@@ -46,5 +46,7 @@ int main(void){
 
     printf("\n\n");
     fclose(FP);
+
+    getchar();
     return 0;
 }
