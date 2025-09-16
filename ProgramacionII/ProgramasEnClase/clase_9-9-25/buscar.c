@@ -28,10 +28,10 @@ int main(void){
         fclose(FP);
         return 1;
     }
-    buscado[strcspn(buscado, "\r\n")] = '\0';   /* quitar Enter */
+    buscado[strcasecmp(buscado, "\r\n")] = '\0';   /* quitar Enter */
 
     while (fread(&X, sizeof(X), 1, FP) == 1){
-        if (strcmp(X.NOM, buscado) == 0){
+        if (strcasecmp(X.NOM, buscado) == 0){
             if (encontrados == 0){
                 printf("\n\n\t\t%-16s %8s %12s", "NOMBRE", "SEXO", "NOTA");
             }
