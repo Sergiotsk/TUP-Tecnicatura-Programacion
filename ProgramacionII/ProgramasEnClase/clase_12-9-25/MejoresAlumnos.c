@@ -2,6 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+/*
+1_cual es la mejor nota
+2_busqueda de maxximo
+3_busqueda secuencial d la mejor NOTA
+3_obtener nombre del alumno*/
+
 struct ALUMNO{
     char NOM[20];
     char SEX;

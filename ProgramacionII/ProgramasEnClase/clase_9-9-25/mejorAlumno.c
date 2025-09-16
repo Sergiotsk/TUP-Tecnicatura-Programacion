@@ -27,8 +27,8 @@ int main(void){
     }
    }
 
-    printf("\n\n\t\t%-16s %8s %12s", "NOMBRE", "SEXO", "NOTA");
-    printf("\n\n\t\t%-16s %8c %12d", MEJOR, X.SEX, MAX);
+    
+    printf("\n\n\t\tEl mejor alumno es: %s y su NOTA es %d", MEJOR, MAX);
 
 
 
@@ -40,6 +40,7 @@ int main(void){
 
 
     printf("\n\n");
+    getchar();
     fclose(FP);
     return 0;
 }
