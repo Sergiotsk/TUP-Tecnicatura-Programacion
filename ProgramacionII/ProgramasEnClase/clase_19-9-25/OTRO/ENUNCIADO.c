@@ -40,10 +40,56 @@ struct EXAMEN {
 
 int main()
 {
-			
-		printf ("\n\n\nFIN DEL PROGRAMA  " );
-		return 0 ;
-}
+	struct INGRESO unIngreso;
+	struct EXAMEN unExamen;
+	FILE *fp, *fpExamen;
+	int CANT_INSCRIPCIONES=0;
+	char carreraBuscada[20]; // Variable para almacenar la carrera que busca el usuario
+	
+	printf("Ingrese el nombre de la carrera a buscar: ");
+	gets(carreraBuscada); // Leer la carrera que busca el usuario
+	
+	if(( fp=fopen("INGRESO.unknown", "rb")) == NULL ){	
+		printf ("\n\n\nNO SE PUEDE ABRIR EL ARCHIVO " );
+		getchar();
+		return 0;
+	}
+	
 
+	fread(&unIngreso, sizeof(struct INGRESO), 1, fp);
+	while(!feof(fp)){
+		// Comparar la carrera del archivo con la carrera buscada
+		if(strcmp(unIngreso.CARRERA, carreraBuscada) == 0){
+			CANT_INSCRIPCIONES++;
+		}
+		fread(&unIngreso, sizeof(struct INGRESO), 1, fp);
+	}
+	fclose(fp);
+	
+
+
+	printf("\nCantidad de inscripciones en %s: %d", carreraBuscada, CANT_INSCRIPCIONES);
+	printf ("\n\n\nFIN DEL PROGRAMA  " );
+	getchar();
+	return 0 ;
+
+
+	if(( fpExamen=fopen("EXAMEN.unknown", "rb")) == NULL ){	
+		printf ("\n\n\nNO SE PUEDE ABRIR EL ARCHIVO " );
+		getchar();
+		return 0;
+	}
+
+	fread(&unExamen, sizeof(struct EXAMEN), 1, fpExamen);
+	while(!feof(fpExamen)){
+		printf("%d %d", unExamen.LEG, unExamen.NOTA);
+		fread(&unExamen, sizeof(struct EXAMEN), 1, fpExamen);
+	}
+	fclose(fpExamen); 
+
+
+
+	
+}
 
 
