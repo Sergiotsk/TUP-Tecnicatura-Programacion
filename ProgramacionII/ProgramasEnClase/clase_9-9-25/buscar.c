@@ -28,7 +28,7 @@ int main(void){
         fclose(FP);
         return 1;
     }
-    buscado[strcasecmp(buscado, "\r\n")] = '\0';   /* quitar Enter */
+    buscado[strcmp(buscado, "\r\n")] = '\0';   /* quitar Enter */
 
     while (fread(&X, sizeof(X), 1, FP) == 1){
         if (strcasecmp(X.NOM, buscado) == 0){

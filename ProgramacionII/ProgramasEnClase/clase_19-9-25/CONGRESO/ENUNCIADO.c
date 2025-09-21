@@ -1,0 +1,30 @@
+/*  EL ARCHIVO SENADO.DAT ESTA FORMADO POR :
+    NOMBRE DEL SENADOR (string de 20)
+    NUMERO DE AUXILIARES (int)
+    LEGAJO DE LOS AUXILIARES (unsigned int)
+    
+    EL ARCHIVO ASESOR.DAT ESTA FORMADO POR ESTRUCTURAS lEG
+    
+    SE PIDE DETERMINAR :
+    
+    1. SENADOR QUE OCASIONA MAS GASTOS
+    2. SENADORES QUE NO TIENEN CHOFERES
+    3. SENADOR QUE OCASIONA MAS GASTOS EN GUARDAESPALDAS
+*/
+    
+struct LEG {
+	 unsigned int LEGAJO ;
+	 char CARGO[20] ;
+	 unsigned int SUELDO ;
+};
+
+int main()
+{
+	
+	
+	
+	
+	printf("\n\n\n  FIN DEL PROGRAMA \n"); 
+	
+	return 0 ;
+}
