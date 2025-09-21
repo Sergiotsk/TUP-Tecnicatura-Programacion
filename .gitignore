@@ -5,3 +5,10 @@ UTNFRHProg2M2/**/CON
 UTNFRHProg2M2/**/PRN
 UTNFRHProg2M2/**/COM[1-9]
 UTNFRHProg2M2/**/LPT[1-9]
+# Ignorar nombres reservados de Windows también en la raíz (por si aparecen)
+NUL
+AUX
+CON
+PRN
+COM[1-9]
+LPT[1-9]
