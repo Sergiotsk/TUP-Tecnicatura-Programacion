@@ -26,7 +26,7 @@ int main()
 	FPASESOR = fopen ("ASESOR.DAT" , "rb") ;
 	
 	
-	fread(SENADOR , 20 , 1, FPSENADO );
+	fread(SENADOR , sizeof(SENADOR) , 1, FPSENADO );
 	while ( ! feof(FPSENADO) ) {
 			fread(&NUMASESORES , sizeof(NUMASESORES) , 1, FPSENADO );
 			printf("\n\n\t\t %-30s %30d\n\n" , SENADOR , NUMASESORES);
@@ -36,7 +36,7 @@ int main()
 			}
 			getchar();
 				
-			fread(SENADOR , 20 , 1, FPSENADO );
+			fread(SENADOR , sizeof(SENADOR) , 1, FPSENADO );
 	}
 	
 	printf("\n\n\n\t\t\tNOMINA DE ASESORES\n\n");
