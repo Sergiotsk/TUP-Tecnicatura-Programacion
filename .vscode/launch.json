@@ -28,8 +28,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "d:/DEV/TUP-Tecnicatura-Programacion/ProgramacionII/ProgramasEnClase/clase_19-9-25/OTRO",
-      "program": "d:/DEV/TUP-Tecnicatura-Programacion/ProgramacionII/ProgramasEnClase/clase_19-9-25/OTRO/build/Debug/outDebug",
+      "cwd": "d:/DEV/TUP-Tecnicatura-Programacion/ProgramacionII/ProgramasEnClase/clase_30-9-25/LISTAS I",
+      "program": "d:/DEV/TUP-Tecnicatura-Programacion/ProgramacionII/ProgramasEnClase/clase_30-9-25/LISTAS I/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "C/msys64/mingw64/bin/gdb.exe",
       "setupCommands": [
