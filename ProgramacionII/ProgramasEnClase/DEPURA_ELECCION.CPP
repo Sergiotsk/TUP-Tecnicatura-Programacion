@@ -8,9 +8,6 @@
 //  con la totalidad de sus votos.
 //  Determinar el candidato ganador y los votos obtenidos. 
 
-
-
-
 #include <conio.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -31,8 +28,14 @@ class LISTA {
 	private :
 		CANDI * INICIO ;
 	public :
+		// Constructor: crea una lista inicial con 60 nodos aleatorios
 		LISTA() ;
+		// Muestra la lista (nombre y votos) tal como está enlazada
 		void MIRAR() ;
+		// Depura la lista: fusiona nodos repetidos por nombre acumulando sus votos
+		void DEPURA() ;
+		// Determina e informa el candidato con mayor cantidad de votos
+		void GANADOR() ;
 };
 
 LISTA :: LISTA ()
@@ -44,6 +47,7 @@ LISTA :: LISTA ()
 			   "EDELMIRO" , "JOSE" , "MIRTA" , "SUSANA" ,
 			   "FELIPE" , "ENZO" , "BETO" , "PACO" } ;
 	INICIO = NULL ;
+	// Genera 60 nodos con nombre aleatorio de la tabla y votos [1..100]
 	for ( I=0 ; I<60 ; I++ ) {
 		P = new CANDI ;
 		strcpy ( P->NOM , NOM [ rand()%16 ] ) ;
@@ -58,6 +62,7 @@ void LISTA :: MIRAR ()
 	CANDI * P ;
 	P = INICIO ;
 	cout << "\n\n\n" ;
+	// Recorre la lista imprimiendo nombre y votos de cada nodo
 	while ( P ) {
 		printf ( "     %-10s%5d" , P->NOM , P->VOTOS) ;
 		P = P->SIG ;
@@ -65,10 +70,64 @@ void LISTA :: MIRAR ()
 	getch();
 }
 
+void LISTA :: DEPURA ()
+{
+	// Idea: para cada nodo P, buscar más adelante (Q) nodos con el mismo nombre.
+	// Si coincide, acumular votos en P y eliminar físicamente el nodo duplicado.
+	CANDI * P ;
+	CANDI * Q ;
+	CANDI * R ;
+	CANDI * AUX ;
+
+	P = INICIO ;
+	while ( P ) {
+		// R sigue a Q para poder quitar el nodo duplicado cuando aparezca
+		R = P ;
+		Q = P->SIG ;
+		while ( Q ) {
+			if ( strcmp ( P->NOM , Q->NOM ) == 0 ) {
+				// Encontrado duplicado: sumar votos al primer nodo (P)
+				P->VOTOS += Q->VOTOS ;
+				// Saltear Q en la lista y liberar su memoria
+				R->SIG = Q->SIG ;
+				AUX = Q ;
+				Q = Q->SIG ;
+				delete AUX ;
+			} else {
+				// Avanzar en la búsqueda manteniendo el seguidor R
+				R = Q ;
+				Q = Q->SIG ;
+			}
+		}
+		P = P->SIG ;
+	}
+}
+
+void LISTA :: GANADOR ()
+{
+	// Busca el nodo con mayor cantidad de votos y lo muestra
+	if ( ! INICIO ) return ;
+
+	CANDI * P = INICIO ;
+	CANDI * G = INICIO ;
+
+	P = INICIO->SIG ;
+	while ( P ) {
+		if ( P->VOTOS > G->VOTOS ) G = P ;
+		P = P->SIG ;
+	}
+
+	printf ( "\n\nGANADOR: %-10s%5d" , G->NOM , G->VOTOS ) ;
+	getch();
+}
+
 int main()
 {
 	LISTA L ;
 	L.MIRAR() ;
+	L.DEPURA() ;
+	L.MIRAR() ;
+	L.GANADOR() ;
 	cout << "\n\n\nFIN DEL PROGRAMA  " ;
 	return 0 ;
 }
