@@ -28,8 +28,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "d:/DEV/TUP-Tecnicatura-Programacion/ProgramacionII/ProgramasEnClase/C++ II",
-      "program": "d:/DEV/TUP-Tecnicatura-Programacion/ProgramacionII/ProgramasEnClase/C++ II/build/Debug/outDebug",
+      "cwd": "d:/DEV/TUP-Tecnicatura-Programacion/ProgramacionII/ProgramasEnClase/clase_28-10-25",
+      "program": "d:/DEV/TUP-Tecnicatura-Programacion/ProgramacionII/ProgramasEnClase/clase_28-10-25/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "C/msys64/mingw64/bin/gdb.exe",
       "setupCommands": [

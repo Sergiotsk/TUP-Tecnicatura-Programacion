@@ -63,8 +63,9 @@ void LISTA :: MIRAR ()
 	P = INICIO ;
 	cout << "\n\n\n" ;
 	// Recorre la lista imprimiendo nombre y votos de cada nodo
+	printf("CANDIDATO\tVOTOS\n");
 	while ( P ) {
-		printf ( "     %-10s%5d" , P->NOM , P->VOTOS) ;
+		printf ( "     %-10s%5d\n" , P->NOM , P->VOTOS) ;
 		P = P->SIG ;
 	}
 	getch();
@@ -122,7 +123,6 @@ void LISTA :: GANADOR ()
 		P = P->SIG ;
 	}
 
-	// Mostrar nombre y total de votos del ganador
 	printf ( "\n\nGANADOR: %-10s%5d" , G->NOM , G->VOTOS ) ;
 	getch();
 }
