@@ -106,17 +106,23 @@ void LISTA :: DEPURA ()
 void LISTA :: GANADOR ()
 {
 	// Busca el nodo con mayor cantidad de votos y lo muestra
+	// Caso borde: lista vacía, no hay ganador que mostrar
 	if ( ! INICIO ) return ;
 
+	// P recorre la lista; G guarda el puntero al candidato ganador parcial
 	CANDI * P = INICIO ;
 	CANDI * G = INICIO ;
 
+	// Comenzamos comparando desde el segundo nodo
 	P = INICIO->SIG ;
 	while ( P ) {
+		// Si P tiene más votos que el actual ganador G, actualizamos G
+		// Nota: en caso de empate, se mantiene el primero encontrado (G)
 		if ( P->VOTOS > G->VOTOS ) G = P ;
 		P = P->SIG ;
 	}
 
+	// Mostrar nombre y total de votos del ganador
 	printf ( "\n\nGANADOR: %-10s%5d" , G->NOM , G->VOTOS ) ;
 	getch();
 }
