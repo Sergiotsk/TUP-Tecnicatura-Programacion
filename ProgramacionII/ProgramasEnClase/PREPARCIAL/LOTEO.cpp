@@ -19,12 +19,30 @@
 //              EN EL MAIN.
 //          3   EN ESTA FUNCION DETERMINAR QUIEN ES EL INVERSOR QUE MAS DINERO INVIRTIO
 //              EN LA COMPRA DE LOTES, Y CUAL FUE ESE MONTO.
+/*
 
+4) REALIZAR FUNCION  void COUNTRY::MASCARO(LOTEO L)
+
+PARA ENCONTRAR EL LOTE MAS CARO, SI ESTE SE VENDIO O NO, Y SI SE VENDIO QUIEN FUE SU COMPRADOR
+
+
+                         
+                         LOGICA DE DESARROLLO
+    
+    1.EN LOTEO BUSCAR EL NODO DEL MAXIMO PRECIO
+    2.YA TENEMOS EL CODIGO Y EL PRECIO 
+    3.CAMBIAR A LA GUIRNALDA CON EL CODIGO 
+    4.BUSCAR LOTE DONDE FIGURA CODIGO (*).
+    5.DE NODO INVERSOR OBTENER NOMBRE DEL DUE�O 
+    (*)==NULL ,SI NO SE ENCUENTRA INFORMAR QUE NO ESTA VENDIDO    
+
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
 #include <string.h>
+#include <ostream>
 
 using namespace std ;
 
@@ -69,6 +87,11 @@ class LOTEO {
 		}
 		void MIRALOTE();
 		char * DA_COD (int) ;
+		void INSERTAR_INICIO(char *,int);
+		void CONTAR(LOTEO);
+		void INSERTAR_FINAL(char *, int);
+		bool ELIMINARXCODIGO(char *);
+		
 };
 
 void LOTEO::MIRALOTE()
@@ -124,6 +147,9 @@ class COUNTRY {
 		void MIRAR(LOTEO);
 		void ARREGLATE ( char * );
 		void MASGASTO(LOTEO);
+		void MASCARO(LOTEO);
+		void CONTAR_VENDIDOS();
+		void LOTE_MAS_BARATO(LOTEO);
 };
 
 COUNTRY::COUNTRY()
@@ -160,7 +186,7 @@ void COUNTRY::MIRAR(LOTEO L)
 
 				printf( "\nTotal Invertido por %s: %d" , P->NOM , Gasto);
 
-				getchar();
+				//getchar();
 				P = P->SIG ;
 		}
 
@@ -272,29 +298,358 @@ void COUNTRY::MASGASTO(LOTEO L)
 
 }
 
+//4)DETERMINAR LOTE MAS CARO E INFORMAR SI FUE VENDIDO Y SU COMPRADO O NO
 
+void COUNTRY::MASCARO(LOTEO L)
+{
+	
+	LOTE * Q;
+	INVERSOR * P;
+	TERRENO * T;
+	int MASCARO=0;
+	char MASCAROCOD[10];
+	int cont=0;
+	bool encontrado= false;
+	
+	
+		T=L.INICIO;
+		while(T)
+		{
+			if(T->PRECIO>MASCARO)
+			{
+				
+				MASCARO=T->PRECIO;
+				strcpy(MASCAROCOD,T->CODIGOLOTE);					
+				
+				
+			}		
+			
+			T=T->SIG;
+		}
+
+	    cout<<"\nEL O LOS LOTES MAS CAROS TIENEN UN VALOR DE:"<<MASCARO<<endl;
+
+    	cout<<"\nSU CODIGO ES:"<<endl;
+		
+		
+		T=L.INICIO;		
+		while(T)
+		{
+			if(MASCARO==T->PRECIO)
+			{
+				encontrado=false;
+				cont++;
+				cout<<cont<<"."<<T->CODIGOLOTE;
+				
+				P=INICIO;	
+				while(P){
+
+							Q=P->INILOTE;
+							while(Q && !encontrado){
+			    
+								if(!strcmp(T->CODIGOLOTE,Q->CODIGOLOTE)){
+
+								encontrado=true;				
+				
+								cout<<"-->FUE VENDIDO A: "<<P->NOM<<endl;
+								break;
+								
+
+				
+								}
+			
+		     
+							Q=Q->SIG;
+							}
+				
+		
+		
+							P=P->SIG;
+						}	
+						if(!encontrado)
+						cout<<"-->NO SE VENDIO"<<endl;
+							
+				
+			}		
+			
+			T=T->SIG;
+
+
+		}				
+	
+	
+}
+
+void COUNTRY::LOTE_MAS_BARATO(LOTEO L){
+
+
+
+        TERRENO * T;		
+        LOTE * Q;		
+        INVERSOR * P;
+
+
+        char BARATO[10]="";
+		char CODBARATO[10]="";
+	
+        int Mprecio;
+		bool VENDIDO;
+
+        T=L.INICIO;
+
+        Mprecio=T->PRECIO;
+       
+		
+
+        while(T)
+        {	
+			int PREC=T->PRECIO;
+			strcpy(BARATO,T->CODIGOLOTE);
+            if(PREC<Mprecio)
+			{
+				Mprecio=PREC;
+				
+			}
+
+			VENDIDO=false;
+			P=INICIO;
+			while(P && !VENDIDO){
+				Q=P->INILOTE;
+				while(Q){
+					if(!strcmp(BARATO,Q->CODIGOLOTE)){						
+						VENDIDO=true;
+						break;
+						
+					}
+					Q=Q->SIG;
+				}
+				P=P->SIG;
+			}   
+			if(!VENDIDO && PREC<Mprecio || CODBARATO[0]=='\0'){
+				Mprecio=PREC;
+				strcpy(CODBARATO,BARATO);
+				
+			}            
+
+      
+        T=T->SIG;
+	}
+	  
+
+        cout<<"\nEl lote mas BARATO disponible es: "<<CODBARATO<<" y su precio es de "<<Mprecio<<endl;
+
+}
+/////////////////PRACTICAS LIBRES////////////////////////
+
+/*INSERTAR UN LOTE POR EL INICIO*/
+
+void LOTEO::INSERTAR_INICIO(char * codigo, int precio) {
+    TERRENO * nuevo = new TERRENO;
+    strcpy(nuevo->CODIGOLOTE, codigo);
+    nuevo->PRECIO = precio;
+    
+    nuevo->SIG=INICIO;
+
+	INICIO=nuevo;
+    
+    
+}
+/*INSERTAR UN LOTE POR EL FINAL*/
+void LOTEO::INSERTAR_FINAL(char * codigo, int precio){
+    
+	TERRENO * T, * nuevo =new TERRENO;
+	strcpy(nuevo->CODIGOLOTE, codigo);
+    nuevo->PRECIO = precio;
+	nuevo->SIG=NULL;
+	
+	T=INICIO;
+	while (T->SIG!=NULL)
+	{
+		T=T->SIG;
+	}
+	T->SIG=nuevo;
+	
+
+
+
+
+
+
+}
+
+
+
+/*CONTAR NODOS, CUANTOS TERRENOS HAY?*/
+void LOTEO::CONTAR(LOTEO L){
+  
+	TERRENO * T;
+	T=INICIO;
+	int CONT=0;
+
+	while (T!=NULL)
+	{
+		CONT++;
+		T=T->SIG;
+	}
+	
+		
+		
+		cout<<"EXISTEN "<<CONT<<" LOTES EN TOTAL."<<endl;
+
+
+}
+
+/*CONTAR LOTES VENDIDOS*/
+
+void COUNTRY::CONTAR_VENDIDOS(){
+
+	INVERSOR * P;
+	LOTE * Q;
+	int CONT=0;
+	P=INICIO;
+	while (P)
+	{
+		Q=P->INILOTE;	
+		while (Q)
+			{
+				CONT++;
+
+				Q=Q->SIG;
+			}
+			
+		P=P->SIG;
+	}
+	
+
+	cout<<"CANTIDAD DE LOTES VENDIDOS: "<<CONT<<endl;
+	
+}
+/*BUSCAR Y ELIMINAR TERRENO, BUSCANDO POR CODIGO*/
+    
+bool LOTEO::ELIMINARXCODIGO(char * COD){
+TERRENO * T;
+TERRENO * ANT;
+TERRENO *ACT;
+
+T=INICIO;
+
+//CASO1: LISTA VACIA
+if(INICIO==NULL)return false;
+
+
+//CASO2: ESTA EN EL INICIO
+if(!strcmp(T->CODIGOLOTE,COD)){
+
+	T=INICIO;
+	INICIO=INICIO->SIG;
+	delete T;
+	return true;
+}
+
+
+//CASO3: ESTA EN EL MEDIO O EL FINAL
+ANT = INICIO;
+ACT = INICIO->SIG;
+while (ACT)
+{
+	
+	if(!strcmp(ACT->CODIGOLOTE,COD)){
+
+		ANT->SIG= ACT->SIG; //DESVINCULAR
+		delete ACT;         //LIBERAR
+		return true;
+	}
+
+	ANT=ACT;
+	ACT=ACT->SIG;
+
+	
+}
+
+	
+	return false;//NO ENCONTRADO
+
+}
+
+////////////////////////////////////////////////////////
 int main( )
 {
-		LOTEO L ;
+		LOTEO L;
 		COUNTRY C ;
 		char BUF[20];
-		LOTE * Q ;
 		INVERSOR * PINV ;
 		int I ;
+		char nuevoCOD[10],FnuevoCOD[10],EliminarCOD[10];
+		int nuevoPRECIO,FnuevoPRECIO;
+		bool ELIMINADO=false;
+		
 
 		srand( SEMILLA );
 
 		for ( I = 0 ; I < NUMLOTES ; I = I + (1+rand()%3) )
 				C.ARREGLATE(L.DA_COD(I)) ;
 
-		L.MIRALOTE() ;
+			
+		do
+		{
+			cout<<"INGRESE NUEVO LOTE POR EL PRINCIPIO"<<endl;
+			cout<<"CODIGO DE 10 CARACTERES: ";
+			cin>>nuevoCOD;
+			if (strcmp(nuevoCOD, "FIN") == 0) break;
+			cout<<"PRECIO: ";
+			cin>>nuevoPRECIO;
+			L.INSERTAR_INICIO(nuevoCOD,nuevoPRECIO);
+
+		} while (true);
+		
+		
+	do {
+   			 cout<<"INGRESE NUEVO LOTE AL FINAL(FIN para terminar)"<<endl;
+   			 cout<<"CODIGO: ";
+   			 cin>>FnuevoCOD;
+  			  if (strcmp(FnuevoCOD, "FIN") == 0) break;
+
+   			 cout<<"PRECIO: ";
+   			 cin>>FnuevoPRECIO;
+   			 L.INSERTAR_FINAL(FnuevoCOD, FnuevoPRECIO);
+		} while (true);
+
 
 		C.MIRAR(L) ;
+		L.MIRALOTE() ;
+		C.LOTE_MAS_BARATO(L);
+		C.MASGASTO(L);
 
-        C.MASGASTO(L);
+			
+			getchar();
+			
+			//getchar();
+			C.MASCARO(L);
+			L.CONTAR(L);	
+			C.CONTAR_VENDIDOS();	
 
-		printf("\n\n");
-		return 0 ;
+			do
+			{
+				cout<<"INGRESE CODIGO DEL LOTE QUE DESEA ELIMINAR(FIN para terminar)"<<endl;
+     			cout<<"CODIGO: ";
+    			cin>>EliminarCOD;
+   			 if (!strcmp(EliminarCOD, "FIN")) break;
+				ELIMINADO=L.ELIMINARXCODIGO(EliminarCOD);
+
+			if(ELIMINADO)
+				cout<<"Lote eliminado CORRECTAMENTE"<<endl;
+			else 
+				cout<<"Lote NO encontrado en los registros existentes"<<endl;
+
+			} while (strcmp(EliminarCOD, "FIN"));
+			
+			
+			getchar();
+			L.MIRALOTE();
+
+			printf("\n\n");
+		
+			return 0 ;
 }
 
 char * GENERANOM()
