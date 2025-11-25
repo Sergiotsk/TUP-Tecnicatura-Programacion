@@ -34,9 +34,10 @@ class COMPETIDOR {
 	public :
 			COMPETIDOR(char *) ;
 			~COMPETIDOR() ;
-			char NOM[20] ;	
+			char NOM[20] ;
+			int PUNTAJE;
+			int DINERO;
 			COMPETIDOR * SIG ;	
-			
 };
 
 
@@ -77,15 +78,7 @@ DISCIPLINA::DISCIPLINA(char * S , COMPETIDOR * PRIMERO)
 DISCIPLINA::~DISCIPLINA()
 {
 		cout << "\n\n   MATANDO A ... TODOS LOS COMPETIDORES" ;
-		DISCIPLINA * actual;
-		actual=actual->PALUM;
-		
-		while (actual)
-		{
-			
-			
-		}
-		
+		cout << "\n\n   PARA USTEDES" ;
 		getchar();
 }
 
@@ -102,8 +95,6 @@ class TORNEO {
 			void MIRAR() ;
 			void GANADOR();
 			void MAYOR_INVERSION();
-			int GASTA(char *);
-			void MAXGASTA();
 };
 
 
@@ -189,173 +180,59 @@ void TORNEO::MIRAR()
 
 void TORNEO::GANADOR() {
 
-	DISCIPLINA * D = INICIO, * D2;
-    COMPETIDOR * C, * C2, * GANADOR;
-    int MAYOR_PUNTAJE = 0, puntaje = 0, participaciones = 0, max_participaciones = 0;
+	DISCIPLINA * PPAR;
+	COMPETIDOR * PAL;
+	PPAR = INICIO;
+	int DINERO=0;
+	int MaxPUNTAJE=0;
+	int MaxDINERO=0;
+	char MaxNOM[20];
+	
 
-    C = D->PALUM;
-    int pos = 0;
+	
+	while (PPAR) {
+		PAL=PPAR->PALUM;
+		int	POSICION=1;	
 
-    while ( D )
-    {
-        C = D->PALUM;
-
-        while ( C )
-        {
-            D2 = D;
-            puntaje = 0;
-            participaciones = 0;
-
-            while ( D2 )
-            {
-                C2 = D2->PALUM;
-                pos = 0;
-
-                while ( C2 )
-                {
-                    pos++;
-
-                    if ( !strcmp(C->NOM, C2->NOM) )
-                    {
-                        if (pos < 6) puntaje += (11 - pos) * D2->HANDICAP;
-                        else puntaje += 2 * D2->HANDICAP;
-
-                        participaciones++;
-                    }
-
-                    C2 = C2->SIG;
-                }
-
-                D2 = D2->SIG;
-            }
-
-            if ( MAYOR_PUNTAJE < puntaje )
-            {
-                MAYOR_PUNTAJE = puntaje;
-                GANADOR = C;
-                max_participaciones = participaciones;
-            }
-
-            C = C->SIG;
-        }
-
-        D = D->SIG;
-    }
-
-    printf("\n\n\t\tGANADOR: %s (%d puntos)\n\t\tPARTICIPO %d VECES\n\n", GANADOR->NOM, MAYOR_PUNTAJE, max_participaciones);
+		while (PAL) {
+			if (POSICION==1) {
+				PAL->PUNTAJE += 10;
+			} else if (POSICION==2) {
+				PAL->PUNTAJE += 9;
+			} else if (POSICION==3) {
+				PAL->PUNTAJE += 8;
+			} else if (POSICION==4) {
+				PAL->PUNTAJE += 7;
+			} else if (POSICION==5) {
+				PAL->PUNTAJE += 6;
+			} else {
+				PAL->PUNTAJE += 2;
+			}
+			POSICION++;
+			PAL = PAL->SIG;
+			DINERO=PAL->DINERO*PPAR->HANDICAP;
+			
+		}
+		if (PAL->PUNTAJE>MaxPUNTAJE) {
+			MaxPUNTAJE=PAL->PUNTAJE;
+			MaxDINERO=DINERO;
+			strcpy(MaxNOM,PAL->NOM);
+			
+		}	
+		 		
+		 PPAR = PPAR->SIG;
+		 	
+	}
+	
+  cout<<"\n\nGANADOR: "<<MaxNOM<<" con "<<MaxPUNTAJE<<" puntos";	
 }
-int TORNEO::GASTA(char * CNOM){
 
-	DISCIPLINA * PDIS;
-	COMPETIDOR * PCOM ;
-	PDIS=INICIO;
-	int GASTO=0;
-	
-	
-	while (PDIS)
-	{
-		PCOM= PDIS->PALUM;
-		while (PCOM)
-		{
-			if(!strcmp(CNOM,PCOM->NOM)){   //SI DA 0 O NULL ,seria lo mismo
-	
-				
-					GASTO=GASTO + 1000 * PDIS->HANDICAP;
-	
-	
-			}
-			PCOM=PCOM->SIG;
-		}
-	
-		PDIS=PDIS->SIG;
-	}
-	return GASTO;
-	
-	}
-void TORNEO::MAXGASTA(){
-	
-		DISCIPLINA * PDIS;
-		COMPETIDOR * PCOM ;
-		PDIS=INICIO;
-		int GASTO,MAXGASTO=0;
-		char MAXGASTADOR[20];
-		
-		
-		while (PDIS)
-		{
-			PCOM= PDIS->PALUM;
-			while (PCOM)
-			{
-				GASTO=GASTA(PCOM->NOM);
-				if (GASTO>MAXGASTO)
-				{
-					MAXGASTO=GASTO;
-					strcpy(MAXGASTADOR,PCOM->NOM);
-				}
-				
-		
-			
-				PCOM=PCOM->SIG;
-			}
-		
-			PDIS=PDIS->SIG;
-		}
-		
-		printf("\n\n %-15s %10d", MAXGASTADOR,MAXGASTO);
-		}
+
+
 void TORNEO::MAYOR_INVERSION() {
+    
+}
 
-	DISCIPLINA * D = INICIO, * D2;
-    COMPETIDOR * C, * C2, * MAYOR_INVERSION;
-    int max_inversion = 0,inversion = 0;
-
-    C = D->PALUM;
-    int pos = 0;
-
-    while ( D )
-    {
-		C = D->PALUM;
-
-		while ( C )
-		{
-			D2 = D;
-			pos = 0;
-			inversion = 0;
-
-			while ( D2 )
-			{
-				C2 = D2->PALUM;
-				pos = 0;
-
-				while ( C2 )
-				{
-					pos++;
-					if ( !strcmp(C->NOM, C2->NOM) )
-					{
-						inversion += 1000 * D2->HANDICAP;
-					}
-					C2 = C2->SIG;					
-				}
-				
-
-				D2 = D2->SIG;
-			}
-			if ( max_inversion < inversion )
-				{
-					max_inversion = inversion;
-					MAYOR_INVERSION = C;
-				}
-			
-			C = C->SIG;
-		}
-		D = D->SIG;
-
-		
-	}
-	if(MAYOR_INVERSION){
-		printf("\n\n\t\tMAYOR INVERSION: %s (%d pesos)\n", MAYOR_INVERSION->NOM, max_inversion);
-	}
- }
 char * GENERANOM();
 
 int main( )
@@ -375,8 +252,7 @@ int main( )
 		T.MIRAR() ; 
 		
 		T.GANADOR() ;
-       // T.MAYOR_INVERSION() ;
-	   T.MAXGASTA();
+//      T.MAYOR_INVERSION() ;
 		
 		printf("\n\n");
 		return 0 ;
@@ -415,25 +291,3 @@ char * GENERADISCIPLINA()
 }
 
 
-/*
-MONOGRAFIA EN PDF ENTREGS 25 Y 28 NOVIEMBRE
-
-SERVICIOS WEB
-
-	API
-	REST
-	SOAP
-	JSON
-	XML
-
-
-
-
-
-
-
-
-
-
-
-*/
