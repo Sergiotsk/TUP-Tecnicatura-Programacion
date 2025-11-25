@@ -1,10 +1,10 @@
 /*   COMPETENCIA   */
 
 /*   SE DESARROLLARA UN TORNEO POR DISCIPLINAS.                  */
-/*   CADA UNA DE ESTAS TIENE UN DETERMINADO HANDICAP             */ 
+/*   CADA UNA DE ESTAS TIENE UN DETERMINADO HANDICAP             */
 /*   POR CADA DISCIPLINA SE DISPONE DE LA LISTA DE COMPETIDORES  */
 /*   EN EL ORDEN EN QUE CLASIFICARON                             */
-/*   SEGUN LA POSICION OBTENIDA SE ASIGNA EL SIGUIENTE PUNTAJE : */ 
+/*   SEGUN LA POSICION OBTENIDA SE ASIGNA EL SIGUIENTE PUNTAJE : */
 /*   		PRIMERO     10 PUNTOS                                */
 /*   		SEGUNDO      9 PUNTOS                                */
 /*   		TERCERO      8 PUNTOS                                */
@@ -34,9 +34,8 @@ class COMPETIDOR {
 	public :
 			COMPETIDOR(char *) ;
 			~COMPETIDOR() ;
-			char NOM[20] ;	
-			COMPETIDOR * SIG ;	
-			
+			char NOM[20] ;
+			COMPETIDOR * SIG ;
 };
 
 
@@ -60,10 +59,9 @@ class DISCIPLINA {
 			char NOM[20] ;
 			int HANDICAP ;
 			COMPETIDOR * PALUM ;
-			DISCIPLINA * SIG ;	
+			DISCIPLINA * SIG ;
 			DISCIPLINA(char * , COMPETIDOR *) ;
 			~DISCIPLINA() ;
-			
 };
 
 
@@ -77,15 +75,7 @@ DISCIPLINA::DISCIPLINA(char * S , COMPETIDOR * PRIMERO)
 DISCIPLINA::~DISCIPLINA()
 {
 		cout << "\n\n   MATANDO A ... TODOS LOS COMPETIDORES" ;
-		DISCIPLINA * actual;
-		actual=actual->PALUM;
-		
-		while (actual)
-		{
-			
-			
-		}
-		
+		cout << "\n\n   PARA USTEDES" ;
 		getchar();
 }
 
@@ -100,97 +90,59 @@ class TORNEO {
 			~TORNEO() ;
 			void ARREGLATE(char *);
 			void MIRAR() ;
-			void GANADOR();
+			void GANADOR() ;
 			void MAYOR_INVERSION();
-			int GASTA(char *);
-			void MAXGASTA();
 };
 
-
-TORNEO::TORNEO()
+void TORNEO::MAYOR_INVERSION()
 {
-		INICIO = NULL ;
+    DISCIPLINA * D1 = INICIO, * D2;
+    COMPETIDOR * C1, * C2, * DERROCHADOR;
+    int INVERSION = 0, MAX_INVERSION = 0;
+
+    while ( D1 )
+    {
+        C1 = D1->PALUM;
+
+        while ( C1 )
+        {
+            INVERSION = 0;
+            D2 = D1;
+
+            while ( D2 )
+            {
+                C2 = D2->PALUM;
+
+                while ( C2 )
+                {
+                    if ( !strcmp( C1->NOM, C2->NOM ) ) INVERSION += 1000;
+
+                    C2 = C2->SIG;
+                }
+
+                D2 = D2->SIG;
+            }
+
+            if ( INVERSION > MAX_INVERSION )
+            {
+                MAX_INVERSION = INVERSION;
+                DERROCHADOR = C1;
+            }
+
+            C1 = C1->SIG;
+        }
+
+        D1 = D1->SIG;
+    }
+
+    printf("\n\n\t\t MAYOR INVERSION: %s\n\t\tCANTIDAD GASTADA: $%d\n\n", DERROCHADOR->NOM, MAX_INVERSION);
 }
 
-TORNEO::~TORNEO()
+void TORNEO::GANADOR()
 {
-		cout << "\n\n   DESTRUYENDO TODAS LAS DISCIPLINAS " ;
-		cout << "\n\n   ADIVINEN ....  " ;
-		getchar();
-}
-
-void TORNEO::ARREGLATE(char * S)
-{
-		/*   PROTOTIPO  */
-		char * GENERADISCIPLINA();
-		
-		char BUF[20] ;
-		COMPETIDOR * PAL , * P ;
-		DISCIPLINA * PPAR ;
-		
-		PAL = new COMPETIDOR(S) ;
-		
-		strcpy ( BUF , GENERADISCIPLINA() ) ;
-	
-		PPAR = BUSCAR(BUF) ;
-	
-		if ( PPAR ) {
-				/*  DISCIPLINA EXISTENTE  */
-				P = PPAR->PALUM ;		/*  APUNTO AL PRIMERO  */
-				while ( P->SIG )
-						P = P->SIG ; 	/*  AVANZO AL ULTIMO COMPETIDOR  */
-				P->SIG = PAL ;		
-				return ;
-		}
-		/*  NUEVA DISCIPLINA  */
-		PPAR = new DISCIPLINA(BUF,PAL) ;
-		PPAR->SIG = INICIO ;
-		INICIO = PPAR ;	
-}
-
-DISCIPLINA * TORNEO::BUSCAR(char * S)
-{
-		DISCIPLINA * P ;
-		P = INICIO ;
-		
-		while (P) {
-				if ( ! strcmp ( P->NOM , S ) )
-						return P ;			
-				P = P->SIG ;
-		}
-		return NULL ;
-}
-
-
-void TORNEO::MIRAR()
-{
-		DISCIPLINA * PPAR ;
-		COMPETIDOR * PAL ;
-		
-		fflush(stdin);
-		system("cls");
-		cout << "\n\n\n\n\t\t    CONTENIDO DEL TORNEO \n\n" ;
-		PPAR = INICIO ;
-		while ( PPAR ) {
-				cout << "\n\n\n\n\t\t    DISCIPLINA   :   " << PPAR->NOM ;
-				cout << "\n\n\t\t    HANDICAP     :   " << PPAR->HANDICAP ;
-				cout << "\n\n" ;
-			
-				PAL = PPAR->PALUM ;
-				while ( PAL ) {
-						cout << "\n\t\t    " << PAL->NOM ;				
-						PAL = PAL->SIG ;
-				}
-				getchar();
-						
-				PPAR = PPAR->SIG ;
-		}
-}
-
-void TORNEO::GANADOR() {
-
-	DISCIPLINA * D = INICIO, * D2;
+    DISCIPLINA * D = INICIO, * D2;
     COMPETIDOR * C, * C2, * GANADOR;
+    bool ya_procesado = false;
     int MAYOR_PUNTAJE = 0, puntaje = 0, participaciones = 0, max_participaciones = 0;
 
     C = D->PALUM;
@@ -244,140 +196,110 @@ void TORNEO::GANADOR() {
 
     printf("\n\n\t\tGANADOR: %s (%d puntos)\n\t\tPARTICIPO %d VECES\n\n", GANADOR->NOM, MAYOR_PUNTAJE, max_participaciones);
 }
-int TORNEO::GASTA(char * CNOM){
 
-	DISCIPLINA * PDIS;
-	COMPETIDOR * PCOM ;
-	PDIS=INICIO;
-	int GASTO=0;
-	
-	
-	while (PDIS)
-	{
-		PCOM= PDIS->PALUM;
-		while (PCOM)
-		{
-			if(!strcmp(CNOM,PCOM->NOM)){   //SI DA 0 O NULL ,seria lo mismo
-	
-				
-					GASTO=GASTO + 1000 * PDIS->HANDICAP;
-	
-	
-			}
-			PCOM=PCOM->SIG;
+
+TORNEO::TORNEO()
+{
+		INICIO = NULL ;
+}
+
+TORNEO::~TORNEO()
+{
+		cout << "\n\n   DESTRUYENDO TODAS LAS DISCIPLINAS " ;
+		cout << "\n\n   ADIVINEN ....  " ;
+		getchar();
+}
+
+void TORNEO::ARREGLATE(char * S)
+{
+		/*   PROTOTIPO  */
+		char * GENERADISCIPLINA();
+
+		char BUF[20] ;
+		COMPETIDOR * PAL , * P ;
+		DISCIPLINA * PPAR ;
+
+		PAL = new COMPETIDOR(S) ;
+
+		strcpy ( BUF , GENERADISCIPLINA() ) ;
+
+		PPAR = BUSCAR(BUF) ;
+
+		if ( PPAR ) {
+				/*  DISCIPLINA EXISTENTE  */
+				P = PPAR->PALUM ;		/*  APUNTO AL PRIMERO  */
+				while ( P->SIG )
+						P = P->SIG ; 	/*  AVANZO AL ULTIMO COMPETIDOR  */
+				P->SIG = PAL ;
+				return ;
 		}
-	
-		PDIS=PDIS->SIG;
-	}
-	return GASTO;
-	
-	}
-void TORNEO::MAXGASTA(){
-	
-		DISCIPLINA * PDIS;
-		COMPETIDOR * PCOM ;
-		PDIS=INICIO;
-		int GASTO,MAXGASTO=0;
-		char MAXGASTADOR[20];
-		
-		
-		while (PDIS)
-		{
-			PCOM= PDIS->PALUM;
-			while (PCOM)
-			{
-				GASTO=GASTA(PCOM->NOM);
-				if (GASTO>MAXGASTO)
-				{
-					MAXGASTO=GASTO;
-					strcpy(MAXGASTADOR,PCOM->NOM);
+		/*  NUEVA DISCIPLINA  */
+		PPAR = new DISCIPLINA(BUF,PAL) ;
+		PPAR->SIG = INICIO ;
+		INICIO = PPAR ;
+}
+
+DISCIPLINA * TORNEO::BUSCAR(char * S)
+{
+		DISCIPLINA * P ;
+		P = INICIO ;
+
+		while (P) {
+				if ( ! strcmp ( P->NOM , S ) )
+						return P ;
+				P = P->SIG ;
+		}
+		return NULL ;
+}
+
+
+void TORNEO::MIRAR()
+{
+		DISCIPLINA * PPAR ;
+		COMPETIDOR * PAL ;
+
+		fflush(stdin);
+		system("cls");
+		cout << "\n\n\n\n\t\t    CONTENIDO DEL TORNEO \n\n" ;
+		PPAR = INICIO ;
+		while ( PPAR ) {
+				cout << "\n\n\n\n\t\t    DISCIPLINA   :   " << PPAR->NOM ;
+				cout << "\n\n\t\t    HANDICAP     :   " << PPAR->HANDICAP ;
+				cout << "\n\n" ;
+
+				PAL = PPAR->PALUM ;
+				while ( PAL ) {
+						cout << "\n\t\t    " << PAL->NOM ;
+						PAL = PAL->SIG ;
 				}
-				
-		
-			
-				PCOM=PCOM->SIG;
-			}
-		
-			PDIS=PDIS->SIG;
+				getchar();
+
+				PPAR = PPAR->SIG ;
 		}
-		
-		printf("\n\n %-15s %10d", MAXGASTADOR,MAXGASTO);
-		}
-void TORNEO::MAYOR_INVERSION() {
+}
 
-	DISCIPLINA * D = INICIO, * D2;
-    COMPETIDOR * C, * C2, * MAYOR_INVERSION;
-    int max_inversion = 0,inversion = 0;
 
-    C = D->PALUM;
-    int pos = 0;
-
-    while ( D )
-    {
-		C = D->PALUM;
-
-		while ( C )
-		{
-			D2 = D;
-			pos = 0;
-			inversion = 0;
-
-			while ( D2 )
-			{
-				C2 = D2->PALUM;
-				pos = 0;
-
-				while ( C2 )
-				{
-					pos++;
-					if ( !strcmp(C->NOM, C2->NOM) )
-					{
-						inversion += 1000 * D2->HANDICAP;
-					}
-					C2 = C2->SIG;					
-				}
-				
-
-				D2 = D2->SIG;
-			}
-			if ( max_inversion < inversion )
-				{
-					max_inversion = inversion;
-					MAYOR_INVERSION = C;
-				}
-			
-			C = C->SIG;
-		}
-		D = D->SIG;
-
-		
-	}
-	if(MAYOR_INVERSION){
-		printf("\n\n\t\tMAYOR INVERSION: %s (%d pesos)\n", MAYOR_INVERSION->NOM, max_inversion);
-	}
- }
 char * GENERANOM();
 
 int main( )
-{  
-		TORNEO T ;		
+{
+		TORNEO T ;
 		char BUF[20];
-		
+
 		srand(65);
-		
+
 		strcpy ( BUF , GENERANOM() );
 		while ( strcmp(BUF,"FIN") ) {
-				T.ARREGLATE(BUF) ; 
-			
+				T.ARREGLATE(BUF) ;
+
 				strcpy ( BUF , GENERANOM() );
 		}
-		
-		T.MIRAR() ; 
-		
-		T.GANADOR() ;
-       // T.MAYOR_INVERSION() ;
-	   T.MAXGASTA();
-		
+
+		T.MIRAR() ;
+
+        T.GANADOR() ;
+        T.MAYOR_INVERSION() ;
+
 		printf("\n\n");
 		return 0 ;
 }
@@ -410,30 +332,8 @@ char * GENERADISCIPLINA()
 {
 	static char NOM[][20] = {"TRIATLON","PENTATLON","MARTILLO","JABALINA",
 						     "GARROCHA","SALTO TRIPLE","SALTO EN LARGO",
-							 "MARATON","CARRERA 100 MTS","DISCO","MEDIA MARATON","PESAS" };						 
+							 "MARATON","CARRERA 100 MTS","DISCO","MEDIA MARATON","PESAS" };
 	return NOM[rand()%12] ;
 }
 
 
-/*
-MONOGRAFIA EN PDF ENTREGS 25 Y 28 NOVIEMBRE
-
-SERVICIOS WEB
-
-	API
-	REST
-	SOAP
-	JSON
-	XML
-
-
-
-
-
-
-
-
-
-
-
-*/

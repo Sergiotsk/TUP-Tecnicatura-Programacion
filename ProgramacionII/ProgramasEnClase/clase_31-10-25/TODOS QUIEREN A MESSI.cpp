@@ -1,10 +1,6 @@
-
-/*   TODOS QUIEREN A MESSI  (VARIANTE) */
-/*   CONSTRUIR LA FUNCION CHEQUEAR QUE PERTENECE A GUIRNALDA  */
-/*   QUE MUESTRE LOS EQUIPOS QUE INSCRIBIERON JUGADORES DUPLICADOS */
-/*   ESTO ES, QUE TAMBIEN ESTAN EN OTROS EQUIPOS  */
-/*   DE LA FORMA :   JUGADOR      EQUIPO 1      EQUIPO 2      */
-
+/*   MESSI   */
+/*ENCONTRAR QUE EQUIPOS TIENEN JUGADORES INSCRIPTOS QUE YA ESTABAN EN OTROS EQUIPOS
+DETERMINAR QUE EQUIPO LO INSCRIBIO PRIMERO Y ELIMINAR LOS QUE ESTEN EN FALTA*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
@@ -29,7 +25,7 @@ JUGADOR::JUGADOR(char * S)
 JUGADOR::~JUGADOR()
 {
 		cout << "\n\n   MATANDO A ... " << NOM << "\n\n";
-		
+		getchar();
 }
 
 
@@ -52,52 +48,37 @@ EQUIPO::EQUIPO ( char * S , JUGADOR * PRESI )
 EQUIPO::~EQUIPO()
 {
 		cout << "\n\n   MATANDO A ... TODOS LOS JUGADORES\n\n";
-		JUGADOR * actual = PALUM;
-		while ( actual ) {
-				JUGADOR * siguiente = actual->SIG;
-				cout << "\n\n   MATANDO A ... " << actual->NOM << "\n\n";
-				delete actual;
-				actual = siguiente;
-		}
-		PALUM = NULL;
-		
+		cout << "\n\n   TAREA PARA USTEDES \n\n";
+		getchar();
 }
 
 
-class GUIRNALDA {
+class CAMPEONATO {
 		private :
 			EQUIPO * INICIO ;
 			EQUIPO * BUSCAR ( char * );
 		public :
-			GUIRNALDA() ;
-			~GUIRNALDA() ;
+			CAMPEONATO() ;
+			~CAMPEONATO() ;
 			void ARREGLATE(char *);
 			void MIRAR();
-			void CHEQUEAR();
 };
 
-GUIRNALDA::GUIRNALDA()
+CAMPEONATO::CAMPEONATO()
 {
 		INICIO = NULL ;
 }
 
 
-GUIRNALDA::~GUIRNALDA()
+CAMPEONATO::~CAMPEONATO()
 {
 		cout << "\n\n   QUE SE VAYAN TODOS !!! DESTRUYENDO EQUIPOS" ;
-		EQUIPO * actual = INICIO;
-		while ( actual ) {
-				EQUIPO * siguiente = actual->SIG;
-				cout << "\n\n   matando a ... " << actual->NOM << "\n\n";
-				delete actual;
-				actual = siguiente;
-		}
-		INICIO = NULL;
-		
+		cout << "\n\n   OTRA QUE ES PARA USTEDES " ;
+		getchar();
 }
 
 
-EQUIPO * GUIRNALDA::BUSCAR(char * S)
+EQUIPO * CAMPEONATO::BUSCAR(char * S)
 {
 		EQUIPO * P ;
 		P = INICIO ;
@@ -112,7 +93,7 @@ EQUIPO * GUIRNALDA::BUSCAR(char * S)
 
 
 
-void GUIRNALDA::ARREGLATE ( char * S )
+void CAMPEONATO::ARREGLATE ( char * S )
 {
 		char * GENERAEQUIPO() ;				/*  PROTOTIPO  */
 		
@@ -140,12 +121,12 @@ void GUIRNALDA::ARREGLATE ( char * S )
 		INICIO = PPAR ;
 }
 
-void GUIRNALDA::MIRAR()
+void CAMPEONATO::MIRAR()
 {
 		EQUIPO * PPAR ;
 		JUGADOR * PAL ;
 		
-		cout << "\n\n  CONTENIDO DE LA GUIRNALDA\n\n\n";
+		cout << "\n\n  CONTENIDO DE LA CAMPEONATO\n\n\n";
 		PPAR = INICIO ;
 		while ( PPAR ) {
 					cout << "\n\n\n\n\t\t" << PPAR->NOM << "\n" ;
@@ -161,33 +142,15 @@ void GUIRNALDA::MIRAR()
 					PPAR = PPAR->SIG ;
 		}
 }
-void GUIRNALDA::CHEQUEAR() {
-	cout << "\n\n\t\tEQUIPOS QUE INSCRIBIERON JUGADORES DUPLICADOS\n\n";
-	EQUIPO* E;
-	EQUIPO* E2;
-	JUGADOR* J;
-	JUGADOR* J2;
 
-	for (E = INICIO; E; E = E->SIG) {
-			for (J = E->PALUM; J; J = J->SIG) {
-					for (E2 = E->SIG; E2; E2 = E2->SIG) { // evitar comparar el mismo equipo
-							for (J2 = E2->PALUM; J2; J2 = J2->SIG) {
-									if (strcmp(J->NOM, J2->NOM) == 0) {
-											printf("\n\n\t%-15s\t%-10s\t%-10s", J->NOM, E->NOM, E2->NOM);
-											break; // no repetir por múltiples ocurrencias en E2
-									}
-							}
-					}
-			}
-	}
-}
-	
+
+
 char * GENERANOM();
 
 int main()
 {  
 		char BUF[20] ;
-		GUIRNALDA G ;
+		CAMPEONATO G ;
 		
 		srand(105);
 		
@@ -200,7 +163,7 @@ int main()
 		
 		G.MIRAR() ;		
 		
-		G.CHEQUEAR();
+		
 		
 		printf("\n\n      FIN DEL PROGRAMA");	
 		return 0 ;

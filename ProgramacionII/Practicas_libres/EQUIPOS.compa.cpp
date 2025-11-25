@@ -18,7 +18,7 @@ class JUGADOR {
 			char NOM[20] ;
 			JUGADOR * SIG ;
 			JUGADOR(char *);
-			~JUGADOR();	
+			~JUGADOR();
 };
 
 JUGADOR::JUGADOR(char * S)
@@ -29,7 +29,7 @@ JUGADOR::JUGADOR(char * S)
 JUGADOR::~JUGADOR()
 {
 		cout << "\n\n   MATANDO A ... " << NOM << "\n\n";
-		
+		getchar();
 }
 
 
@@ -39,7 +39,7 @@ class EQUIPO {
 			JUGADOR * PALUM ;
 			EQUIPO * SIG ;
 			EQUIPO ( char * , JUGADOR * ) ;
-			~EQUIPO() ;	
+			~EQUIPO() ;
 };
 
 
@@ -52,15 +52,8 @@ EQUIPO::EQUIPO ( char * S , JUGADOR * PRESI )
 EQUIPO::~EQUIPO()
 {
 		cout << "\n\n   MATANDO A ... TODOS LOS JUGADORES\n\n";
-		JUGADOR * actual = PALUM;
-		while ( actual ) {
-				JUGADOR * siguiente = actual->SIG;
-				cout << "\n\n   MATANDO A ... " << actual->NOM << "\n\n";
-				delete actual;
-				actual = siguiente;
-		}
-		PALUM = NULL;
-		
+		cout << "\n\n   TAREA PARA USTEDES \n\n";
+		getchar();
 }
 
 
@@ -76,6 +69,93 @@ class GUIRNALDA {
 			void CHEQUEAR();
 };
 
+void GUIRNALDA::CHEQUEAR()
+{
+    EQUIPO * E1, * E2, * EX;
+    JUGADOR * J1, * J2;
+    bool REPETIDO = false, ya_procesado = false;
+    int n_e = 3;
+
+    E1 = INICIO;
+
+    while ( E1 )
+    {
+        J1 = E1->PALUM;
+
+        while ( J1 )
+        {
+            REPETIDO = false;
+            ya_procesado = false;
+
+            J2 = INICIO->PALUM;
+            E2 = INICIO;
+
+            while ( J2 != J1 && E1 != E2 )
+            {
+                if ( !strcmp( J1->NOM, J2->NOM ) )
+                {
+                    ya_procesado = true;
+                    break;
+                }
+
+                if ( J2->SIG ) J2 = J2->SIG;
+                else
+                {
+                    E2 = E2->SIG;
+                    J2 = E2->PALUM;
+                }
+            }
+
+            E2 = E1->SIG;
+
+            while ( E2 && !ya_procesado )
+            {
+                J2 = E2->PALUM;
+
+                while ( J2 && !REPETIDO )
+                {
+                    if ( !strcmp( J1->NOM, J2->NOM ) )
+                    {
+                        printf("\nJUGADOR REPETIDO: %s\nEQUIPO 1: %s\nEQUIPO 2: %s\n", J1->NOM, E1->NOM, E2->NOM);
+                        EX = E2->SIG;
+                        n_e = 3;
+
+                        while ( EX )
+                        {
+                            JUGADOR * JX = EX->PALUM;
+
+                            while ( JX )
+                            {
+                                if ( !strcmp( J1->NOM, JX->NOM) )
+                                {
+                                    printf("EQUIPO %d: %s\n", n_e++, EX->NOM);
+                                    break;
+                                }
+
+                                JX = JX->SIG;
+                            }
+
+                            EX = EX->SIG;
+                        }
+
+                        REPETIDO = true;
+                        break;
+                    }
+
+                    J2 = J2->SIG;
+                }
+
+                E2 = E2->SIG;
+            }
+
+            J1 = J1->SIG;
+        }
+
+        E1 = E1->SIG;
+    }
+
+}
+
 GUIRNALDA::GUIRNALDA()
 {
 		INICIO = NULL ;
@@ -85,15 +165,8 @@ GUIRNALDA::GUIRNALDA()
 GUIRNALDA::~GUIRNALDA()
 {
 		cout << "\n\n   QUE SE VAYAN TODOS !!! DESTRUYENDO EQUIPOS" ;
-		EQUIPO * actual = INICIO;
-		while ( actual ) {
-				EQUIPO * siguiente = actual->SIG;
-				cout << "\n\n   matando a ... " << actual->NOM << "\n\n";
-				delete actual;
-				actual = siguiente;
-		}
-		INICIO = NULL;
-		
+		cout << "\n\n   OTRA QUE ES PARA USTEDES " ;
+		getchar();
 }
 
 
@@ -101,11 +174,11 @@ EQUIPO * GUIRNALDA::BUSCAR(char * S)
 {
 		EQUIPO * P ;
 		P = INICIO ;
-		
+
 		while ( P ) {
-				if ( ! strcmp(P->NOM,S) )			
-						return P ;			
-				P = P->SIG ;			
+				if ( ! strcmp(P->NOM,S) )
+						return P ;
+				P = P->SIG ;
 		}
 		return NULL ;
 }
@@ -115,15 +188,15 @@ EQUIPO * GUIRNALDA::BUSCAR(char * S)
 void GUIRNALDA::ARREGLATE ( char * S )
 {
 		char * GENERAEQUIPO() ;				/*  PROTOTIPO  */
-		
+
 		JUGADOR * PAL , * P ;
 		EQUIPO * PPAR ;
 		char BUF[20] ;
-	
+
 		PAL = new JUGADOR(S) ;
-		
+
 		strcpy ( BUF, GENERAEQUIPO() );
-		
+
 		PPAR = BUSCAR(BUF) ;
 
 		if ( PPAR ) {
@@ -132,8 +205,8 @@ void GUIRNALDA::ARREGLATE ( char * S )
 				while ( P->SIG )
 						P = P->SIG ;  /* VOY HASTA EL ULTIMO ALUMNO */
 				P->SIG = PAL ;
-				return ;			
-		}		
+				return ;
+		}
 		/*   EQUIPO NUEVO    */
 		PPAR = new EQUIPO(BUF,PAL) ;
 		PPAR->SIG = INICIO ;
@@ -144,65 +217,47 @@ void GUIRNALDA::MIRAR()
 {
 		EQUIPO * PPAR ;
 		JUGADOR * PAL ;
-		
+
 		cout << "\n\n  CONTENIDO DE LA GUIRNALDA\n\n\n";
 		PPAR = INICIO ;
 		while ( PPAR ) {
 					cout << "\n\n\n\n\t\t" << PPAR->NOM << "\n" ;
-			
+
 					PAL = PPAR->PALUM ;
 					while ( PAL ) {
 							cout << "\n\n\t\t" << PAL->NOM ;
-			
+
 							PAL = PAL->SIG ;
 					}
 					getchar();
-						
+
 					PPAR = PPAR->SIG ;
 		}
 }
-void GUIRNALDA::CHEQUEAR() {
-	cout << "\n\n\t\tEQUIPOS QUE INSCRIBIERON JUGADORES DUPLICADOS\n\n";
-	EQUIPO* E;
-	EQUIPO* E2;
-	JUGADOR* J;
-	JUGADOR* J2;
 
-	for (E = INICIO; E; E = E->SIG) {
-			for (J = E->PALUM; J; J = J->SIG) {
-					for (E2 = E->SIG; E2; E2 = E2->SIG) { // evitar comparar el mismo equipo
-							for (J2 = E2->PALUM; J2; J2 = J2->SIG) {
-									if (strcmp(J->NOM, J2->NOM) == 0) {
-											printf("\n\n\t%-15s\t%-10s\t%-10s", J->NOM, E->NOM, E2->NOM);
-											break; // no repetir por mÃºltiples ocurrencias en E2
-									}
-							}
-					}
-			}
-	}
-}
-	
+
+
 char * GENERANOM();
 
 int main()
-{  
+{
 		char BUF[20] ;
 		GUIRNALDA G ;
-		
+
 		srand(105);
-		
+
 		strcpy( BUF , GENERANOM() ) ;
 		while ( strcmp (BUF,"FIN") ) {
 				G.ARREGLATE(BUF) ;
-				
+
 				strcpy( BUF , GENERANOM() ) ;
 		}
-		
-		G.MIRAR() ;		
-		
+
+		G.MIRAR() ;
+
 		G.CHEQUEAR();
-		
-		printf("\n\n      FIN DEL PROGRAMA");	
+
+		printf("\n\n      FIN DEL PROGRAMA");
 		return 0 ;
 }
 
@@ -231,7 +286,7 @@ char * GENERANOM()
 						  "KEMPES","ZANABRIA","OLGUIN","PALACIOS",
 						  "MESSI","VERON","FIN"};
 		static int I = 0 ;
-		return NOM[I++] ;	
+		return NOM[I++] ;
 }
 
 
@@ -239,8 +294,8 @@ char * GENERAEQUIPO()
 {
 		static char NOM[][20] = {"BARCELONA","RIVER","BOCA","JUVENTUS",
 						  		 "MILAN","REAL MADRID","DYNAMO",
-								 "BOTAFOGO","COLO COLO","PEï¿½AROL",
+								 "BOTAFOGO","COLO COLO","PEÑAROL",
 								 "RACING","INDEPENDIENTE"  };
-		return NOM[rand()%12] ;	
+		return NOM[rand()%12] ;
 }
 

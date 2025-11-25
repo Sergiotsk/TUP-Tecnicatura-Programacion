@@ -95,6 +95,8 @@ class TORNEO {
 			void MIRAR() ;
 			void GANADOR();
 			void MAYOR_INVERSION();
+			int GASTA(char *);
+			void MAXGASTA();
 };
 
 
@@ -236,6 +238,68 @@ void TORNEO::MAYOR_INVERSION() {
     
 }
 
+int TORNEO::GASTA(char * CNOM){
+
+DISCIPLINA * PDIS;
+COMPETIDOR * PCOM ;
+PDIS=INICIO;
+int GASTO=0;
+
+
+while (PDIS)
+{
+	PCOM= PDIS->PALUM;
+	while (PCOM)
+	{
+		if(!strcmp(CNOM,PCOM->NOM)){   //SI DA 0 O NULL ,seria lo mismo
+
+			
+				GASTO=GASTO + 1000 * PDIS->HANDICAP;
+
+
+		}
+		PCOM=PCOM->SIG;
+	}
+
+	PDIS=PDIS->SIG;
+}
+return GASTO;
+
+}
+
+
+void TORNEO::MAXGASTA(){
+	
+DISCIPLINA * PDIS;
+COMPETIDOR * PCOM ;
+PDIS=INICIO;
+int GASTO,MAXGASTO=0;
+char MAXGASTADOR[20];
+
+
+while (PDIS)
+{
+	PCOM= PDIS->PALUM;
+	while (PCOM)
+	{
+		GASTO=GASTA(PCOM->NOM);
+		if (GASTO>MAXGASTO)
+		{
+			MAXGASTO=GASTO;
+			strcpy(MAXGASTADOR,PCOM->NOM);
+		}
+		
+
+	
+		PCOM=PCOM->SIG;
+	}
+
+	PDIS=PDIS->SIG;
+}
+
+printf("\n\n %-15s %10d", MAXGASTADOR,MAXGASTO);
+}
+
 char * GENERANOM();
 
 int main( )
@@ -255,6 +319,9 @@ int main( )
 		T.MIRAR() ; 
 		
 		T.GANADOR() ;
+		T.MAXGASTA();
+
+		
 //      T.MAYOR_INVERSION() ;
 		
 		printf("\n\n");
