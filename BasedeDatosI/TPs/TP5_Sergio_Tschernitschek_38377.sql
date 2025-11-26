@@ -69,37 +69,88 @@ where c.profesor is null;
 
 --7. Listar los nombres de las materias que tienen más de tres alumnos inscriptos.
 
-select M.ID,m.nombre  ,   COUNT(MT.ALUMNO)   FROM MATERIA M 
+ select M.ID, m.nombre,count(mt.alumno) as cant_alumnos FROM MATERIA M 
  JOIN CURSO C on C.MATERIA = M.ID
  JOIN MATRICULA MT ON MT.CURSO = C.ID
-where MT.ALUMNO NOT LIKE "%organica%"
-  GROUP BY M.ID, M.NOMBRE
-
- having count (mt.alumno)>3--despues del group by
- GROUP BY M.NOMBRE;
+ GROUP BY M.ID, M.NOMBRE
+ having count (mt.alumno)>3; 
  
 
 /*8. Identificar de los alumnos inscriptos en algún curso sus edades, colocando una leyenda de menor de edad a
   aquellos alumnos con menos de 18 años.   */
 
 
+select
+a.legajo,
+a.apellido || ',' || a.nombre as ALUMNO,
+a.fecha_nacimiento,
+trunc((sysdate -a.fecha_nacimiento)/365) as EDAD,
+case 
+    when (sysdate - a.fecha_nacimiento )/365 < 18 then 'MENOR_DE_EDAD'
+    else ' '
+end as cat_edad
+from alumno a
+join matricula m on a.legajo = m.alumno
+order by
+        a.apellido,a.nombre;
+
+
+
 /*9. Indicar en un listado por alumno inscriptos a cursos (contando su apellido y nombre) la cantidad de cursos en los
  que están inscriptos actualmente.*/
+select 
+    a.apellido || ',' || a.nombre as ALUMNO,
+    count(m.alumno) as cursos_tomados
+    from alumno a
+    join matricula m on a.legajo = m.alumno
+    group by
+    a.apellido,a.nombre
+    order by
+    a.apellido,a.nombre;
 
 
+--10. Listar de cada materia la cantidad de cursos que hay para cada una de ellas 
 
-
---10. Listar de cada materia la cantidad de cursos que hay para cada una de ellas.
-
-
-
-
+select
+    m.nombre as materia,
+    count(c.materia) as cant_cursos
+    from materia m
+    join curso c on c.materia = m.id
+    group by
+    c.materia,m.nombre
+    order by
+    m.nombre;
 
 
 --11. Por carrera, indicar cuántos alumnos están cursando actualmente alguna materia.
 
-
-
-
+select 
+    c.nombre as CARRERA,
+    count (m.alumno) as CANTIDAD_INSCRIPTOS
+    FROM carrera c
+    join alumno a on a.carrera = c.id
+    join matricula m on m.alumno = a.legajo
+    group by 
+        m.alumno,c.nombre
+    order by
+        c.nombre;
 
 --12. Por carrera indicar cuántos alumnos no están cursando materia alguna.
+
+
+select 
+    c.nombre as CARRERA,
+    count (a.legajo) as CANT_alumnos_sin_materia
+    FROM carrera c
+    join alumno a on a.carrera = c.id
+    left join matricula m on m.alumno = a.legajo
+    where m.curso is null
+    group by 
+        c.nombre
+    order by
+        c.nombre;
+
+
+
+
+

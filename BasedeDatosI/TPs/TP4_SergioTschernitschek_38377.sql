@@ -179,7 +179,17 @@ ORDER BY
 Apellido. Tener en cuenta que el sueldo estará dado por el básico de cada categoría y la cantidad de
 cargos que cada profesor tenga asignados en la actualidad.*/
 
-
+select 
+    p.apellido || ',' || p.nombre  as PROFESOR,
+    sum(c.sueldo_basico) as SUELDO
+    FROM profesor p
+    left join cat_doc cd on p.id = cd.docente
+    left join categorias c on c.codigo = cd.categoria
+    group by
+            p.apellido,p.nombre
+    order by 
+            p.apellido;
+    
 
 
 
