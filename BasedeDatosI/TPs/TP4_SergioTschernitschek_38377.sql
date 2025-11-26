@@ -179,24 +179,6 @@ ORDER BY
 Apellido. Tener en cuenta que el sueldo estará dado por el básico de cada categoría y la cantidad de
 cargos que cada profesor tenga asignados en la actualidad.*/
 
-CREATE TABLE cat_doc (
-    categoria   NUMBER(4) NOT NULL,
-    docente     NUMBER(4) NOT NULL,
-    curso       NUMBER(4) NOT NULL,
-    desde       DATE,
-    hasta       DATE,
-    
-    CONSTRAINT pk_cat_doc PRIMARY KEY (categoria, docente, curso),
-    
-    CONSTRAINT fk_catdoc_categoria FOREIGN KEY (categoria)
-        REFERENCES categorias (codigo),
-        
-    CONSTRAINT fk_catdoc_docente FOREIGN KEY (docente)
-        REFERENCES profesor (id),
-        
-    CONSTRAINT fk_catdoc_curso FOREIGN KEY (curso)
-        REFERENCES curso (id)
-);
 
 
 
