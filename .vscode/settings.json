@@ -62,5 +62,6 @@
   "C_Cpp_Runner.msvcSecureNoWarnings": false,
   "code-runner.clearPreviousOutput": false,
   "terminal.integrated.accessibleViewPreserveCursorPosition": false,
-  "C_Cpp.default.compilerPath": "C/msys64/mingw64/bin/gcc.exe"
+  "C_Cpp.default.compilerPath": "C/msys64/mingw64/bin/gcc.exe",
+  "cmake.sourceDirectory": "E:/SERJITO/TUP/TUP-REPO/PracticasLibres/FolderOrganizer"
 }
