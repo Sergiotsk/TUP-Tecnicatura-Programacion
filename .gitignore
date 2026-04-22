@@ -73,3 +73,8 @@ coverage.xml
 # Variables de entorno
 .env
 .env.local
+
+# Bases de datos (NUNCA subir a git)
+ProgramacionIII/localhost/mysql_data/
+*.sock
+
