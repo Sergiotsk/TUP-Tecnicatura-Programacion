@@ -1,0 +1,20 @@
+services:
+  oracle-bdii:
+    image: gvenzl/oracle-xe:21-slim
+    container_name: oracle-bdii
+    restart: unless-stopped
+    ports:
+      - "1521:1521"
+    environment:
+      ORACLE_PASSWORD: oracle
+    volumes:
+      - oracle-bdii-data:/opt/oracle/oradata
+    healthcheck:
+      test: ["CMD", "sqlplus", "-L", "system/oracle@//localhost/XEPDB1", "-S", "/nolog"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 120s
+
+volumes:
+  oracle-bdii-data:

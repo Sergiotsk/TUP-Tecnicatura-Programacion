@@ -1,0 +1,50 @@
+# openspec/config.yaml — SDD Project Config
+schema: spec-driven
+
+context: |
+  Project: TUP-REPO — Student Learning Hub (TUP @ UTN)
+  Stack: HTML/CSS/JS (ProgramacionIII), PHP/Docker (upcoming), C (Aprobadas), Python, PL/SQL
+  Architecture: Multi-subject educational repo. Each subject = isolated folder.
+  Conventions: AGENTS.md at root. Spanish variable names. No linter/formatter configured.
+  Active subject: ProgramacionIII (HTML/CSS/JS → PHP/REST → Docker/Nginx → React Native)
+  Tooling: VS Code, Docker Desktop + WSL2, MSYS2 MinGW64, gcc/g++
+
+strict_tdd: false
+
+testing:
+  strict_tdd: false
+  note: "No automated test framework detected. Testing is manual (run + verify console output)."
+  test_runner: null
+  unit: false
+  integration: false
+  e2e: false
+  coverage: null
+  linter: null
+  type_checker: null
+  formatter: null
+
+rules:
+  proposal:
+    - Identify which subject folder(s) are affected
+    - Note if changes touch the Obsidian vault (SB_Sergio) vs TUP-REPO
+    - Include rollback plan for structural changes
+  specs:
+    - Use Given/When/Then format for scenarios
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY)
+    - Anchor requirements to the PRD section when applicable
+  design:
+    - Keep designs simple — this is educational code, not production
+    - Document file paths explicitly (TUP-REPO vs SB_Sergio vault)
+  tasks:
+    - Group by: Obsidian structure → TUP-REPO structure → content
+    - Use hierarchical numbering (1.1, 1.2, etc.)
+    - Keep tasks small enough to complete in one session
+  apply:
+    - Follow existing code style per subject (C: UPPERCASE, JS: camelCase, Python: snake_case)
+    - Code goes to TUP-REPO; theory notes go to SB_Sergio vault
+    - NEVER compile/execute unless explicitly requested
+  verify:
+    - No automated tests — verify by checking file existence and content structure
+    - Compare created files against PRD section specs
+  archive:
+    - Warn before merging destructive deltas
