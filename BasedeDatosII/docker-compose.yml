@@ -9,8 +9,9 @@ services:
       ORACLE_PASSWORD: oracle
     volumes:
       - oracle-bdii-data:/opt/oracle/oradata
+      - ./:/mis_scripts
     healthcheck:
-      test: ["CMD", "sqlplus", "-L", "system/oracle@//localhost/XEPDB1", "-S", "/nolog"]
+      test: [ "CMD", "sqlplus", "-L", "system/oracle@//localhost/XEPDB1", "-S", "/nolog" ]
       interval: 30s
       timeout: 10s
       retries: 10

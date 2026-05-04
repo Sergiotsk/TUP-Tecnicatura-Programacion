@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>simuladorPerfil</title>
+</head>
+
+<body>
+
+    <header>
+        <H1>Simulador de perfil profesional</H1>
+
+        <div class="header-links">
+            <a href="https://github.com/Sergiotsk" target="_blank" class="btn">Repositorio GitHub</a>
+            <a href="https://www.w3schools.com/html/html_form_elements.asp" target="_blank" class="btn">Material de
+                apoyo</a>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <div class="box">
+                <h2>Datos del usuario</h2>
+                <form action="">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" placeholder="Thiago Eloyo" name="nombre">
+                    <label for="profesion">Profesion</label>
+                    <input type="text" id="profesion" placeholder="Deslomado" name="profesion">
+                    <label for="imagen">URL Imagen</label>
+                    <input type="text" id="imagen" placeholder="Ingrese la URL de su imagen">
+                    <label for="color">Color de fondo</label>
+                    <select name="color" id="color">
+                        <option value="">Seleccione un color</option>
+                        <option value="#2c2416">Café</option>
+                        <option value="#1a1a1a">Negro</option>
+                        <option value="#1a2a1a">Verde</option>
+                        <option value="#1a1a2a">Azul</option>
+                        <option value="#2a1a1a">Granate</option>
+                        <option value="#1a2a2a">Verde</option>
+                    </select>
+                </form>
+                <button class="btn" id="gperfil">Generar Perfil</button>
+            </div>
+
+            <div class="box" id="box-vista">
+                <h2>Vista previa</h2>
+                <div class="box-foto">
+                    <div class="foto">
+                        <img id="vista-imagen" alt=""
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQFD7ot5OhUmrQBh37Iu2_HkQbawoiXp43A9Q&usqp=CAU">
+                        <div class="vista-info">
+                            <h3 id="vista-nombre"></h3>
+                            <p id="vista-profesion"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
