@@ -1,9 +1,9 @@
-/*--1)Definir la salida por consola de los bloques anónimos de la sesión.
+--1)Definir la salida por consola de los bloques anónimos de la sesión.
 
     SET SERVEROUTPUT ON;
 
 --2)Realizar un bloque anónimo que salude a todos.
-
+/*
 BEGIN
 
     DBMS_OUTPUT.PUT_LINE('Hola a todos');
@@ -68,12 +68,86 @@ begin
   mensaje:='Cambio el valor de la constante';
   DBMS_OUTPUT.PUT_LINE(mensaje);
 end;
+/
 
-*/  
 --9)Desarrollar un bloque anónimo que tenga declarada una variable numérica y comprobar si ese valor es mayor a 18.
 
 DECLARE
     num1 number(2):=5;
+BEGIN
+  if num1>18 then
+    DBMS_OUTPUT.PUT_LINE('EL NUMERO ES MAYOR A 18');            
+  elsif num1=18 then
+    DBMS_OUTPUT.PUT_LINE('EL NUMERO ES IGUAL A 18');
+  else
+    DBMS_OUTPUT.PUT_LINE('EL NUMERO ES MENOR A 18');            
+  end if;
+             
+END;    
+/
+
+--10)Crear un bloque anónimo que permita controlar si un número es múltiplo de 3 o no.
+
+DECLARE
+    num1 number(3):=25;
 begin
-  
+  if MOD(num1, 3) = 0 then
+    DBMS_OUTPUT.PUT_LINE('El numero es multiplo de 3');
+  else
+    DBMS_OUTPUT.PUT_LINE('El numero NO es multiplo de 3');
+  end if;
+end;
+/
+
+
+--11)Crear un bloque anónimo que permita controlar si un número es múltiplo de 6 o no.
+
+DECLARE
+    num1 number(3):=98;
+begin
+  if MOD(num1, 6) = 0 then
+    DBMS_OUTPUT.PUT_LINE('El numero es multiplo de 6');
+  else
+    DBMS_OUTPUT.PUT_LINE('El numero NO es multiplo de 6');
+  end if;
+end;
+/
+
+
+--12)Mediante un bloque anónimo, mostrar el doble de un número si el número es múltiplo de dos; caso contrario, mostrar su triplo.
+
+DECLARE
+    num1 number(3):= 456;
+    multiplo number(3);
+begin
+    if MOD(num1,2) = 0 then
+    multiplo:=NUM1*2;
+    DBMS_OUTPUT.PUT_LINE('El numero es multiplo de 2: '||multiplo);
+    elsif MOD(num1,3) = 0 then
+     multiplo:=NUM1*3;
+     DBMS_OUTPUT.PUT_LINE('El numero es multiplo de 3: '||multiplo);
+    else
+    DBMS_OUTPUT.PUT_LINE('El numero NO es multiplo de 2 ni de 3');
+  end if;
+
 end;    
+/
+
+--13)Mediante un bloque anónimo, dado un número entero, mostrar el anterior y el posterior.
+
+DECLARE
+    num1 number(3):= 123;
+begin
+    DBMS_OUTPUT.PUT_LINE('Numero anterior: '||(num1-1));
+    DBMS_OUTPUT.PUT_LINE('Numero posterior: '||(num1+1));
+
+end;
+/
+*/
+ 
+--14) Mediante un bloque anónimo mostrar la fecha actual del servidor Oracle.
+
+begin
+  DBMS_OUTPUT.PUT_LINE(SYSDATE);
+end;
+/
