@@ -8,9 +8,9 @@
 -- EJERCICIOS DE CASE
 
 -- EJERCICIO 6: CASE simple
-/*
+
 DECLARE
-  l_dia NUMBER := 3;
+  l_dia NUMBER := 5;
   l_nombre_dia VARCHAR2(20);
 BEGIN
   CASE l_dia
@@ -22,12 +22,12 @@ BEGIN
   DBMS_OUTPUT.put_line('El día es: ' || l_nombre_dia);
 END;
 /
-*/
+
 
 -- EJERCICIO 7: CASE de búsqueda
-/*
+
 DECLARE
-  l_salario NUMBER := 6000;
+  l_salario NUMBER :=3003;
 BEGIN
   CASE
     WHEN l_salario >= 10000 THEN DBMS_OUTPUT.put_line('Gerente');
@@ -37,19 +37,19 @@ BEGIN
   END CASE;
 END;
 /
-*/
+
 
 -- EJERCICIOS DE BUCLES
 
 -- EJERCICIO 8: Bucle FOR numérico
-/*
+
 BEGIN
   FOR i IN 1..5 LOOP
     DBMS_OUTPUT.put_line('Iteración: ' || i);
   END LOOP;
 END;
 /
-*/
+
 
 -- EJERCICIO 9: Bucle WHILE
 /*
