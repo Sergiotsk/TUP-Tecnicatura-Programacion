@@ -11,21 +11,22 @@ BEGIN
   DBMS_OUTPUT.put_line('¡Hola desde un procedimiento!');
 END saludos;
 /
--- Ejecutar: EXEC saludos;
-*/
+EXEC saludos;
+
 
 -- EJERCICIO 2: Crear procedimiento SALUDAR con parámetro
-/*
+
 CREATE OR REPLACE PROCEDURE saludar(p_nombre IN VARCHAR2) AS
-BEGIN
+BEGIN  
   DBMS_OUTPUT.put_line('Hola ' || p_nombre);
 END saludar;
 /
--- Ejecutar: EXEC saludar('Sergio');
+ EXEC saludar('&Nombre');
+
 */
 
 -- EJERCICIO 3: Función que retorna un valor
-/*
+
 CREATE OR REPLACE FUNCTION obtener_salario(p_emp_id IN NUMBER)
   RETURN NUMBER IS
   v_salario NUMBER;
@@ -35,7 +36,7 @@ BEGIN
 END obtener_salario;
 /
 -- Ejecutar: SELECT obtener_salario(100) FROM dual;
-*/
+
 
 -- EJERCICIO 4: Procedimiento con parámetros OUT
 /*

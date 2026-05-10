@@ -213,3 +213,5 @@ INSERT INTO detalle_facturas VALUES('F0008','P0003',3,840.00);
 INSERT INTO detalle_facturas VALUES('F0008','P0006',1,340.00);
 INSERT INTO detalle_facturas VALUES('F0009','P0003',3,840.00);
 INSERT INTO detalle_facturas VALUES('F0010','P0009',5,1100.00);
+
+COMMIT;
