@@ -324,3 +324,11 @@ CREATE TABLE auditoria (
 );
 
 COMMIT;
+
+SELECT * FROM internaciones WHERE id_paciente = 5;
+
+SELECT fecha_ingreso, fecha_egreso
+FROM internaciones
+WHERE id_paciente = 5
+  AND fecha_egreso IS NULL;
+
