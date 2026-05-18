@@ -4,7 +4,9 @@
       "Bash(mkdir -p \"e:/SERJITO/TUP/TUP-REPO/ProgramacionIII/practica-dom/01-selectores\")",
       "Bash(mkdir -p \"e:/SERJITO/TUP/TUP-REPO/ProgramacionIII/practica-dom/02-eventos\")",
       "Bash(mkdir -p \"e:/SERJITO/TUP/TUP-REPO/ProgramacionIII/practica-dom/03-manipulacion\")",
-      "Bash(mkdir -p \"e:/SERJITO/TUP/TUP-REPO/ProgramacionIII/practica-dom/04-arrays-dom\")"
+      "Bash(mkdir -p \"e:/SERJITO/TUP/TUP-REPO/ProgramacionIII/practica-dom/04-arrays-dom\")",
+      "mcp__plugin_engram_engram__mem_save",
+      "mcp__plugin_engram_engram__mem_judge"
     ]
   }
 }
