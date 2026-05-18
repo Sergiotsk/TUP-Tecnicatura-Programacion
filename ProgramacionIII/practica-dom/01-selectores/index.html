@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Ejercicio 01 — Selectores</title>
+  <style>
+    body { font-family: sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; }
+    .caja { background: #eee; padding: 16px; margin: 12px 0; border-radius: 8px; }
+    .resaltado { background: #ffe066; }
+    button { padding: 8px 16px; margin: 4px; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <h1>Ejercicio 01: Selectores del DOM</h1>
+
+  <!-- EJERCICIO A -->
+  <div class="caja">
+    <h3>A) getElementById</h3>
+    <p id="parrafo-a">Este texto va a cambiar.</p>
+    <button onclick="ejercicioA()">Cambiar texto</button>
+  </div>
+
+  <!-- EJERCICIO B -->
+  <div class="caja">
+    <h3>B) querySelector</h3>
+    <p class="mensaje">Primer párrafo con clase "mensaje".</p>
+    <p class="mensaje">Segundo párrafo con clase "mensaje".</p>
+    <button onclick="ejercicioB()">Resaltar primero</button>
+  </div>
+
+  <!-- EJERCICIO C -->
+  <div class="caja">
+    <h3>C) querySelectorAll</h3>
+    <ul id="lista-c">
+      <li>Item 1</li>
+      <li>Item 2</li>
+      <li>Item 3</li>
+      <li>Item 4</li>
+    </ul>
+    <button onclick="ejercicioC()">Resaltar todos los li</button>
+  </div>
+
+  <!-- EJERCICIO D -->
+  <div class="caja">
+    <h3>D) getAttribute / setAttribute</h3>
+    <img id="imagen-d" src="https://placecats.com/200/150" alt="Gato 1">
+    <br><br>
+    <button onclick="ejercicioD()">Cambiar imagen</button>
+  </div>
+
+  <!-- EJERCICIO E -->
+  <div class="caja">
+    <h3>E) classList</h3>
+    <p id="parrafo-e">Este párrafo puede resaltarse.</p>
+    <button onclick="ejercicioE()">Toggle resaltado</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

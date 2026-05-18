@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Ejercicio 03 — Manipulación del DOM</title>
+  <style>
+    body { font-family: sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; }
+    .caja { background: #eee; padding: 16px; margin: 12px 0; border-radius: 8px; }
+    button { padding: 8px 16px; margin: 4px; cursor: pointer; }
+    input { padding: 8px; font-size: 1rem; }
+    .tarjeta {
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 12px;
+      margin: 8px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .tarjeta button { background: #e74c3c; color: white; border: none; border-radius: 4px; }
+  </style>
+</head>
+<body>
+
+  <h1>Ejercicio 03: Crear y Eliminar Nodos</h1>
+
+  <!-- EJERCICIO A: createElement + appendChild -->
+  <div class="caja">
+    <h3>A) Agregar elementos a una lista</h3>
+    <input type="text" id="input-item" placeholder="Nuevo item...">
+    <button id="btn-agregar">Agregar</button>
+    <ul id="lista-items">
+      <li>Item de ejemplo</li>
+    </ul>
+  </div>
+
+  <!-- EJERCICIO B: Eliminar nodos -->
+  <div class="caja">
+    <h3>B) Lista de tareas con botón eliminar</h3>
+    <input type="text" id="input-tarea" placeholder="Nueva tarea...">
+    <button id="btn-nueva-tarea">+ Agregar tarea</button>
+    <div id="contenedor-tareas"></div>
+  </div>
+
+  <!-- EJERCICIO C: innerHTML vs textContent -->
+  <div class="caja">
+    <h3>C) innerHTML vs textContent</h3>
+    <button id="btn-inner">Insertar con innerHTML</button>
+    <button id="btn-text">Insertar con textContent</button>
+    <div id="resultado-c" style="margin-top:12px; padding:12px; background:white; border-radius:6px; min-height:40px;">
+      (el resultado aparece acá)
+    </div>
+  </div>
+
+  <!-- EJERCICIO D: Clonar y mover nodos -->
+  <div class="caja">
+    <h3>D) Clonar una tarjeta</h3>
+    <div id="tarjeta-original" class="tarjeta">
+      <span>Soy la tarjeta original</span>
+      <button onclick="this.parentElement.remove()">✕</button>
+    </div>
+    <button id="btn-clonar">Clonar tarjeta</button>
+    <div id="zona-clones"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

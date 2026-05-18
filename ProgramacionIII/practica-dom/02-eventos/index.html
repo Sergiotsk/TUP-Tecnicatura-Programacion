@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Ejercicio 02 — Eventos</title>
+  <style>
+    body { font-family: sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; }
+    .caja { background: #eee; padding: 16px; margin: 12px 0; border-radius: 8px; }
+    button { padding: 8px 16px; margin: 4px; cursor: pointer; }
+    input { padding: 8px; font-size: 1rem; width: 100%; box-sizing: border-box; }
+    #contador { font-size: 3rem; font-weight: bold; text-align: center; }
+    #preview { margin-top: 12px; font-style: italic; color: #555; }
+  </style>
+</head>
+<body>
+
+  <h1>Ejercicio 02: Eventos</h1>
+
+  <!-- EJERCICIO A: addEventListener click -->
+  <div class="caja">
+    <h3>A) Contador con addEventListener</h3>
+    <div id="contador">0</div>
+    <button id="btn-sumar">+ Sumar</button>
+    <button id="btn-restar">- Restar</button>
+    <button id="btn-reset">Reset</button>
+  </div>
+
+  <!-- EJERCICIO B: evento 'input' en tiempo real -->
+  <div class="caja">
+    <h3>B) Preview en tiempo real</h3>
+    <input type="text" id="input-nombre" placeholder="Escribí tu nombre...">
+    <p id="preview">Hola, (tu nombre aparecerá acá)</p>
+  </div>
+
+  <!-- EJERCICIO C: evento 'submit' en formulario -->
+  <div class="caja">
+    <h3>C) Formulario sin recargar la página</h3>
+    <form id="mi-form">
+      <input type="text" id="input-tarea" placeholder="Nueva tarea...">
+      <br><br>
+      <button type="submit">Agregar</button>
+    </form>
+    <p id="resultado-form"></p>
+  </div>
+
+  <!-- EJERCICIO D: evento 'change' en select -->
+  <div class="caja">
+    <h3>D) Cambio de color con select</h3>
+    <select id="selector-color">
+      <option value="">-- Elegí un color --</option>
+      <option value="tomato">Rojo</option>
+      <option value="steelblue">Azul</option>
+      <option value="mediumseagreen">Verde</option>
+      <option value="goldenrod">Amarillo</option>
+    </select>
+    <div id="caja-color" style="height:60px; margin-top:12px; border-radius:8px; background:#ddd;"></div>
+  </div>
+
+  <!-- EJERCICIO E: mouseover y mouseout -->
+  <div class="caja">
+    <h3>E) Efecto hover con JS</h3>
+    <div id="hover-box" style="
+      background: #c0c0c0;
+      height: 80px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    ">
+      Pasá el mouse por acá
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

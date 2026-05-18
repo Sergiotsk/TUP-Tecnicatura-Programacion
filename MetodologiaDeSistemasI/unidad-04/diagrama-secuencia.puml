@@ -1,0 +1,27 @@
+@startuml diagrama-secuencia-prestamo
+
+' Flujo: Realizar Préstamo
+' Unidad: 4 | Clase: 12
+
+actor Socio
+participant "Sistema" as S
+participant "Catalogo" as C
+participant "BaseDatos" as BD
+
+Socio -> S : solicitarPrestamo(isbn)
+S -> C : verificarDisponibilidad(isbn)
+C -> BD : consultarEstado(isbn)
+BD --> C : disponible = true
+C --> S : libroDisponible
+
+alt libro disponible
+  S -> BD : registrarPrestamo(socioId, isbn, fecha)
+  BD --> S : prestamoId
+  S -> BD : actualizarEstadoLibro(isbn, disponible=false)
+  BD --> S : ok
+  S --> Socio : confirmarPrestamo(prestamoId, fechaVencimiento)
+else libro no disponible
+  S --> Socio : errorLibroNoDisponible()
+end
+
+@enduml
