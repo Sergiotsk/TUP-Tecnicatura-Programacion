@@ -181,7 +181,7 @@ END;
 /
 
 
-*/
+
 -- 2. Mostrar de cada provincia la cantidad de municipios que tiene.
 
 DECLARE 
@@ -236,7 +236,80 @@ END;
 /
 
 /*
-* 4. Hacer un listado de los alumnos en el que figure de cada uno su apellido, nombre y, si su edad fuese mayor o igual a 21, indicarlo mediante un mensaje (por ejemplo, ‘Mayor de edad’). Caso contrario colocar una leyenda con 5 guiones altos '-----’. NOTA: utilizar la función DIF_FECHAS del punto C1.
-* 5. Devolver un reporte con la lista de todas facturas agrupadas de un cliente e indique el monto total facturado.
-* 6. Calcular el total que se le ha facturado a cada una de las empresas clientes, desde una fecha dada hasta el presente.
+* 4. Hacer un listado de los empleados en el que figure de cada uno su apellido, nombre y, si su edad fuese mayor o igual a 21,
+ indicarlo mediante un mensaje (por ejemplo, ‘Mayor de edad’). Caso contrario colocar una leyenda con 5 guiones altos '-----’. 
+ NOTA: utilizar la función DIF_FECHAS del punto C1.
+ */
+ /*
+ 
+ DECLARE
+    CURSOR c_pacientes IS 
+        SELECT nombre, apellido, fecha_nacimiento FROM pacientes;
+    r_paciente c_pacientes%ROWTYPE;
+    v_edad NUMBER;
+ BEGIN
+    FOR r_paciente IN c_pacientes LOOP
+        v_edad := calc_edad(r_paciente.fecha_nacimiento);
+        IF v_edad >= 21 THEN
+            DBMS_OUTPUT.PUT_LINE('Mayor de edad: ' || r_paciente.nombre || ' ' || r_paciente.apellido);
+        ELSE
+            DBMS_OUTPUT.PUT_LINE('-----');
+        END IF;
+    END LOOP;
+ END;
+ /
+ 
+
+ 
+ 5. Devolver un reporte con la lista de todas facturas agrupadas de un cliente e indique el monto total facturado. 
+
+
+ 
+
+DECLARE 
+    CURSOR c_facturas IS 
+        select f.cod_cliente,c.nombres, SUM (f.importe_total) AS total_facturado 
+        from facturas f
+        join clientes c on f.cod_cliente = c.cod_cliente
+        group by f.cod_cliente, c.nombres;
+
+BEGIN
+    DBMS_OUTPUT.PUT_LINE(rpad(to_char('Cliente n°'),15)||rpad('Nombre',30)||'Monto total');
+    DBMS_OUTPUT.PUT_LINE(rpad('-',58,'-'));
+    
+
+    for r_cliente IN c_facturas LOOP
+    DBMS_OUTPUT.PUT_LINE(rpad(to_char(r_cliente.cod_cliente),15)||rpad(r_cliente.nombres,30)||r_cliente.total_facturado);
+
+    end loop;
+END;
+/
+
+
+ */ 
+
+/*
+6. Calcular el total que se le ha facturado a cada una de las empresas clientes, desde una fecha dada hasta el presente.
+
 */
+DECLARE
+    v_fecha_desde DATE := TO_DATE('01-01-2020', 'dd-mm-yyyy');
+    CURSOR c_facturado IS
+    SELECT MAX(c.nombres) AS nombres,f.cod_cliente,SUM (f.importe_total) AS Facturado_desde_fecha_ingesada
+    FROM facturas f
+    JOIN clientes c ON f.cod_cliente = c.cod_cliente
+    WHERE v_fecha_desde <= f.fecha_emision
+    GROUP BY f.cod_cliente;
+   
+    
+BEGIN
+
+ DBMS_OUTPUT.PUT_LINE(rpad(to_char('Cliente n°'),15)||rpad('Nombre',30)||'Facturado hasta la fecha');
+ DBMS_OUTPUT.PUT_LINE(rpad('-',69,'-'));
+
+ FOR r_facturado IN c_facturado LOOP
+ DBMS_OUTPUT.PUT_LINE(rpad(to_char(r_facturado.cod_cliente),15)||rpad(r_facturado.nombres,30)||r_facturado.Facturado_desde_fecha_ingesada);
+
+END LOOP;
+END;
+/
