@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CV – Sergio Tschernitschek</title>
+  <style>
+    /* ─── PRINT PAGE SETUP ──────────────────────────────────── */
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+
+    /* ─── RESET ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      font-size: 11pt;
+      color: #1a1a1a;
+      background: #e0e0e0;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* ─── PAGE WRAPPER ───────────────────────────────────────── */
+    .page {
+      width: 210mm;
+      height: 297mm;
+      overflow: hidden;
+      margin: 20px auto;
+      background: #fff;
+      padding: 14mm 16mm 12mm 16mm;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.15);
+      page-break-after: always;
+      break-after: page;
+    }
+
+    @media print {
+      html, body {
+        background: none;
+        width: 210mm;
+        height: auto;
+      }
+      .page {
+        margin: 0;
+        box-shadow: none;
+        width: 210mm;
+        height: 297mm;
+        overflow: hidden;
+        padding: 14mm 16mm 12mm 16mm;
+        page-break-after: always;
+        break-after: page;
+      }
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       EUROPASS STYLE
+    ══════════════════════════════════════════════════════════ */
+    .europass {
+      font-family: Arial, sans-serif;
+      font-size: 9pt;
+    }
+
+    .ep-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 3px;
+    }
+
+    .ep-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1px;
+      min-width: 70px;
+    }
+
+    .ep-logo-box {
+      background: #003399 !important;
+      color: #fff !important;
+      font-size: 8pt;
+      font-weight: bold;
+      padding: 3px 8px;
+      letter-spacing: 1px;
+    }
+
+    .ep-logo-stars {
+      font-size: 7.5pt;
+      color: #FFD700;
+      letter-spacing: 1px;
+    }
+
+    .ep-cv-title {
+      font-size: 18pt;
+      font-weight: bold;
+      color: #003399;
+      letter-spacing: 3px;
+      align-self: center;
+    }
+
+    .ep-section {
+      margin-top: 7px;
+    }
+
+    .ep-section-title {
+      background: #003399 !important;
+      color: #fff !important;
+      font-size: 8pt;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 2px 7px;
+      margin-bottom: 2px;
+    }
+
+    .ep-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 9pt;
+    }
+
+    .ep-table td {
+      padding: 1.5px 5px;
+      vertical-align: top;
+      border: none;
+    }
+
+    .ep-table td:first-child {
+      font-weight: bold;
+      color: #003399;
+      white-space: nowrap;
+      width: 38%;
+      font-size: 8.5pt;
+    }
+
+    .ep-objective {
+      font-size: 9.5pt;
+      font-style: italic;
+      color: #333;
+      padding: 2px 5px;
+    }
+
+    .ep-lang-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 8.5pt;
+    }
+
+    .ep-lang-table th {
+      background: #dde4f0 !important;
+      color: #003399 !important;
+      font-weight: bold;
+      text-align: center;
+      padding: 2px 3px;
+      border: 1px solid #b0bcd8;
+    }
+
+    .ep-lang-table td {
+      text-align: center;
+      padding: 2px 3px;
+      border: 1px solid #b0bcd8;
+    }
+
+    .ep-lang-table td:first-child {
+      text-align: left;
+      font-weight: bold;
+    }
+
+    .ep-lang-span {
+      background: #dde4f0;
+      font-weight: bold;
+    }
+
+    .ep-note {
+      font-size: 7.5pt;
+      color: #555;
+      margin-top: 2px;
+      font-style: italic;
+      padding-left: 5px;
+    }
+
+    .ep-skills-block {
+      padding: 1px 5px;
+    }
+
+    .ep-skills-block h4 {
+      font-size: 8.5pt;
+      color: #003399;
+      font-weight: bold;
+      margin-bottom: 1px;
+      margin-top: 4px;
+    }
+
+    .ep-skills-block p {
+      font-size: 8.5pt;
+      color: #222;
+      line-height: 1.4;
+    }
+
+    .ep-digital-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px 14px;
+      font-size: 8pt;
+      padding: 2px 5px;
+    }
+
+    .ep-digital-grid div strong {
+      display: block;
+      color: #003399;
+      font-size: 7.5pt;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0;
+    }
+
+    .ep-footer {
+      font-size: 7pt;
+      color: #999;
+      text-align: right;
+      margin-top: 5px;
+      font-style: italic;
+    }
+
+    .ep-divider {
+      border: none;
+      border-top: 1px solid #003399;
+      margin: 4px 0 2px 0;
+    }
+
+    .ep-experience-block {
+      margin-bottom: 3px;
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       MODERN RESUME STYLE
+    ══════════════════════════════════════════════════════════ */
+    .modern {
+      font-family: 'Segoe UI', Georgia, sans-serif;
+      font-size: 10.5pt;
+      color: #222;
+    }
+
+    .mod-header {
+      border-bottom: 3px solid #1a1a1a;
+      padding-bottom: 10px;
+      margin-bottom: 18px;
+    }
+
+    .mod-name {
+      font-size: 26pt;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #111;
+      line-height: 1;
+    }
+
+    .mod-initials {
+      display: inline-block;
+      background: #111 !important;
+      color: #fff !important;
+      font-size: 26pt;
+      font-weight: 700;
+      width: 52px;
+      height: 52px;
+      line-height: 52px;
+      text-align: center;
+      margin-right: 14px;
+      letter-spacing: 0;
+      vertical-align: middle;
+    }
+
+    .mod-name-text {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .mod-contact {
+      font-size: 9.5pt;
+      color: #555;
+      margin-top: 5px;
+    }
+
+    .mod-contact span {
+      margin-right: 10px;
+    }
+
+    .mod-section {
+      margin-bottom: 18px;
+    }
+
+    .mod-section-title {
+      font-size: 9pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #111;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 3px;
+      margin-bottom: 10px;
+    }
+
+    .mod-about {
+      font-size: 10.5pt;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .mod-job {
+      margin-bottom: 12px;
+    }
+
+    .mod-job-title {
+      font-size: 11pt;
+      font-weight: 700;
+      color: #111;
+    }
+
+    .mod-job-meta {
+      font-size: 9.5pt;
+      color: #666;
+      margin-bottom: 5px;
+    }
+
+    .mod-job-meta strong {
+      color: #333;
+    }
+
+    .mod-job ul {
+      padding-left: 16px;
+      color: #333;
+    }
+
+    .mod-job ul li {
+      margin-bottom: 3px;
+      font-size: 10pt;
+      line-height: 1.5;
+    }
+
+    .mod-edu-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 10pt;
+    }
+
+    .mod-edu-table th {
+      text-align: left;
+      font-size: 9pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #999;
+      border-bottom: 1px solid #eee;
+      padding: 4px 8px 4px 0;
+    }
+
+    .mod-edu-table td {
+      padding: 6px 8px 6px 0;
+      vertical-align: top;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 10pt;
+    }
+
+    .mod-skills-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .mod-skills-list li {
+      font-size: 10pt;
+      color: #333;
+      padding: 3px 0;
+      border-bottom: 1px solid #f0f0f0;
+      line-height: 1.5;
+    }
+
+    .mod-skills-list li:last-child {
+      border-bottom: none;
+    }
+
+    .mod-lang-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 10pt;
+    }
+
+    .mod-lang-table th {
+      text-align: left;
+      font-size: 9pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #999;
+      border-bottom: 1px solid #eee;
+      padding: 4px 0;
+    }
+
+    .mod-lang-table td {
+      padding: 5px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    /* ─── PRINT ──────────────────────────────────────────────── */
+    @media print {
+      body { background: none; }
+      .page {
+        margin: 0;
+        box-shadow: none;
+        padding: 14mm 16mm 12mm 16mm;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════
+     PAGE 1 — EUROPASS
+════════════════════════════════════════════════════════ -->
+<div class="page europass">
+
+  <div class="ep-header">
+    <div class="ep-logo">
+      <div class="ep-logo-box">europass</div>
+      <div class="ep-logo-stars">★ ★ ★ ★ ★<br>★ ★ ★ ★ ★</div>
+    </div>
+    <div class="ep-cv-title">Curriculum Vitae</div>
+  </div>
+
+  <hr class="ep-divider">
+
+  <!-- PERSONAL INFORMATION -->
+  <div class="ep-section">
+    <div class="ep-section-title">Personal Information</div>
+    <table class="ep-table">
+      <tr><td>First name(s) / Surname(s)</td><td>Sergio Tschernitschek</td></tr>
+      <tr><td>Address</td><td>Buenos Aires, Argentina</td></tr>
+      <tr><td>Mobile</td><td>+54 11 6293 0819</td></tr>
+      <tr><td>Email</td><td>sergiots1786@gmail.com</td></tr>
+      <tr><td>GitHub</td><td>github.com/Sergiotsk</td></tr>
+      <tr><td>Sex / Date of birth / Nationality</td><td>Male &nbsp;│&nbsp; 01/07/1986 &nbsp;│&nbsp; Argentine</td></tr>
+    </table>
+  </div>
+
+  <!-- DESIRED EMPLOYMENT -->
+  <div class="ep-section">
+    <div class="ep-section-title">Desired Employment / Occupational Field</div>
+    <div class="ep-objective">Backend Trainee / Junior Go Developer</div>
+  </div>
+
+  <!-- WORK EXPERIENCE -->
+  <div class="ep-section">
+    <div class="ep-section-title">Work Experience</div>
+
+    <div class="ep-experience-block">
+      <table class="ep-table">
+        <tr><td>Dates</td><td>2022 – Present</td></tr>
+        <tr><td>Occupation or position held</td><td>Independent Technician</td></tr>
+        <tr><td>Employer</td><td>Self-employed, Buenos Aires, Argentina</td></tr>
+        <tr><td>Main activities and responsibilities</td><td>Electrical installations and maintenance for residential and commercial clients. PC repair, hardware diagnostics, and software troubleshooting. Direct client communication, budget estimation, and technical documentation.</td></tr>
+        <tr><td>Business or sector</td><td>Electrical services / IT technical support</td></tr>
+      </table>
+    </div>
+
+    <hr class="ep-divider">
+
+    <div class="ep-experience-block">
+      <table class="ep-table">
+        <tr><td>Dates</td><td>2016 – 2022</td></tr>
+        <tr><td>Occupation or position held</td><td>Specialized Electrician / Acting Site Supervisor <em>(6-month period)</em></td></tr>
+        <tr><td>Employer</td><td>Serviur SA, Buenos Aires, Argentina</td></tr>
+        <tr><td>Main activities and responsibilities</td><td>Maintenance, installation, and commissioning of HUBER industrial equipment. Temporarily promoted to Acting Site Supervisor: team coordination, supplier management, daily reporting, and administrative oversight.</td></tr>
+        <tr><td>Business or sector</td><td>Industrial electrical services</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- EDUCATION -->
+  <div class="ep-section">
+    <div class="ep-section-title">Education and Training</div>
+    <table class="ep-table">
+      <tr><td>Dates</td><td>2025 – 2028 <em>(expected)</em></td></tr>
+      <tr><td>Title awarded</td><td>Técnico Universitario en Programación <em>(University Technician in Programming)</em></td></tr>
+      <tr><td>EQF level</td><td>Level 5</td></tr>
+      <tr><td>Organisation</td><td>UTN – Haedo Regional, Buenos Aires, Argentina</td></tr>
+      <tr><td>Principal subjects / skills covered</td><td>Programming fundamentals, web development, relational databases, algorithms and data structures, operating systems, software engineering principles.</td></tr>
+    </table>
+  </div>
+
+  <!-- PERSONAL SKILLS -->
+  <div class="ep-section">
+    <div class="ep-section-title">Personal Skills</div>
+
+    <div class="ep-skills-block">
+      <h4>Mother tongue(s)</h4>
+      <p>Spanish</p>
+
+      <h4>Other language(s)</h4>
+      <table class="ep-lang-table">
+        <tr>
+          <th></th>
+          <th colspan="2" class="ep-lang-span">UNDERSTANDING</th>
+          <th colspan="2" class="ep-lang-span">SPEAKING</th>
+          <th class="ep-lang-span">WRITING</th>
+        </tr>
+        <tr>
+          <th></th>
+          <th>Listening</th>
+          <th>Reading</th>
+          <th>Spoken interaction</th>
+          <th>Spoken production</th>
+          <th></th>
+        </tr>
+        <tr>
+          <td>English</td>
+          <td>B2</td><td>B2</td><td>B2</td><td>B2</td><td>B2</td>
+        </tr>
+      </table>
+      <p class="ep-note">Levels: A1/A2: Basic user · B1/B2: Independent user · C1/C2: Proficient user &nbsp;— Common European Framework of Reference for Languages</p>
+
+      <h4>Communication skills</h4>
+      <p>Strong ability to document technical projects (PRDs, READMEs) and communicate requirements clearly. Experienced in explaining technical solutions to non-technical clients in freelance work contexts.</p>
+
+      <h4>Organisational / managerial skills</h4>
+      <p>Effective concurrent management of university studies, independent professional work, and personal development projects. Project planning and tracking using tools such as Obsidian and Google Calendar. Six-month experience as Acting Site Supervisor: team coordination, supplier management, and administrative oversight.</p>
+
+      <h4>Digital competence</h4>
+    </div>
+
+    <div class="ep-digital-grid">
+      <div><strong>Programming languages</strong>JavaScript / TypeScript · HTML5 / CSS3 · Python · Go (in progress)</div>
+      <div><strong>Frameworks &amp; libraries</strong>Next.js (App Router) · React</div>
+      <div><strong>Backend / Databases</strong>Supabase (PostgreSQL, Auth, Storage) · SQL</div>
+      <div><strong>DevOps / Infrastructure</strong>Git / GitHub · Docker / Docker Compose · Vercel</div>
+      <div><strong>Tools &amp; environment</strong>WSL 2 / Linux (Ubuntu) · npm · uv · fnm · VS Code</div>
+    </div>
+  </div>
+
+  <div class="ep-footer">© European Union, 2002–2012 · http://europass.cedefop.europa.eu</div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════════
+     PAGE 2 — MODERN RESUME
+════════════════════════════════════════════════════════ -->
+<div class="page modern">
+
+  <!-- HEADER -->
+  <div class="mod-header">
+    <div class="mod-name">
+      <span class="mod-initials">ST</span>
+      <span class="mod-name-text">Sergio Tschernitschek</span>
+    </div>
+    <div class="mod-contact">
+      <span>Buenos Aires, Argentina</span>
+      <span>sergiots1786@gmail.com</span>
+      <span>+54 11 6293 0819</span>
+      <span>github.com/Sergiotsk</span>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="mod-section">
+    <div class="mod-section-title">About</div>
+    <p class="mod-about">
+      Programming student and independent technician transitioning into backend software development.
+      Hands-on experience with modern web technologies and a strong foundation in problem-solving
+      built through years of technical fieldwork. Currently expanding skills in Go for backend
+      development while completing a university degree in programming.
+    </p>
+  </div>
+
+  <!-- EXPERIENCE -->
+  <div class="mod-section">
+    <div class="mod-section-title">Experience</div>
+
+    <div class="mod-job">
+      <div class="mod-job-title">Independent Technician</div>
+      <div class="mod-job-meta"><strong>Self-employed</strong> — Buenos Aires, Argentina &nbsp;·&nbsp; 2022 – Present</div>
+      <ul>
+        <li>Electrical installations and maintenance for residential and commercial clients.</li>
+        <li>PC repair, hardware diagnostics, and software troubleshooting.</li>
+        <li>Direct client communication, budget estimation, and technical documentation.</li>
+      </ul>
+    </div>
+
+    <div class="mod-job">
+      <div class="mod-job-title">Specialized Electrician / Acting Site Supervisor</div>
+      <div class="mod-job-meta"><strong>Serviur SA</strong> — Buenos Aires, Argentina &nbsp;·&nbsp; 2016 – 2022</div>
+      <ul>
+        <li>Maintenance, installation, and commissioning of HUBER industrial equipment.</li>
+        <li>Temporarily promoted to Acting Site Supervisor: team coordination, supplier management, daily reporting, and administrative oversight.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- EDUCATION -->
+  <div class="mod-section">
+    <div class="mod-section-title">Education</div>
+    <table class="mod-edu-table">
+      <thead>
+        <tr>
+          <th>Degree</th>
+          <th>Institution</th>
+          <th>Period</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>University Technician in Programming</td>
+          <td>UTN – Haedo Regional, Buenos Aires</td>
+          <td>2025 – 2028 <em>(expected)</em></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SKILLS -->
+  <div class="mod-section">
+    <div class="mod-section-title">Skills</div>
+    <ul class="mod-skills-list">
+      <li>JavaScript / TypeScript &nbsp;·&nbsp; HTML5 / CSS3 &nbsp;·&nbsp; Python &nbsp;·&nbsp; Go <em>(in progress)</em></li>
+      <li>Next.js (App Router) &nbsp;·&nbsp; React &nbsp;·&nbsp; Supabase &nbsp;·&nbsp; SQL</li>
+      <li>Git / GitHub &nbsp;·&nbsp; Docker &nbsp;·&nbsp; Vercel</li>
+      <li>WSL 2 / Linux (Ubuntu) &nbsp;·&nbsp; VS Code</li>
+      <li>Technical documentation (PRDs, READMEs)</li>
+      <li>Project self-management and planning</li>
+    </ul>
+  </div>
+
+  <!-- LANGUAGES -->
+  <div class="mod-section">
+    <div class="mod-section-title">Languages</div>
+    <table class="mod-lang-table">
+      <thead>
+        <tr><th>Language</th><th>Level</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Spanish</td><td>Native</td></tr>
+        <tr><td>English</td><td>B2 – Independent user</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+</body>
+</html>
