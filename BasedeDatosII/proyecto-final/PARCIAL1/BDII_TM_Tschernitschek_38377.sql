@@ -1,44 +1,53 @@
 --1)Desarrollar todas las consignas pedidas y con cada una de las sentencias que responden a ellas armar un archivo que lleve el siguiente formato
 -- BII_Apellido_Legajo.sql, por ejemplo BII_TN_GARCIA_12345.sql
 
---En el Sanatorio "Urgencias Locas" se ha creado una Base de Datos con las tablas que encontrará en el script adjunto. 
--- Sólo se han creado tablas pero no los objetos necesarios para cumplir con ciertas reglas de negocio. Usted como administrador 
---de la Base de Datos deberá desarrollar los disparadores, procedimientos, funciones y paquetes necesarios que permitirán cumplir 
+--En el Sanatorio "Urgencias Locas" se ha creado una Base de Datos con las tablas que encontrará en el script adjunto.
+-- Sólo se han creado tablas pero no los objetos necesarios para cumplir con ciertas reglas de negocio. Usted como administrador
+--de la Base de Datos deberá desarrollar los disparadores, procedimientos, funciones y paquetes necesarios que permitirán cumplir
 --con aquellas tareas del negocio solicitadas por administrativos, médicos, enfermeros u otros profesionales del sanatorio.
 
 --Nota: todas las consignas deben llevar los bloques anónimos de prueba.
 
 
---1)Crear una función que permita obtener la cantidad de diagnósticos distintos de un paciente dando su apellido y DNI.
----Nota: Considerar que podría haber dos pacientes con el mismo apellido y el mismo DNI en cuyo caso devolver -10
+-- ============================================================
+-- EJERCICIO 1
+-- Función: obtener_cant_diagnosticos
+-- Retorna la cantidad de diagnósticos DISTINTOS de un paciente.
+-- Si hay dos pacientes con mismo apellido y DNI, retorna -10.
+-- Si el paciente no existe, retorna 0.
+-- ============================================================
 /*
 CREATE OR REPLACE FUNCTION obtener_cant_diagnosticos(
-    p_apellido IN pacientes.apellido%TYPE,
-    p_dni      IN pacientes.dni%TYPE
+    p_apellido IN pacientes.apellido%TYPE,  -- Parámetro de entrada: apellido del paciente
+    p_dni      IN pacientes.dni%TYPE        -- Parámetro de entrada: DNI del paciente
 ) RETURN NUMBER IS
-    l_cant_pacientes    NUMBER;
-    l_cant_diagnosticos NUMBER;
+    l_cant_pacientes    NUMBER;  -- Variable para detectar duplicados o ausencia
+    l_cant_diagnosticos NUMBER;  -- Variable para almacenar el resultado final
 BEGIN
+    -- Contamos cuántos pacientes coinciden con ese apellido y DNI
+    -- COUNT(*) cuenta todas las filas que cumplen la condición WHERE
      SELECT COUNT(*)
-      INTO l_cant_pacientes
+      INTO l_cant_pacientes       -- Guardamos el resultado en la variable
       FROM pacientes
      WHERE apellido = p_apellido
        AND dni      = p_dni;
 
+    -- Regla de negocio: si hay más de 1 resultado, hay duplicados → retornar -10
     IF l_cant_pacientes > 1 THEN
         RETURN -10;
-        elsif l_cant_pacientes = 0 then
-
-         RETURN  0;
+    -- Si no se encontró ningún paciente → retornar 0
+    ELSIF l_cant_pacientes = 0 THEN
+        RETURN 0;
     END IF;
-    
 
-  
+    -- Si hay exactamente 1 paciente, contamos sus diagnósticos distintos.
+    -- COUNT(DISTINCT d.descripcion) evita contar el mismo diagnóstico más de una vez.
+    -- Se usan JOINs para navegar: diagnosticos → citas → pacientes
     SELECT COUNT(DISTINCT d.descripcion)
       INTO l_cant_diagnosticos
       FROM diagnosticos d
-      JOIN citas      c ON d.id_cita      = c.id_cita
-      JOIN pacientes  p ON c.id_paciente  = p.id_paciente
+      JOIN citas      c ON d.id_cita      = c.id_cita      -- Une diagnóstico con su cita
+      JOIN pacientes  p ON c.id_paciente  = p.id_paciente  -- Une cita con el paciente
      WHERE p.apellido = p_apellido
        AND p.dni      = p_dni;
 
@@ -46,162 +55,363 @@ BEGIN
 END obtener_cant_diagnosticos;
 /
 
--- Bloque de prueba
+-- ---- Bloque de prueba ----
 DECLARE
     l_resultado NUMBER;
 BEGIN
+    -- Llamamos a la función con apellido y DNI de prueba
     l_resultado := obtener_cant_diagnosticos('Perez', '12345678');
-    DBMS_OUTPUT.PUT_LINE('Diagnósticos distintos: ' || l_resultado);
-    IF l_resultado = -1  THEN DBMS_OUTPUT.PUT_LINE('Paciente no encontrado');
-ELSIF l_resultado = -10 THEN DBMS_OUTPUT.PUT_LINE('Paciente duplicado');
-ELSE DBMS_OUTPUT.PUT_LINE('Diagnósticos: ' || l_resultado);
-END IF;
+    DBMS_OUTPUT.PUT_LINE('Resultado raw: ' || l_resultado);
 
+    -- Evaluamos el resultado y mostramos el mensaje correspondiente
+    IF    l_resultado = -10 THEN DBMS_OUTPUT.PUT_LINE('Paciente duplicado');
+    ELSIF l_resultado =   0 THEN DBMS_OUTPUT.PUT_LINE('Paciente no encontrado');
+    ELSE                         DBMS_OUTPUT.PUT_LINE('Diagnósticos distintos: ' || l_resultado);
+    END IF;
 END;
 /
-
 */
---2)Realizar un disparador que registre el usuario y la fecha de cualquier actividad de cambio que se realice sobre 
---- la tabla de pacientes (actualizaciones, eliminaciones o inserciones de registros).
---- Registrar esto en la tabla de LOGS_PACIENTES (tiene tres campos: ID, USUARIO, FECHA, MOTIVO).
 
-/* 
 
+-- ============================================================
+-- EJERCICIO 2
+-- Trigger: trg_logs_consultas
+-- Auditoría de cambios sobre la tabla PACIENTES.
+-- Se dispara DESPUÉS de INSERT, UPDATE o DELETE.
+-- Registra en LOGS_PACIENTES: usuario DB, fecha y motivo.
+-- ============================================================
+/*
+
+-- Tabla de auditoría donde se registran todos los cambios
 CREATE TABLE logs_pacientes(
-    id NUMBER GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
-    usuario VARCHAR2(100),
-    fecha DATE,
-    motivo VARCHAR2(255)
+    -- GENERATED BY DEFAULT AS IDENTITY crea un autoincremento automático para el ID
+    id      NUMBER GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+    usuario VARCHAR2(100),   -- Nombre del usuario de base de datos que ejecutó la acción
+    fecha   DATE,            -- Fecha y hora del evento
+    motivo  VARCHAR2(255)    -- Descripción del evento (inserción, actualización o eliminación)
 );
 
+-- FOR EACH ROW: el trigger se ejecuta una vez por cada fila afectada
+-- :NEW hace referencia a los valores nuevos (INSERT/UPDATE)
+-- :OLD hace referencia a los valores anteriores (UPDATE/DELETE)
 CREATE OR REPLACE TRIGGER trg_logs_consultas
-    AFTER INSERT OR UPDATE OR DELETE ON pacientes
-    FOR EACH ROW 
+    AFTER INSERT OR UPDATE OR DELETE ON pacientes  -- Se activa DESPUÉS de la operación DML
+    FOR EACH ROW                                   -- Granularidad por fila, no por sentencia
 DECLARE
-   
-    v_motivo VARCHAR2(255);
-BEGIN 
-    IF INSERTING THEN 
+    v_motivo VARCHAR2(255);  -- Variable local para construir el mensaje del log
+BEGIN
+    -- INSERTING, UPDATING, DELETING son predicados booleanos propios de los triggers
+    -- que indican qué tipo de operación DML disparó el trigger
+    IF INSERTING THEN
+        -- :NEW.id_paciente: valor del ID en la fila recién insertada
         v_motivo := 'Insercion de Paciente ID: ' || :NEW.id_paciente;
-    ELSIF UPDATING THEN 
+    ELSIF UPDATING THEN
+        -- :OLD.id_paciente: valor del ID ANTES de la actualización
         v_motivo := 'Actualizacion de Paciente ID: ' || :OLD.id_paciente;
-    ELSIF DELETING THEN 
+    ELSIF DELETING THEN
+        -- :OLD.id_paciente: valor del ID de la fila que se está eliminando
         v_motivo := 'Eliminacion de Paciente ID: ' || :OLD.id_paciente;
     END IF;
-    INSERT INTO logs_pacientes(usuario, fecha, motivo) VALUES (USER, SYSDATE, v_motivo);
+
+    -- USER    → función que retorna el nombre del usuario conectado a la sesión
+    -- SYSDATE → función que retorna la fecha y hora actual del servidor
+    INSERT INTO logs_pacientes(usuario, fecha, motivo)
+    VALUES (USER, SYSDATE, v_motivo);
 END;
 /
 
 
-BEGIN 
+-- ---- Bloque de prueba ----
+BEGIN
+    -- Probamos los tres tipos de DML para verificar que el trigger funciona
 
-    INSERT INTO pacientes (nombre, apellido, dni, fecha_nacimiento, direccion, telefono, email,id_obra_social) 
-                    VALUES ('sergio', 'tschernitschek', '32384844', TO_DATE('1986-07-01','YYYY-MM-DD'), 'rivadavia', '113', 'sergiots1786@gmail.com',1);
+    -- INSERT: dispara INSERTING
+    INSERT INTO pacientes (nombre, apellido, dni, fecha_nacimiento, direccion, telefono, email, id_obra_social)
+    VALUES ('sergio', 'tschernitschek', '32384844', TO_DATE('1986-07-01','YYYY-MM-DD'), 'rivadavia', '113', 'sergiots1786@gmail.com', 1);
 
+    -- UPDATE: dispara UPDATING
     UPDATE pacientes SET telefono = '1161930819' WHERE dni = '32384844';
 
+    -- DELETE: dispara DELETING
     DELETE FROM pacientes WHERE dni = '32384844';
 
-    FOR logs IN (SELECT * FROM LOGS_PACIENTES) LOOP 
-        DBMS_OUTPUT.PUT_LINE(' Usuario: '|| logs.USUARIO || 'LOG ID: '||logs.ID  || 'Motivo: ' || logs.MOTIVO  );
+    -- Recorremos el cursor implícito del FOR-LOOP para mostrar los 3 registros generados
+    FOR logs IN (SELECT * FROM LOGS_PACIENTES) LOOP
+        DBMS_OUTPUT.PUT_LINE('Usuario: ' || logs.USUARIO || ' | LOG ID: ' || logs.ID || ' | Motivo: ' || logs.MOTIVO);
     END LOOP;
 END;
 /
 */
---3)Crear una función que indique cuántos días de internación lleva un paciente determinado.
---- Si el paciente ha sido dado de alta indicarlo con -1 y con -10 si el paciente nunca ha sido internado en el nosocomio. 
 
+
+-- ============================================================
+-- EJERCICIO 3
+-- Función: dias_internacion
+-- Retorna los días que lleva internado un paciente activo.
+-- Retorna -1  si el paciente ya fue dado de alta (tiene fecha_egreso).
+-- Retorna -10 si el paciente nunca fue internado.
+-- ============================================================
 CREATE OR REPLACE FUNCTION dias_internacion(
-    p_id_paciente IN internaciones.id_paciente%TYPE
+    p_id_paciente IN internaciones.id_paciente%TYPE  -- ID del paciente a consultar
 ) RETURN NUMBER
 IS
+    -- Variables del mismo tipo que las columnas (ancla %TYPE → resistente a cambios de esquema)
     v_fecha_ingreso internaciones.fecha_ingreso%TYPE;
     v_fecha_egreso  internaciones.fecha_egreso%TYPE;
 BEGIN
+    -- Buscamos una internación ACTIVA: sin fecha de egreso (IS NULL = sigue internado)
+    -- Si no existe → lanza NO_DATA_FOUND automáticamente (manejado en EXCEPTION)
     SELECT fecha_ingreso, fecha_egreso
     INTO v_fecha_ingreso, v_fecha_egreso
     FROM internaciones
     WHERE id_paciente = p_id_paciente
-      AND fecha_egreso IS NULL;
+      AND fecha_egreso IS NULL;  -- Solo internaciones sin alta médica
 
-    RETURN TRUNC(current_date - v_fecha_ingreso);
+    -- TRUNC() elimina la parte horaria de la resta de fechas,
+    -- devolviendo un número entero de días
+    -- CURRENT_DATE es la fecha actual de la sesión (equivalente a SYSDATE sin hora)
+    RETURN TRUNC(CURRENT_DATE - v_fecha_ingreso);
 
 EXCEPTION
+    -- NO_DATA_FOUND se lanza cuando el SELECT INTO no devuelve ninguna fila
+    -- Puede significar: dado de alta O nunca internado → debemos distinguir los casos
     WHEN NO_DATA_FOUND THEN
         DECLARE
-            v_cont NUMBER;
+            v_cont NUMBER;  -- Contador para saber si alguna vez estuvo internado
         BEGIN
+            -- Contamos internaciones históricas (con o sin fecha de egreso)
             SELECT COUNT(*)
             INTO v_cont
             FROM internaciones
             WHERE id_paciente = p_id_paciente;
 
+            -- Si no hay registros en absoluto: nunca fue internado
             IF v_cont = 0 THEN
                 RETURN -10;
-            else
-                return -1;    
-            
+            ELSE
+                -- Hay registros pero todos tienen fecha_egreso → fue dado de alta
+                RETURN -1;
             END IF;
         END;
 END;
 /
- 
- --BLOQUE PRUEBA
+
+-- ---- Bloque de prueba ----
+-- CORRECCIÓN: v_res debe recibir el valor de la función ANTES de evaluarlo en el IF
 DECLARE
- v_id_paciente internaciones.id_paciente%TYPE:= &Ingrese_ID_de_paciente;
- v_res number;
-begin
- if v_res > 0 then
-  v_res := dias_internacion(v_id_paciente);
-  DBMS_OUTPUT.PUT_LINE('Dias de internacion: '||v_res);
-  elsif v_res = -10 then
-        DBMS_OUTPUT.PUT_LINE('Paciente nunca ingresado a internacion');
-   else
-        DBMS_OUTPUT.PUT_LINE('Paciente dado de alta');     
-    
-   
- end if;
-end;
+    v_id_paciente internaciones.id_paciente%TYPE := &Ingrese_ID_de_paciente;
+    v_res         NUMBER;
+BEGIN
+    -- IMPORTANTE: primero ejecutamos la función y almacenamos el resultado
+    v_res := dias_internacion(v_id_paciente);
+
+    -- Recién DESPUÉS evaluamos el resultado
+    IF    v_res = -10 THEN DBMS_OUTPUT.PUT_LINE('Paciente nunca ingresado a internacion');
+    ELSIF v_res = -1  THEN DBMS_OUTPUT.PUT_LINE('Paciente dado de alta');
+    ELSE                   DBMS_OUTPUT.PUT_LINE('Dias de internacion activa: ' || v_res);
+    END IF;
+END;
+/
 
 
 
 
---4)Mediante un procedimiento almacenado hacer el listado de todos los pacientes que se atienden en el 
---nosocomio por Obra Social. El listado debe tener un encabezado por Obra Social con los datos más relevantes de ésta:
--- Nombre y Dirección, mientras que de los pacientes se pide Apellido, Nombre y dirección de correo electrónico
---Texto de la respuesta Pregunta 4
-
-/*  
+-- ============================================================
+-- EJERCICIO 4
+-- Procedimiento: listado_por_obra_social
+-- Lista todos los pacientes agrupados por obra social.
+-- Encabezado por obra social: nombre y dirección.
+-- Detalle por paciente: apellido, nombre y email.
+-- ============================================================
+/*
 CREATE OR REPLACE PROCEDURE listado_por_obra_social AS
 
-    
+    -- Cursor explícito c_obras: recorre todas las obras sociales disponibles
     CURSOR c_obras IS
         SELECT id_obra_social, nombre, direccion
         FROM obras_sociales;
 
-   
+    -- Cursor parametrizado c_pacientes: recibe el ID de obra social como parámetro
+    -- y filtra solo los pacientes que pertenecen a esa obra social
     CURSOR c_pacientes(p_id obras_sociales.id_obra_social%TYPE) IS
         SELECT apellido, nombre, email
         FROM pacientes
-        WHERE id_obra_social = p_id;
+        WHERE id_obra_social = p_id;  -- Filtra por la obra social del loop exterior
 
 BEGIN
+    -- FOR...LOOP con cursor: itera automáticamente, abre y cierra el cursor solo
+    -- La variable "os" es un registro implícito con los campos del cursor
     FOR os IN c_obras LOOP
 
-        
-        DBMS_OUTPUT.PUT_LINE('-----'||'OBRA SOCIAL'||os.nombre || '  Direccion: ' || os.direccion ||'----');
+        -- Imprimimos el encabezado de cada obra social
+        DBMS_OUTPUT.PUT_LINE('-----' || 'OBRA SOCIAL: ' || os.nombre || '  Direccion: ' || os.direccion || '----');
 
-        
+        -- Loop anidado: por cada obra social iteramos sus pacientes
+        -- Pasamos el ID de la obra social actual al cursor parametrizado
         FOR p IN c_pacientes(os.id_obra_social) LOOP
             DBMS_OUTPUT.PUT_LINE('  ' || p.apellido || ', ' || p.nombre || ' - ' || p.email);
         END LOOP;
 
     END LOOP;
 END listado_por_obra_social;
+/
 
-
--- bloque de prueba
+-- ---- Bloque de prueba ----
 BEGIN
-    listado_por_obra_social;
+    listado_por_obra_social;  -- Invocamos el procedimiento sin parámetros
 END;
+/
+*/
+
+
+-- ============================================================
+-- ============================================================
+--       GLOSARIO DE FUNCIONES BUILT-IN UTILIZADAS
+-- ============================================================
+-- ============================================================
+
+/*
+┌─────────────────────────┬──────────────────────────────────────────────────────────────────────────────┐
+│ Función / Keyword        │ Sintaxis y Funcionamiento                                                    │
+├─────────────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ COUNT(*)                 │ COUNT(*)                                                                     │
+│                          │ Cuenta TODAS las filas que cumplen la condición WHERE,                       │
+│                          │ incluyendo NULLs. Nunca devuelve NULL, mínimo retorna 0.                     │
+│                          │ Ej: SELECT COUNT(*) FROM pacientes WHERE dni = '123'                         │
+├─────────────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ COUNT(DISTINCT expr)     │ COUNT(DISTINCT columna)                                                      │
+│                          │ Cuenta valores únicos/distintos, ignorando NULLs y repetidos.                │
+│                          │ Ej: COUNT(DISTINCT d.descripcion) → no repite el mismo diagnóstico           │
+├─────────────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ TRUNC(n) / TRUNC(fecha)  │ TRUNC(valor [, formato])                                                     │
+│                          │ Con números: elimina decimales sin redondear. TRUNC(5.9) → 5                 │
+│                          │ Con fechas:  elimina la parte horaria. TRUNC(SYSDATE) → hoy a medianoche     │
+│                          │ Ej: TRUNC(CURRENT_DATE - fecha_ingreso) → días enteros de diferencia         │
+├─────────────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ CURRENT_DATE             │ CURRENT_DATE                                                                 │
+│                          │ Retorna la fecha actual de la sesión (sin parte horaria).                    │
+│                          │ Similar a SYSDATE pero respeta la zona horaria de la sesión.                 │
+├─────────────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ SYSDATE                  │ SYSDATE                                                                      │
+│                          │ Retorna la fecha y hora actual del servidor de base de datos.                │
+│                          │ No requiere paréntesis. Ej: INSERT INTO logs VALUES(SYSDATE)                 │
+├─────────────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ USER                     │ USER                                                                         │
+│                          │ Retorna el nombre del usuario de base de datos conectado en la sesión.       │
+│                          │ Sin paréntesis. Ej: INSERT INTO logs(usuario) VALUES(USER)                   │
+├─────────────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ TO_DATE                  │ TO_DATE(cadena, formato)                                                     │
+│                          │ Convierte un VARCHAR2 en DATE usando una máscara de formato.                 │
+│                          │ Ej: TO_DATE('1986-07-01', 'YYYY-MM-DD') → valor DATE 01/07/1986              │
+├─────────────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ DBMS_OUTPUT.PUT_LINE     │ DBMS_OUTPUT.PUT_LINE(texto VARCHAR2)                                         │
+│                          │ Imprime texto en la consola de salida (requiere SET SERVEROUTPUT ON).        │
+│                          │ Útil para depurar y verificar resultados en bloques PL/SQL.                  │
+│                          │ Ej: DBMS_OUTPUT.PUT_LINE('Resultado: ' || v_numero)                          │
+├─────────────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ NO_DATA_FOUND            │ WHEN NO_DATA_FOUND THEN ...                                                  │
+│                          │ Excepción predefinida que se lanza automáticamente cuando un                 │
+│                          │ SELECT INTO no encuentra ninguna fila. Se captura en el bloque EXCEPTION.    │
+├─────────────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ GENERATED BY DEFAULT     │ columna NUMBER GENERATED BY DEFAULT AS IDENTITY                              │
+│ AS IDENTITY              │ Crea una secuencia automática (autoincremento) para la columna.              │
+│                          │ "BY DEFAULT" permite insertar valores manuales si se desea.                  │
+│                          │ Alternativa moderna a CREATE SEQUENCE en Oracle 12c+.                        │
+├─────────────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ INSERTING / UPDATING     │ IF INSERTING THEN ... ELSIF UPDATING THEN ... ELSIF DELETING THEN ...        │
+│ / DELETING               │ Predicados condicionales disponibles SOLO dentro de triggers.                │
+│                          │ Retornan TRUE según el tipo de operación DML que disparó el trigger.         │
+│                          │ Permiten usar un único trigger para los tres eventos DML.                    │
+└─────────────────────────┴──────────────────────────────────────────────────────────────────────────────┘
+*/
+
+
+-- ============================================================
+-- ============================================================
+--          SUGERENCIAS DE MEJORA PARA LOS SCRIPTS
+-- ============================================================
+-- ============================================================
+
+/*
+=== SUGERENCIA 1: BUG CRÍTICO en el bloque de prueba del Ejercicio 3 ===
+
+CÓDIGO ORIGINAL (incorrecto):
+    v_res NUMBER;   -- v_res = NULL en este punto
+BEGIN
+    IF v_res > 0 THEN               -- NULL > 0 → siempre FALSE, nunca entra
+        v_res := dias_internacion(v_id_paciente);  -- NUNCA se ejecuta
+
+PROBLEMA: v_res es NULL cuando se evalúa el IF, por lo que la función
+nunca se invoca y el IF siempre falla silenciosamente.
+
+CÓDIGO CORREGIDO (ya aplicado arriba):
+    v_res := dias_internacion(v_id_paciente);  -- Primero ejecutamos
+    IF    v_res = -10 THEN ...                 -- Después evaluamos
+    ELSIF v_res = -1  THEN ...
+    ELSE  ...
+
+
+=== SUGERENCIA 2: Manejo de TOO_MANY_ROWS en el Ejercicio 1 ===
+
+El SELECT INTO del Ejercicio 1 puede lanzar TOO_MANY_ROWS si la tabla
+pacientes tiene múltiples registros con mismo apellido y DNI, antes
+de que lleguemos a comparar l_cant_pacientes.
+Podría agregarse una excepción explícita:
+
+    EXCEPTION
+        WHEN TOO_MANY_ROWS THEN RETURN -10;
+
+O bien reemplazar el SELECT INTO por un SELECT COUNT(*) (como ya lo hacés),
+que nunca lanza esa excepción. Tu enfoque actual con COUNT es el correcto.
+
+
+=== SUGERENCIA 3: Usar RAISE_APPLICATION_ERROR en lugar de códigos mágicos ===
+
+Retornar -1, -10 como códigos de error funciona pero es frágil:
+el código que llama a la función debe "saber" qué significa cada número.
+Una alternativa más robusta es lanzar errores con mensajes descriptivos:
+
+    RAISE_APPLICATION_ERROR(-20001, 'Paciente no encontrado');
+    RAISE_APPLICATION_ERROR(-20002, 'Paciente duplicado');
+
+Los códigos -20000 a -20999 están reservados para errores de usuario en Oracle.
+Esto hace que los errores se propaguen con un mensaje claro en lugar de un número.
+
+
+=== SUGERENCIA 4: Agregar SAVEPOINT en el bloque de prueba del Ejercicio 2 ===
+
+El bloque de prueba del Ejercicio 2 hace INSERT + UPDATE + DELETE reales.
+Si algo falla a mitad del bloque, los cambios parciales quedan en la tabla.
+Sería más seguro envolverlo en un SAVEPOINT y hacer ROLLBACK al final:
+
+    BEGIN
+        SAVEPOINT antes_prueba;
+        INSERT INTO pacientes ...;
+        UPDATE pacientes ...;
+        DELETE FROM pacientes ...;
+        -- Ver los logs
+        FOR logs IN (SELECT * FROM LOGS_PACIENTES) LOOP ... END LOOP;
+        ROLLBACK TO antes_prueba;  -- Deja la tabla limpia después de la prueba
+    END;
+
+
+=== SUGERENCIA 5: Consistencia en CURRENT_DATE vs SYSDATE ===
+
+En el Ejercicio 2 usás SYSDATE y en el Ejercicio 3 usás CURRENT_DATE.
+Ambas retornan la fecha actual, pero SYSDATE usa la zona horaria del servidor
+y CURRENT_DATE usa la zona horaria de la sesión.
+Para un sistema en producción, conviene elegir UNA y usarla consistentemente
+en todo el proyecto para evitar diferencias horarias difíciles de depurar.
+Recomendación: usá SYSDATE (es el estándar histórico de Oracle y el más portable).
+
+
+=== SUGERENCIA 6: Formato del DBMS_OUTPUT en el Ejercicio 2 ===
+
+En el loop de logs falta un espacio entre el usuario y el ID:
+    ' Usuario: '|| logs.USUARIO || 'LOG ID: '  -- ← Sin separador entre campos
+
+Corrección sugerida:
+    'Usuario: ' || logs.USUARIO || ' | LOG ID: ' || logs.ID || ' | Motivo: ' || logs.MOTIVO
+
+Pequeño detalle, pero en una defensa se nota el cuidado en los detalles.
 */
