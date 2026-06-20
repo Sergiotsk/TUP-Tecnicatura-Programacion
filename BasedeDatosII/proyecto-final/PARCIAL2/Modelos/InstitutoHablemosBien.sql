@@ -1,11 +1,4 @@
-/*1. No se permite dar de alta ni cursos, ni alumnos, ni docentes los fines de semana.
-  2. Realizar un procedimiento que permita validar el email de un alumno.
-
-El formato de un email correcto contiene un nombre de usuario seguido de una "@" y un dominio.
-Los nombres de los usuarios sólo pueden contener letras (a-z), números (0-9), y punto (.) el que no puede estar al final.
-Además el primer carácter debe ser una letra.
-Los nombres de dominio sólo pueden contener letras (a-z), números (0-9) y el guion menos (-).
-El guion (-) sólo es permitido si no está al principio o al final del nombre de dominio.*/
+/*1. No se permite dar de alta ni cursos, ni alumnos, ni docentes los fines de semana.*/
 
 --1)
 create or replace PROCEDURE validar_dia_semana AS
@@ -41,7 +34,50 @@ BEGIN
 END;
 /    
 
+/*2. Realizar un procedimiento que permita validar el email de un alumno.
+
+El formato de un email correcto contiene un nombre de usuario seguido de una "@" y un dominio.
+Los nombres de los usuarios sólo pueden contener letras (a-z), números (0-9), y punto (.) el que no puede estar al final.
+Además el primer carácter debe ser una letra.
+Los nombres de dominio sólo pueden contener letras (a-z), números (0-9) y el guion menos (-).
+El guion (-) sólo es permitido si no está al principio o al final del nombre de dominio.*/
 
 
 
 
+create or replace procedure validar_mail (p_email IN VARCHAR2) IS
+mail boolean; 
+BEGIN
+    IF p_email is not null then
+        mail := REGEXP_LIKE(p_email, '^[a-z][a-z0-9\.]*[a-z0-9][@][a-z0-9]*[a-z0-9-\.]*[a-z0-9]$');
+        if mail THEN
+        DBMS_OUTPUT.PUT_LINE('Mail ingresado correctamente'); 
+        else
+        RAISE_APPLICATION_ERROR(-20001,'Formato de email NO permitido');
+        end if;
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('No se detecto ingreso');
+    end if;    
+END;
+/
+
+create or replace trigger trg_validar_mail
+before INSERT or UPDATE OF EMAIL ON ESTUDIANTES
+for each ROW
+BEGIN
+    validar_mail(:new.email);
+END;    
+/    
+
+BEGIN
+ insert INTO ESTUDIANTES(NOMBRE,apellido,FECHA_NACIMIENTO,email,CARRERA)
+ values('SERTO','Tschehek',TO_DATE('01-07-1986'),'serjito86gmail.com',5);
+END;
+/ 
+
+
+
+/*3. Crear un paquete para que los profesores puedan administrar sus tareas en el aula, o sea debe permitir que:
+
+a). El docente dé de alta las notas de un alumno para una actividad en una de sus materias. 
+Se deberá controlar que dicho docente esté actualmente dictando la materia solicitada y que el alumno la esté cursando.*/
