@@ -81,14 +81,28 @@ END;
 
 a). El docente dé de alta las notas de un alumno para una actividad en una de sus materias. 
 Se deberá controlar que dicho docente esté actualmente dictando la materia solicitada y que el alumno la esté cursando.
+
 b). Mediante una función, se obtendrá la edad de un alumno ingresando su número de legajo. Se devolverá un número entero.
 
-c). Mediante una función, se pueda obtener la cantidad de materias que un alumno dado está cursando actualmente. Si no cursa ninguna materia, devolverá cero.
+c). Mediante una función, se pueda obtener la cantidad de materias que un alumno dado está cursando actualmente.
+     Si no cursa ninguna materia, devolverá cero.
 
-d). Un profesor pueda visualizar la lista de los estudiantes, cada uno con su edad, de una materia que dicta. Además de una identificación personal deberá ingresar al procedimiento el código de la materia. Este procedimiento debe aceptar que se le ingrese como identificación del docente: el legajo, su apellido y DNI, o su mail. Se deberá controlar que la materia solicitada sea una materia que el profesor en cuestión esté dictando actualmente y se validará que el docente sea un docente del Instituto.
+d). Un profesor pueda visualizar la lista de los estudiantes, cada uno con su edad, de una materia que dicta.
+    Además de una identificación personal deberá ingresar al procedimiento el código de la materia. 
+    Este procedimiento debe aceptar que se le ingrese como identificación del docente: el legajo, su apellido y DNI, o su mail. 
+    Se deberá controlar que la materia solicitada sea una materia que el profesor en cuestión esté dictando actualmente
+     y se validará que el docente sea un docente del Instituto.
 
 Nota: todas las consignas deben llevar los bloques anónimos de prueba.*/
 
 create or replace PACKAGE PKG_ADMINISTRAR_TAREAS AS 
 procedure alta_nota(p_legajo IN NUMBER, p_curso_id IN NUMBER, p_nota IN NUMBER);
 function obtener_edad(p_legajo IN NUMBER) RETURN NUMBER;
+function cantidad_materias(p_legajo IN NUMBER) RETURN NUMBER;
+procedure visualizar_estudiantes(p_docente_id IN VARCHAR2, p_curso_id IN NUMBER);
+END PKG_ADMINISTRAR_TAREAS;
+
+
+create or replace PACKAGE BODY PKG_ADMINISTRAR_TAREAS AS
+procedure alta_nota 
+NULL;
