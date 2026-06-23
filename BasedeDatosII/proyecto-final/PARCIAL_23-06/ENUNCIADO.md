@@ -16,3 +16,22 @@ Requerimientos
 1. Gestión de consultas
 
 Implementar una función que registre el alta de una nueva consulta (turno) para una mascota con un veterinario determinado, dejándola en estado PENDIENTE. Deberá devolver el identificador de la consulta generada.
+
+2. Gestión de stock de productos
+
+Implementar un procedimiento que descuente stock de un producto, validando que exista disponibilidad suficiente antes de afectarlo. Se podrá indicar dar del producto su Identificación o su Nombre y Tipo.
+
+Registrar en la Tabla CONTROL_VETERINARIA si al cargar un DETALLE_CONSULTA no se pasa precio (o es 0), y se lo completará al dato con el precio vigente del producto.
+
+TABLA DE CONTROL_VETERINARIA
+
+CREATE TABLE CONTROL_VETERINARIA (
+    ID_AUDITORIA NUMBER(10)   GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    TABLA_AFECTADA VARCHAR2(50) NOT NULL,
+    OPERACION VARCHAR2(10) NOT NULL CHECK (OPERACION IN ('INSERT','UPDATE','DELETE')),
+    ID_REGISTRO NUMBER(10),
+    VALOR_ANTERIOR VARCHAR2(500),
+    VALOR_NUEVO VARCHAR2(500),
+    USUARIO_DB VARCHAR2(60) DEFAULT USER,
+    FECHA_EVENTO DATE DEFAULT SYSDATE
+);
