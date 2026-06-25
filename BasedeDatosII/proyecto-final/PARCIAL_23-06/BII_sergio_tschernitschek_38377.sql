@@ -181,7 +181,7 @@ COMMIT;
 DECLARE
     v_id NUMBER;
 BEGIN
-    v_id := PKG_VETERINARIA.GESTION_CONSULTAS('Mendez', 7);
+    v_id := PKG_VETERINARIA.GESTION_CONSULTAS('Méndez', 7);
     DBMS_OUTPUT.PUT_LINE('Consulta registrada con ID: ' || v_id);
 END;
 /
