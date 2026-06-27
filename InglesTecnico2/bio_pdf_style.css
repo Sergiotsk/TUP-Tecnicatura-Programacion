@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Merriweather:ital,wght@0,300;0,400;1,300&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Merriweather', Georgia, serif;
+  font-size: 10.5pt;
+  line-height: 1.9;
+  color: #2c2c2c;
+  background: #ffffff;
+}
+
+.page {
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 72px 48px;
+}
+
+.header {
+  margin-bottom: 40px;
+}
+
+.header h1 {
+  font-family: 'Inter', sans-serif;
+  font-size: 22pt;
+  font-weight: 600;
+  color: #111111;
+  letter-spacing: -0.3px;
+  margin-bottom: 6px;
+}
+
+.header .meta {
+  font-family: 'Inter', sans-serif;
+  font-size: 9pt;
+  font-weight: 400;
+  color: #888888;
+  letter-spacing: 0.5px;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #e5e5e5;
+  margin: 32px 0;
+}
+
+p {
+  font-weight: 300;
+  color: #3a3a3a;
+  margin-bottom: 16px;
+  text-align: justify;
+}
+
+p strong {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  color: #111111;
+}
+
+p em {
+  font-style: italic;
+}
+
+.footer {
+  margin-top: 48px;
+  font-family: 'Inter', sans-serif;
+  font-size: 8pt;
+  color: #bbbbbb;
+  letter-spacing: 0.3px;
+  display: flex;
+  justify-content: space-between;
+}

@@ -63,7 +63,7 @@
   "code-runner.clearPreviousOutput": false,
   "terminal.integrated.accessibleViewPreserveCursorPosition": false,
   "C_Cpp.default.compilerPath": "C/msys64/mingw64/bin/gcc.exe",
-  "cmake.sourceDirectory": "E:/SERJITO/TUP/TUP-REPO/PracticasLibres/FolderOrganizer",
+  "cmake.sourceDirectory": "E:/SERJITO/TUP/TUP-REPO/Aprobadas/PracticasLibres/FolderOrganizer",
   "code-runner.runInTerminal": true,
   "code-runner.saveFileBeforeRun": true
 }
