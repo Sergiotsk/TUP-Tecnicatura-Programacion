@@ -1,0 +1,1839 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trabajo Práctico Integrador — Grupo 4 — MudaYa / MudApp</title>
+    <style>
+        @page { size: A4; margin: 2cm; }
+        @media print {
+            body { font-size: 10pt; }
+            .page-break { page-break-before: always; }
+            .no-print { display: none; }
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            color: #1C1C1C;
+            line-height: 1.6;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+
+        .document {
+            background: white;
+            padding: 50px 60px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 4px;
+        }
+
+        /* COVER */
+        .cover {
+            text-align: center;
+            padding: 80px 0 40px;
+        }
+        .cover .university { font-size: 14px; color: #333; margin-bottom: 2px; }
+        .cover .facultad { font-size: 12px; color: #555; margin-bottom: 2px; }
+        .cover .carrera { font-size: 11px; color: #555; margin-bottom: 30px; }
+        .cover hr { border: none; border-top: 2px solid #1B3A5C; margin: 20px auto; width: 100%; }
+        .cover hr.short { width: 40%; border-top-color: #2E86C1; }
+        .cover h1 { font-size: 28px; color: #1B3A5C; margin: 20px 0 8px; }
+        .cover h2 { font-size: 16px; color: #2E86C1; font-weight: normal; margin: 4px 0; }
+        .cover .subtitle { font-size: 13px; color: #333; margin: 3px 0; }
+        .cover .grupo { font-size: 15px; color: #1C1C1C; margin-top: 30px; font-weight: bold; }
+        .cover .integrantes { font-size: 13px; color: #555; margin-top: 4px; }
+        .cover .materia { font-size: 12px; color: #666; margin-top: 16px; }
+
+        /* TOC */
+        .toc { padding: 20px 0; }
+        .toc ul { list-style: none; padding: 0; }
+        .toc li { margin: 4px 0; }
+        .toc li.level-1 { font-weight: bold; font-size: 13px; margin-top: 12px; }
+        .toc li.level-2 { font-size: 12px; padding-left: 20px; color: #555; }
+        .toc a { color: #2E86C1; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+
+        /* HEADINGS */
+        h1 { font-size: 22px; color: #1B3A5C; border-bottom: 2px solid #2E86C1; padding-bottom: 6px; margin: 24px 0 12px; }
+        h2 { font-size: 17px; color: #2E86C1; margin: 20px 0 8px; }
+        h3 { font-size: 14px; color: #1B3A5C; margin: 16px 0 6px; }
+        h4 { font-size: 12px; color: #333; margin: 12px 0 4px; }
+
+        /* BODY */
+        p { margin: 6px 0; text-align: justify; font-size: 13px; }
+        strong { color: #1B3A5C; }
+
+        /* TABLES */
+        .table-wrap { overflow-x: auto; margin: 10px 0; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            margin: 8px 0;
+        }
+        th {
+            background: #1B3A5C;
+            color: white;
+            padding: 8px 10px;
+            text-align: center;
+            font-weight: 600;
+        }
+        td {
+            padding: 6px 10px;
+            border: 1px solid #ddd;
+            vertical-align: top;
+        }
+        tr:nth-child(even) { background: #f5f8fc; }
+        tr:hover { background: #e8f0f8; }
+
+        /* LISTS */
+        ul, ol { margin: 6px 0 6px 24px; font-size: 13px; }
+        li { margin: 3px 0; }
+
+        /* CODE */
+        pre {
+            background: #f0f4f8;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 12px 16px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 11px;
+            line-height: 1.5;
+            overflow-x: auto;
+            margin: 8px 0;
+        }
+        code {
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 11px;
+            background: #f0f4f8;
+            padding: 1px 4px;
+            border-radius: 3px;
+        }
+
+        /* BLOCKQUOTE */
+        blockquote {
+            border-left: 3px solid #2E86C1;
+            background: #f0f4f8;
+            padding: 8px 16px;
+            margin: 8px 0;
+            font-style: italic;
+            color: #555;
+            font-size: 12px;
+        }
+
+        /* FOOTNOTE */
+        .footnote {
+            font-size: 10px;
+            color: #888;
+            margin: 4px 0;
+        }
+
+        /* HR */
+        hr { border: none; border-top: 1px solid #ddd; margin: 12px 0; }
+
+        /* ITA */
+        .ita-intro { font-size: 12px; color: #555; margin-bottom: 16px; }
+        .ita-block {
+            margin: 16px 0;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 12px;
+            background: #fafbfc;
+        }
+        .ita-block h3 {
+            font-size: 13px;
+            color: #1B3A5C;
+            margin: 0 0 8px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid #eee;
+        }
+        .ita-img {
+            width: 100%;
+            max-width: 100%;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        .missing-img {
+            color: #c00;
+            font-style: italic;
+            padding: 20px;
+            text-align: center;
+            background: #fff5f5;
+            border: 1px dashed #c00;
+            border-radius: 4px;
+        }
+
+        /* PAGE BREAKS */
+        .page-break {
+            page-break-before: always;
+            border-top: 2px solid #2E86C1;
+            margin-top: 30px;
+            padding-top: 10px;
+        }
+
+        /* Prevent page breaks inside */
+        table, .table-wrap, .ita-block, .diagram-wrap, pre, blockquote {
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+        h1, h2, h3, h4 {
+            page-break-after: avoid;
+            break-after: avoid;
+        }
+        .footnote {
+            page-break-before: avoid;
+            break-before: avoid;
+        }
+
+        /* DIAGRAM */
+        .diagram-wrap {
+            text-align: center;
+            margin: 16px 0;
+        }
+        .diagram-wrap img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .diagram-wrap .caption {
+            font-size: 11px;
+            color: #888;
+            font-style: italic;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+<div class="document">
+
+
+<div class="cover">
+    <p class="university">UNIVERSIDAD TECNOLÓGICA NACIONAL</p>
+    <p class="facultad">Facultad Regional Haedo</p>
+    <p class="carrera">Tecnicatura Universitaria en Programación</p>
+    <hr>
+    <h1>Trabajo Práctico Integrador</h1>
+    <h2>Caso de Estudio y Modelado de un Sistema de Gestión de Mudanzas</h2>
+    <hr class="short">
+    <p class="subtitle">Actividad N° 1 — Planificación y Control del Cronograma</p>
+    <p class="subtitle">Actividad N° 2 — Modelado de Requisitos: Casos de Uso e Interfaces</p>
+    <p class="subtitle">Actividad N° 3 — Gestión Ágil y Presupuestación del Proyecto</p>
+    <hr class="short">
+    <p class="grupo">Grupo 4 — Sistema de Gestión de una Empresa de Mudanzas</p>
+    <p class="integrantes">Sergio Tschernitschek · Santiago Vadone · Federico De Vivo</p>
+    <p class="subtitle" style="margin-top:20px">Sistema: <strong>MudaYa — MudApp</strong></p>
+    <p class="materia">Metodología de Sistemas I</p>
+    <p class="materia">Junio — Julio de 2026</p>
+    <hr style="margin-top:40px">
+</div>
+<div class="page-break"></div>
+
+
+<h1>ÍNDICE</h1>
+<div class="toc">
+<ul>
+    <li class="level-1"><a href="#caso-estudio">Caso de Estudio: MudaYa / MudApp</a></li>
+    <li class="level-2">Proceso de particular interés: solicitud de presupuesto</li>
+    <li class="level-2">Alcance del sistema</li>
+
+    <li class="level-1"><a href="#act1">Actividad N° 1 — Planificación y Control del Cronograma</a></li>
+    <li class="level-2">Reparto de tareas por integrante</li>
+    <li class="level-2">Estructura de Desglose del Trabajo (EDT/WBS)</li>
+    <li class="level-2">Identificación del Camino Crítico</li>
+    <li class="level-2">Tareas con holgura</li>
+
+    <li class="level-1"><a href="#act2">Actividad N° 2 — Modelado de Requisitos</a></li>
+    <li class="level-2">Diagrama de Casos de Uso (DCU)</li>
+    <li class="level-2">Especificación de Casos de Uso (CU-01 a CU-13)</li>
+    <li class="level-2"><a href="#act2-ita">Interfaces Tentativas de Análisis (ITA-01 a ITA-09)</a></li>
+
+    <li class="level-1"><a href="#act3">Actividad N° 3 — Gestión Ágil y Presupuestación</a></li>
+    <li class="level-2">Backlog de Historias de Usuario</li>
+    <li class="level-2">Planilla de Costos del Proyecto</li>
+    <li class="level-2">Análisis de Impacto y Contingencia</li>
+    <li class="level-2">Conclusiones</li>
+</ul>
+</div>
+<div class="page-break"></div>
+
+<div id="caso-estudio"></div>
+<h2>Caso de Estudio: MudaYa</h2>
+<p>MudaYa es una empresa que opera en la República Argentina y se dedica a la prestación de servicios de mudanzas y fletes para clientes residenciales y comerciales del Área Metropolitana de Buenos Aires (AMBA).</p>
+<p>A diferencia de un mero intermediario, MudaYa cuenta con flota propia de camiones y cuadrillas de personal capacitado, y ofrece distintos tipos de servicio:</p>
+<ul>
+<li>Mudanza completa, con embalaje y desarme/armado de muebles.</li>
+<li>Flete simple.</li>
+<li>Servicio de guardamuebles.</li>
+</ul>
+<p>Actualmente, la empresa gestiona buena parte de su operatoria de forma manual: los pedidos ingresan por teléfono y por WhatsApp, los presupuestos se arman en planillas y la asignación de camiones y personal se coordina en papel.</p>
+<p>En el marco de su crecimiento —y, en particular, de la apertura de una nueva sucursal—, MudaYa ha decidido profesionalizar su gestión a través del desarrollo de un sistema informático propio, de nombre <strong>MudApp</strong>.</p>
+<p>MudApp se compone de dos piezas que comparten la misma información:</p>
+<ol>
+<li><strong>Portal web de administración:</strong> se ejecuta sobre un servidor Apache alojado en la nube bajo sistema operativo Linux y constituye la única vía de interacción del personal interno de la empresa.</li>
+<li><strong>Aplicación móvil:</strong> opera sobre equipos con Android 10 a 14 o iOS 14 a 17, y está orientada a los clientes y al personal de mudanza en terreno.</li>
+</ol>
+<p>Ambas piezas se comunican con un servicio web (<em>web service</em>) de provisión de datos que emplea un estándar de intercambio de información entre aplicaciones[^1] y centraliza los datos de clientes, solicitudes, presupuestos, recursos —camiones y personal— y mudanzas.</p>
+<p>A través del sistema, un cliente podrá:</p>
+<ul>
+<li>Registrar una cuenta personal.</li>
+<li>Iniciar y cerrar sesión.</li>
+<li>Solicitar el presupuesto de una mudanza.</li>
+<li>Solicitar directamente una mudanza.</li>
+<li>Confirmar —aceptando o rechazando— los presupuestos que reciba.</li>
+</ul>
+<p>El administrador, desde el portal web, gestionará las solicitudes entrantes, verificará la disponibilidad de recursos, generará los presupuestos y coordinará cada mudanza confirmada, asignándole un camión y el personal necesario.</p>
+<p>Finalmente, el personal de mudanza utilizará la aplicación para consultar las mudanzas que tiene asignadas y registrar, en terreno, el inicio y la finalización del servicio.</p>
+<hr>
+<h2>Proceso de particular interés: registrar una solicitud de presupuesto</h2>
+<p>Un proceso de particular interés es el de registrar una solicitud de presupuesto para una mudanza.</p>
+<p>Una vez activada por el cliente la opción correspondiente en el menú general de la aplicación, deberá indicar las direcciones de origen y destino, detallando los datos relevantes de cada domicilio:</p>
+<ul>
+<li>Piso.</li>
+<li>Presencia o no de ascensor.</li>
+<li>Dificultades de acceso.</li>
+<li>Distancia de estacionamiento.</li>
+<li>Otros datos relevantes.</li>
+</ul>
+<p>A continuación, el cliente elegirá el tipo de servicio deseado e ingresará un detalle con la mayor cantidad de información posible acerca de los bienes a trasladar.</p>
+<p>Podrá agregar las fotografías que considere, las cuales —por criterios de seguridad informática— solo podrán estar en formato <code>.jpg</code> y, por una gestión eficiente del almacenamiento, no podrán exceder:</p>
+<ul>
+<li><strong>8 fotografías.</strong></li>
+<li><strong>25 MB de tamaño máximo total.</strong></li>
+</ul>
+<p>El cliente proseguirá estableciendo el rango de fechas en el cual desea que se realice la mudanza e informará las formas de pago que está dispuesto a utilizar:</p>
+<ul>
+<li>Efectivo.</li>
+<li>Transferencia bancaria.</li>
+<li>Débito.</li>
+<li>Crédito.</li>
+<li>Mercado Pago.</li>
+</ul>
+<p>También podrá agregar un comentario textual con las observaciones que considere relevantes.</p>
+<p>Al registrar efectivamente su solicitud, el cliente visualizará en la aplicación un mensaje de confirmación que contendrá el correspondiente código alfanumérico identificador, en estándar Unicode.</p>
+<p>En cualquier momento, y mediante otra funcionalidad de MudApp, el cliente podrá consultar, para cada solicitud efectuada, el listado de presupuestos recibidos.</p>
+<p>Cada presupuesto contendrá, entre otros datos:</p>
+<ul>
+<li>Fecha de emisión.</li>
+<li>Detalle del servicio a realizar.</li>
+<li>Fecha estimada de inicio.</li>
+<li>Cantidad de días de trabajo previstos.</li>
+<li>Costo total.</li>
+</ul>
+<p>Los presupuestos tienen una validez de <strong>10 días corridos</strong> y, cumplido dicho plazo, caducan automáticamente.</p>
+<p>Cuando el cliente tenga interés en alguno de ellos, podrá comunicarle al sistema la aceptación del presupuesto.</p>
+<p>En ese caso, MudApp:</p>
+<ol>
+<li>Generará automáticamente la mudanza correspondiente.</li>
+<li>Registrará una seña o anticipo equivalente al <strong>30 % del costo total</strong>.</li>
+<li>Dejará el saldo restante a abonar al momento de finalizar el servicio.</li>
+<li>Pondrá la mudanza a disposición del administrador para que asigne los recursos y programe la fecha definitiva.</li>
+</ol>
+<hr>
+<h2>Alcance del sistema</h2>
+<p>El presente caso de estudio sirve de base para la Actividad N° 2 —Modelado de Requisitos—.</p>
+<p>El modelado funcional —Diagrama de Casos de Uso, especificaciones e interfaces tentativas— se desarrolla sobre los tres actores y las funcionalidades aquí descriptas.</p>
+<p class="footnote">[1] Son tecnologías de intercambio de información entre aplicaciones: SOAP (<em>Simple Object Access Protocol</em>), CORBA (<em>Common Object Request Broker Architecture</em>), REST (<em>Representational State Transfer</em>), etc. En el caso de MudApp se adopta una API de tipo REST.</p>
+<div class="page-break"></div>
+<div id="act1"></div>
+<h2>Planificación y Control del Cronograma</h2>
+<p><strong>Grupo 4: Mudanza y Apertura de una Nueva Sucursal</strong> Sergio Tschernitschek · Santiago Vadone · Federico De Vivo</p>
+<hr>
+<h2>Reparto de tareas por integrante</h2>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>ID</th>
+<th>Tarea</th>
+<th>Recurso Asignado</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>1.1</td>
+<td>Definición del alcance del nuevo local</td>
+<td>Santiago Vadone</td>
+</tr>
+<tr>
+<td>1.2</td>
+<td>Relevamiento y búsqueda en campo de locales disponibles</td>
+<td>Sergio Tschernitschek</td>
+</tr>
+<tr>
+<td>1.3</td>
+<td>Análisis del entorno comercial y competidores</td>
+<td>Federico De Vivo</td>
+</tr>
+<tr>
+<td>1.4</td>
+<td>Inspección técnica preliminar de las estructuras</td>
+<td>Santiago Vadone</td>
+</tr>
+<tr>
+<td>1.5</td>
+<td>Análisis económico de costos de refacción estimada</td>
+<td>Federico De Vivo</td>
+</tr>
+<tr>
+<td>HITO 1</td>
+<td>Relevamiento y análisis de opciones completados</td>
+<td>Todos</td>
+</tr>
+<tr>
+<td>2.1</td>
+<td>Evaluación y matriz de selección del local definitivo</td>
+<td>Sergio Tschernitschek</td>
+</tr>
+<tr>
+<td>2.2</td>
+<td>Gestión jurídica de contratos de alquiler</td>
+<td>Santiago Vadone</td>
+</tr>
+<tr>
+<td>2.3</td>
+<td>Solicitud y tramitación de la habilitación municipal</td>
+<td>Federico De Vivo</td>
+</tr>
+<tr>
+<td>2.4</td>
+<td>Tramitación de altas de servicios comerciales</td>
+<td>Sergio Tschernitschek</td>
+</tr>
+<tr>
+<td>HITO 2</td>
+<td>Local seleccionado y habilitado legalmente</td>
+<td>Todos</td>
+</tr>
+<tr>
+<td>3.1</td>
+<td>Identificación y listado de refacciones necesarias</td>
+<td>Santiago Vadone</td>
+</tr>
+<tr>
+<td>3.2</td>
+<td>Elaboración del pliego de condiciones técnicas</td>
+<td>Federico De Vivo</td>
+</tr>
+<tr>
+<td>3.3</td>
+<td>Envío de pliegos y solicitud de presupuestos a contratistas</td>
+<td>Sergio Tschernitschek</td>
+</tr>
+<tr>
+<td>3.4</td>
+<td>Evaluación técnica-económica de ofertas recibidas</td>
+<td>Santiago Vadone</td>
+</tr>
+<tr>
+<td>HITO 3</td>
+<td>Licitación cerrada y contratista preseleccionado</td>
+<td>Todos</td>
+</tr>
+<tr>
+<td>4.1</td>
+<td>Adjudicación y firma de contrato con el proveedor</td>
+<td>Federico De Vivo</td>
+</tr>
+<tr>
+<td>4.2</td>
+<td>Ejecución de las obras de refacción interna</td>
+<td>Sergio Tschernitschek</td>
+</tr>
+<tr>
+<td>4.3</td>
+<td>Inspección de calidad y recepción de la obra</td>
+<td>Santiago Vadone</td>
+</tr>
+<tr>
+<td>HITO 4</td>
+<td>Infraestructura del local terminada al 100%</td>
+<td>Todos</td>
+</tr>
+<tr>
+<td>5.1</td>
+<td>Relevamiento y selección de empleados a transferir</td>
+<td>Federico De Vivo</td>
+</tr>
+<tr>
+<td>5.2</td>
+<td>Diseño y actualización de los nuevos puestos de trabajo</td>
+<td>Sergio Tschernitschek</td>
+</tr>
+<tr>
+<td>5.3</td>
+<td>Redacción y firma de contratos laborales</td>
+<td>Santiago Vadone</td>
+</tr>
+<tr>
+<td>HITO 5</td>
+<td>Equipo de trabajo conformado y contratado</td>
+<td>Todos</td>
+</tr>
+<tr>
+<td>6.1</td>
+<td>Logística de mudanza y traslado de equipamiento</td>
+<td>Federico De Vivo</td>
+</tr>
+<tr>
+<td>6.2</td>
+<td>Configuración y armado de los puestos físicos de trabajo</td>
+<td>Sergio Tschernitschek</td>
+</tr>
+<tr>
+<td>6.3</td>
+<td>Jornada de inducción y simulacro operativo</td>
+<td>Santiago Vadone</td>
+</tr>
+<tr>
+<td>HITO 6</td>
+<td>Inauguración y apertura oficial al público</td>
+<td>Todos</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2>Paso 1: Criterio de Selección de la Herramienta</h2>
+<h3>Herramienta elegida: ProjectLibre</h3>
+<p>Se eligió ProjectLibre por las siguientes razones:</p>
+<ul>
+<li><strong>Costo cero y open source:</strong> no requiere licencia paga ni suscripción, lo que lo hace accesible para uso académico.</li>
+<li><strong>Cálculo automático de Ruta Crítica:</strong> la herramienta calcula y visualiza el <em>Critical Path</em> de forma automática a partir de las dependencias entre tareas.</li>
+<li><strong>Compatibilidad con estándares PMBOK:</strong> permite definir predecesoras, sucesoras, hitos, duraciones y estructura WBS jerárquica, alineado con el enfoque del PMBOK.</li>
+<li><strong>Diagrama de Gantt completo:</strong> genera un Gantt visual con flechas de dependencia, jerarquía de sprints e hitos claramente diferenciados.</li>
+<li><strong>Formato compatible con MS Project:</strong> trabaja con el mismo formato XML de Microsoft Project (<code>.xml</code> / <code>.pod</code>), lo que facilita la interoperabilidad.</li>
+</ul>
+<hr>
+<h2>Paso 2: Estructura de Desglose del Trabajo (EDT/WBS)</h2>
+<p>El proyecto se descompuso en <strong>6 sprints, 22 paquetes de trabajo y 6 hitos de cierre de etapa</strong>, totalizando <strong>34 elementos</strong> en el cronograma.</p>
+<h3>Resumen de la EDT</h3>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Sprint</th>
+<th>Tareas</th>
+<th>Hito de cierre</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>SPRINT 1 — Relevamiento y Análisis</td>
+<td>1.1 al 1.5</td>
+<td>Relevamiento y análisis completados</td>
+</tr>
+<tr>
+<td>SPRINT 2 — Selección y Habilitación<br>Legal</td>
+<td>2.1 al 2.4</td>
+<td>Local seleccionado y habilitado legalmente</td>
+</tr>
+<tr>
+<td>SPRINT 3 — Licitación de Obras</td>
+<td>3.1 al 3.4</td>
+<td>Licitación cerrada y contratista preseleccionado</td>
+</tr>
+<tr>
+<td>SPRINT 4 — Ejecución de Obras</td>
+<td>4.1 al 4.3</td>
+<td>Infraestructura del local terminada al 100%</td>
+</tr>
+<tr>
+<td>SPRINT 5 — Gestión de Recursos<br>Humanos</td>
+<td>5.1 al 5.3</td>
+<td>Equipo de trabajo conformado y contratado</td>
+</tr>
+<tr>
+<td>SPRINT 6 — Puesta en Marcha</td>
+<td>6.1 al 6.3</td>
+<td>Inauguración y apertura oficial al público</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2>Paso 3: Estimación y Secuenciamiento</h2>
+<p>Todas las duraciones fueron estimadas en días hábiles, considerando una jornada de 8 horas de lunes a viernes.</p>
+<p>Las relaciones de dependencia utilizadas son del tipo <strong>Fin a Inicio (FS)</strong>: una tarea no puede comenzar hasta que su predecesora haya finalizado. Cuando una tarea tiene dos predecesoras, espera a que ambas terminen antes de iniciar.</p>
+<p>Las tareas <strong>1.3</strong> y <strong>1.4</strong> se ejecutan en paralelo, ya que ambas dependen de <strong>1.2</strong>. Lo mismo ocurre con <strong>2.2</strong> y <strong>3.1</strong>, que corren en paralelo a partir de <strong>2.1</strong>, y con <strong>2.3</strong> y <strong>2.4</strong>, que dependen de <strong>2.2</strong>. El Sprint 5 también comienza en paralelo desde <strong>2.1</strong>.</p>
+<hr>
+<h2>Paso 4: Identificación del Camino Crítico</h2>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Duración total del proyecto</th>
+<th>Fecha de inicio</th>
+<th>Fecha de cierre</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><strong>63 días hábiles</strong></td>
+<td><strong>01/07/2026</strong></td>
+<td><strong>25/09/2026</strong></td>
+</tr>
+</tbody>
+</table></div>
+<h3>Ruta Crítica</h3>
+<p>La Ruta Crítica es la secuencia de tareas más larga del proyecto. Cualquier retraso en una de estas tareas impacta directamente en la fecha de finalización.</p>
+<blockquote><strong>1.1 → 1.2 → 1.4 → 1.5 → 2.1 → 3.1 → 3.2 → 3.3 → 3.4 → 4.1 → 4.2 → 4.3 → 6.1 → 6.2 → 6.3 → HITO final</strong></blockquote>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Tarea en Ruta Crítica</th>
+<th>Duración</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>1.1 — Definición del alcance del nuevo local</td>
+<td>3 días</td>
+</tr>
+<tr>
+<td>1.2 — Relevamiento y búsqueda en campo</td>
+<td>10 días</td>
+</tr>
+<tr>
+<td>1.4 — Inspección técnica preliminar</td>
+<td>4 días</td>
+</tr>
+<tr>
+<td>1.5 — Análisis económico de costos de refacción</td>
+<td>3 días</td>
+</tr>
+<tr>
+<td>2.1 — Evaluación y matriz de selección del local</td>
+<td>3 días</td>
+</tr>
+<tr>
+<td>3.1 — Identificación y listado de refacciones</td>
+<td>3 días</td>
+</tr>
+<tr>
+<td>3.2 — Elaboración del pliego de condiciones técnicas</td>
+<td>5 días</td>
+</tr>
+<tr>
+<td>3.3 — Solicitud de presupuestos a contratistas</td>
+<td>10 días</td>
+</tr>
+<tr>
+<td>3.4 — Evaluación técnico-económica de ofertas</td>
+<td>5 días</td>
+</tr>
+<tr>
+<td>4.1 — Adjudicación y firma de contrato con proveedor</td>
+<td>3 días</td>
+</tr>
+<tr>
+<td>4.2 — Ejecución de las obras de refacción interna</td>
+<td>5 días</td>
+</tr>
+<tr>
+<td>4.3 — Inspección de calidad y recepción de la obra</td>
+<td>3 días</td>
+</tr>
+<tr>
+<td>6.1 — Logística de mudanza y traslado de equipamiento</td>
+<td>3 días</td>
+</tr>
+<tr>
+<td>6.2 — Configuración y armado de puestos físicos</td>
+<td>2 días</td>
+</tr>
+<tr>
+<td>6.3 — Jornada de inducción y simulacro operativo</td>
+<td>1 día</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote><strong>Impacto de un retraso de 1 día:</strong> si cualquiera de estas tareas se retrasa un solo día, la fecha de inauguración se corre del <strong>25/09/2026</strong> al <strong>26/09/2026</strong>, retrasando todo el proyecto.</blockquote>
+<hr>
+<h2>Tareas con holgura</h2>
+<h3>1.3 — Análisis del entorno comercial</h3>
+<p><strong>Holgura: 2 días hábiles</strong></p>
+<p>Esta tarea corre en paralelo con 1.4 (Inspección técnica preliminar), pero 1.4 es la que define el camino crítico porque su ruta es más larga. Sin embargo, 1.3 actúa como predecesora del HITO 1 junto con 1.5.</p>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Tarea</th>
+<th>Finalización</th>
+<th>Impacto</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>1.3 — Análisis del entorno comercial</td>
+<td>24/07/2026</td>
+<td>El HITO 1 está determinado por 1.5 (28/07/2026)</td>
+</tr>
+<tr>
+<td>1.5 — Análisis económico de costos</td>
+<td>28/07/2026</td>
+<td>Define la fecha del HITO 1</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Conclusión:</strong> 1.3 puede retrasarse hasta 2 días hábiles sin mover ninguna fecha del proyecto.</p>
+<h3>2.2 — Gestión jurídica de contratos de alquiler</h3>
+<p><strong>Holgura: aproximadamente 16 días hábiles</strong></p>
+<p>Esta tarea corre en paralelo con el Sprint 3 (3.1 → 3.4) y con el Sprint 5, todos iniciando a partir de 2.1. La rama 3.1 → 3.2 → 3.3 → 3.4 tarda 23 días, mientras que 2.2 tarda solo 7. La tarea 4.1 espera a la rama más larga (3.4), por lo que 2.2 no es crítica en la versión actualizada del proyecto.</p>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Tarea</th>
+<th>Finalización</th>
+<th>Impacto</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>2.2 — Gestión jurídica de contratos</td>
+<td>11/08/2026</td>
+<td>4.1 no puede iniciar antes del 03/09/2026 (bloqueada por<br>3.4)</td>
+</tr>
+<tr>
+<td>3.4 — Evaluación técnico-económica<br>(bloqueo real)</td>
+<td>02/09/2026</td>
+<td>Define el inicio real de 4.1</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Conclusión:</strong> 2.2 puede retrasarse hasta aproximadamente 16 días hábiles sin impactar la fecha de cierre del proyecto. Esta tarea ya no forma parte del camino crítico.</p>
+<h3>2.3 — Tramitación de habilitación municipal</h3>
+<p><strong>Holgura: 2 días hábiles</strong></p>
+<p>Esta tarea es predecesora de 6.3, junto con 6.2. Como 6.2 finaliza el 24/09/2026 y 2.3 finaliza el 22/09/2026, la tarea 6.3 queda bloqueada igualmente por 6.2.</p>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Tarea</th>
+<th>Finalización</th>
+<th>Impacto</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>2.3 — Tramitación de habilitación<br>municipal</td>
+<td>22/09/2026</td>
+<td>6.3 no puede iniciar antes del 25/09/2026</td>
+</tr>
+<tr>
+<td>6.2 — Configuración y armado de<br>puestos</td>
+<td>24/09/2026</td>
+<td>Bloquea el inicio de 6.3</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Conclusión:</strong> 2.3 puede retrasarse hasta 2 días hábiles sin impactar la fecha de cierre del proyecto.</p>
+<div class="page-break"></div>
+<div id="act2"></div>
+<h2>Modelado de Requisitos: Casos de Uso e Interfaces</h2>
+<h3>Sistema de Gestión de Mudanzas — MudApp</h3>
+<p><strong>Grupo 4 — Sistema de Gestión de una Empresa de Mudanzas</strong> Sergio Tschernitschek · Santiago Vadone · Federico De Vivo</p>
+<p><strong>Metodología de Sistemas I — Entrega</strong></p>
+<hr>
+<h2>Introducción</h2>
+<p>Para esta actividad partimos de la idea de una aplicación para gestionar una empresa de mudanzas y, sobre esa base, redactamos el caso de estudio de <strong>MudaYa</strong> (entregado como documento aparte). MudaYa es una empresa de mudanzas con flota y personal propios que, en el marco de la apertura de una nueva sucursal, decide desarrollar su propio sistema de gestión: <strong>MudApp</strong>.</p>
+<p>A partir de ese caso de estudio modelamos los requisitos del sistema siguiendo los tres pasos de la consigna: el Diagrama de Casos de Uso, la especificación de cada caso de uso y las interfaces tentativas (ITA).</p>
+<p>El flujo del negocio comienza con el presupuesto: el cliente solicita un presupuesto, la administración lo calcula y lo envía, y recién cuando el cliente lo confirma se crea la mudanza. El cálculo del presupuesto lo realiza el Administrador considerando volumen, distancia, vehículos y kilometraje.</p>
+<p>Decidimos trabajar con cuatro actores, que cubren todo el ciclo del negocio:</p>
+<ul>
+<li><strong>Usuario Anónimo:</strong> visitante sin cuenta que puede solicitar un presupuesto, registrarse <strong>e iniciar sesión</strong> para pasar a operar como Cliente.</li>
+<li><strong>Cliente:</strong> usuario ya autenticado (especialización del Usuario Anónimo) que hereda sus funciones y suma las que requieren sesión activa: cerrar sesión y confirmar el presupuesto.</li>
+<li><strong>Administrador:</strong> gestiona solicitudes (altas, consultas, ediciones y bajas), coordina y actualiza mudanzas.</li>
+<li><strong>Personal de Mudanza:</strong> ejecuta el servicio en terreno.</li>
+</ul>
+<blockquote><strong>Por qué &laquo;Iniciar sesión&raquo; pasó al Usuario Anónimo:</strong> quien inicia sesión es, por definición, alguien que <strong>todavía no tiene una sesión activa</strong>. El Cliente, en cambio, es justamente el actor que ya está autenticado. Modelar &laquo;Iniciar sesión&raquo; como un caso de uso del Cliente era conceptualmente inconsistente: mezclaba el estado de entrada (sin sesión) con el actor de salida (con sesión). Por eso ahora &laquo;Iniciar sesión&raquo; (CU-02) cuelga del Usuario Anónimo, junto con &laquo;Registrar cuenta&raquo; (CU-01).</blockquote>
+<h3>Reparto de tareas por integrante</h3>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Tarea</th>
+<th>Responsable</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Caso de estudio (MudaYa / MudApp)</td>
+<td>Todos</td>
+</tr>
+<tr>
+<td>Diagrama de Casos de Uso (DCU) en Lucidchart</td>
+<td>Federico De Vivo</td>
+</tr>
+<tr>
+<td>Especificación de casos de uso</td>
+<td>Sergio Tschernitschek</td>
+</tr>
+<tr>
+<td>Interfaces Tentativas de Análisis (ITA)</td>
+<td>Santiago Vadone</td>
+</tr>
+<tr>
+<td>Análisis y relación con el cronograma (Act. 1) + armado final</td>
+<td>Todos</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2>Paso 1 — Diagrama de Casos de Uso (DCU)</h2>
+<p>El siguiente diagrama representa los actores del sistema y sus casos de uso, junto con las relaciones de asociación, inclusión (&laquo;include&raquo;), extensión (&laquo;extend&raquo;) y generalización de actores.</p>
+<p>En el diagrama figuran <strong>funciones completas por actor</strong>. Las acciones parciales —elegir el tipo de servicio, ingresar direcciones, asignar camión, confirmar el inicio y fin del servicio, etc.— forman parte del flujo interno de cada caso de uso y no se modelan como casos de uso independientes.</p>
+<p>El sistema contempla un <strong>plan anónimo</strong>, por lo que distinguimos dos actores del lado del usuario. El <strong>Usuario Anónimo</strong> (visitante sin cuenta) puede solicitar un presupuesto, registrarse <strong>e iniciar sesión</strong>. El <strong>Cliente</strong> es una especialización del Usuario Anónimo: hereda esas funciones y suma las que requieren sesión activa —cerrar sesión y confirmar el presupuesto—.</p>
+<p>La relación <strong>&laquo;include&raquo;</strong> se usa cuando una función se reutiliza desde varios casos base: <strong>Ver disponibilidad de recursos</strong> (usada por &laquo;Crear solicitudes&raquo;, &laquo;Ver solicitudes&raquo;, &laquo;Editar solicitudes&raquo;, &laquo;Eliminar solicitudes&raquo; y &laquo;Coordinar mudanza&raquo;) y <strong>Enviar notificación</strong> (usada por &laquo;Ejecutar mudanza&raquo; y &laquo;Actualizar mudanza&raquo;).</p>
+<p>La relación <strong>&laquo;extend&raquo;</strong> se usa para <strong>Reportar incidente</strong>, un comportamiento opcional que extiende a &laquo;Ejecutar mudanza&raquo;.</p>
+<p>!Figura 1 — Diagrama de Casos de Uso del sistema MudApp ()</p>
+<p><em>Figura 1 — Diagrama de Casos de Uso del sistema MudApp, elaborado en Lucidchart (versión corregida: CRUD de solicitudes + Iniciar sesión en Usuario Anónimo).</em></p>
+<h3>Actores y casos de uso base</h3>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Actor</th>
+<th>Casos de uso asociados (base)</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Usuario Anónimo (visitante)</td>
+<td>Solicitar presupuesto · Registrar cuenta · Iniciar sesión</td>
+</tr>
+<tr>
+<td>Cliente (registrado)</td>
+<td>Cerrar sesión · Confirmar presupuesto (+ hereda los del Usuario Anónimo)</td>
+</tr>
+<tr>
+<td>Administrador</td>
+<td>Crear solicitudes · Ver solicitudes · Editar solicitudes · Eliminar solicitudes · Coordinar mudanza · Actualizar mudanza</td>
+</tr>
+<tr>
+<td>Personal de Mudanza</td>
+<td>Consultar mudanzas asignadas · Ejecutar mudanza</td>
+</tr>
+</tbody>
+</table></div>
+<h3>Relaciones del diagrama</h3>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Relación</th>
+<th>Origen → Destino</th>
+<th>Motivo</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>&laquo;include&raquo;</td>
+<td>Crear solicitudes → Ver disponibilidad de recursos</td>
+<td>Antes de dar de alta, se valida si hay recursos para la fecha.</td>
+</tr>
+<tr>
+<td>&laquo;include&raquo;</td>
+<td>Ver solicitudes → Ver disponibilidad de recursos</td>
+<td>La consulta de una solicitud muestra también la disponibilidad vigente.</td>
+</tr>
+<tr>
+<td>&laquo;include&raquo;</td>
+<td>Editar solicitudes → Ver disponibilidad de recursos</td>
+<td>Al presupuestar/editar se vuelve a chequear disponibilidad.</td>
+</tr>
+<tr>
+<td>&laquo;include&raquo;</td>
+<td>Eliminar solicitudes → Ver disponibilidad de recursos</td>
+<td>Antes de dar de baja se corrobora si ya se comprometieron recursos.</td>
+</tr>
+<tr>
+<td>&laquo;include&raquo;</td>
+<td>Coordinar mudanza → Ver disponibilidad de recursos</td>
+<td>Función reutilizada, misma consulta de recursos.</td>
+</tr>
+<tr>
+<td>&laquo;include&raquo;</td>
+<td>Ejecutar mudanza → Enviar notificación</td>
+<td>Notifica al gerente la finalización.</td>
+</tr>
+<tr>
+<td>&laquo;include&raquo;</td>
+<td>Actualizar mudanza → Enviar notificación</td>
+<td>Notifica el cambio de estado.</td>
+</tr>
+<tr>
+<td>&laquo;extend&raquo;</td>
+<td>Reportar incidente → Ejecutar mudanza</td>
+<td>Comportamiento opcional durante la ejecución.</td>
+</tr>
+<tr>
+<td>Generalización</td>
+<td>Cliente ▷ Usuario Anónimo</td>
+<td>El Cliente es un Usuario Anónimo autenticado: hereda sus casos de uso.</td>
+</tr>
+</tbody>
+</table></div>
+<h3>Autenticación y plan anónimo</h3>
+<p>Un <strong>Usuario Anónimo</strong> puede navegar, solicitar un presupuesto dejando sus datos de contacto e <strong>iniciar sesión</strong> si ya tiene una cuenta creada — sin necesidad de estar todavía autenticado, porque justamente ese es el objetivo del caso de uso. En cambio, <strong>confirmar el presupuesto</strong> —es decir, contratar la mudanza— requiere ya estar autenticado, por lo que es una función del Cliente.</p>
+<p>Por eso &laquo;Registrar cuenta&raquo; (CU-01) e &laquo;Iniciar sesión&raquo; (CU-02) figuran como casos de uso del <strong>Usuario Anónimo</strong>, &laquo;Cerrar sesión&raquo; (CU-03) y &laquo;Confirmar presupuesto&raquo; (CU-05) quedan del lado del <strong>Cliente</strong>, y el Cliente se modela como una especialización del Usuario Anónimo.</p>
+<hr>
+<h2>Paso 2 — Especificación de Casos de Uso</h2>
+<p>Detallamos a continuación cada caso de uso base con la plantilla oficial. Los casos de uso incluidos y el extendido se resumen en la tabla del final de este paso.</p>
+<p>Los flujos alternativos se numeran <code>A1, A2, A3...</code> e indican entre paréntesis el paso del flujo normal del que se desprenden.</p>
+<h3>CU-01 · Registrar cuenta</h3>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Nombre y tipo</th>
+<th>Registrar cuenta — Base</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Descripción general</td>
+<td>El visitante (Usuario Anónimo) crea una cuenta a efectos de poder contratar servicios. El plan anónimo permite navegar y pedir presupuesto sin cuenta, pero contratar exige registro.</td>
+</tr>
+<tr>
+<td>Actores</td>
+<td>Principal: Usuario Anónimo (visitante).</td>
+</tr>
+<tr>
+<td>Precondiciones</td>
+<td>El visitante no posee una cuenta.</td>
+</tr>
+<tr>
+<td>Flujo normal</td>
+<td>1. El visitante selecciona &laquo;Registrarse&raquo;.<br>2. El sistema muestra el formulario de registro.<br>3. El visitante ingresa nombre, correo, teléfono y contraseña.<br>4. El visitante acepta los términos y confirma.<br>5. El sistema valida los datos, crea la cuenta y envía un correo de verificación.</td>
+</tr>
+<tr>
+<td>Flujos alternativos</td>
+<td>A1 (paso 4) — Cancelación: el visitante cancela; no se crea la cuenta.<br>A2 (paso 3) — Correo ya registrado: el sistema avisa y ofrece iniciar sesión o recuperar la contraseña.<br>A3 (paso 3) — Datos inválidos: el sistema marca los campos y pide corregirlos.</td>
+</tr>
+<tr>
+<td>Post-condición</td>
+<td>Queda creada una cuenta habilitada para iniciar sesión y, luego, contratar.</td>
+</tr>
+</tbody>
+</table></div>
+<h3>CU-02 · Iniciar sesión</h3>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Nombre y tipo</th>
+<th>Iniciar sesión — Base</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Descripción general</td>
+<td>El visitante (Usuario Anónimo) que ya posee una cuenta se identifica a efectos de pasar a operar como Cliente y acceder a las funciones que requieren sesión activa (por ejemplo, confirmar un presupuesto).</td>
+</tr>
+<tr>
+<td>Actores</td>
+<td>Principal: Usuario Anónimo.</td>
+</tr>
+<tr>
+<td>Precondiciones</td>
+<td>El visitante tiene una cuenta registrada y no tiene una sesión activa.</td>
+</tr>
+<tr>
+<td>Flujo normal</td>
+<td>1. El visitante selecciona &laquo;Iniciar sesión&raquo;.<br>2. El sistema muestra el formulario.<br>3. El visitante ingresa correo y contraseña.<br>4. El sistema valida las credenciales e inicia la sesión.</td>
+</tr>
+<tr>
+<td>Flujos alternativos</td>
+<td>A1 (paso 3) — Cancelación: el visitante cancela.<br>A2 (paso 4) — Credenciales inválidas: el sistema informa y pide reintentar.<br>A3 (paso 3) — Recuperar contraseña: el sistema envía un enlace de recuperación al correo.</td>
+</tr>
+<tr>
+<td>Post-condición</td>
+<td>El visitante queda autenticado, pasa a operar como Cliente y su sesión queda activa.</td>
+</tr>
+</tbody>
+</table></div>
+<h3>CU-03 · Cerrar sesión</h3>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Nombre y tipo</th>
+<th>Cerrar sesión — Base</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Descripción general</td>
+<td>El cliente finaliza su sesión activa a efectos de proteger el acceso a su cuenta.</td>
+</tr>
+<tr>
+<td>Actores</td>
+<td>Principal: Cliente.</td>
+</tr>
+<tr>
+<td>Precondiciones</td>
+<td>El cliente tiene una sesión activa.</td>
+</tr>
+<tr>
+<td>Flujo normal</td>
+<td>1. El cliente selecciona &laquo;Cerrar sesión&raquo;.<br>2. El sistema pide confirmación.<br>3. El cliente confirma.<br>4. El sistema cierra la sesión y vuelve a la vista pública.</td>
+</tr>
+<tr>
+<td>Flujos alternativos</td>
+<td>A1 (paso 3) — Cancelación: el cliente cancela y permanece con la sesión activa.</td>
+</tr>
+<tr>
+<td>Post-condición</td>
+<td>La sesión queda cerrada; las funciones que requieren cuenta dejan de estar disponibles hasta un nuevo inicio de sesión.</td>
+</tr>
+</tbody>
+</table></div>
+<h3>CU-04 · Solicitar presupuesto</h3>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Nombre y tipo</th>
+<th>Solicitar presupuesto — Base</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Descripción general</td>
+<td>El cliente solicita una estimación de costo a efectos de decidir si contrata el servicio, indicando el tipo de servicio, las direcciones de origen y destino, el volumen y la fecha tentativa. Disponible también para usuarios anónimos (plan anónimo); en ese caso el visitante deja sus datos de contacto.</td>
+</tr>
+<tr>
+<td>Actores</td>
+<td>Principal: Usuario Anónimo o Cliente.</td>
+</tr>
+<tr>
+<td>Precondiciones</td>
+<td>Ninguna obligatoria. Para confirmar el presupuesto luego, el usuario deberá estar registrado e iniciar sesión.</td>
+</tr>
+<tr>
+<td>Flujo normal</td>
+<td>1. El actor selecciona &laquo;Solicitar presupuesto&raquo;.<br>2. El sistema muestra el formulario.<br>3. El actor elige el tipo de servicio.<br>4. El actor ingresa las direcciones de origen y destino (piso, ascensor y observaciones de acceso).<br>5. El actor indica el volumen estimado y la fecha tentativa, y puede adjuntar fotos.<br>6. El actor confirma el pedido.<br>7. El sistema registra el pedido con estado &laquo;En espera de presupuesto&raquo; y lo deja disponible para el Administrador. El costo no se calcula automáticamente: lo calcula el Administrador (CU-08 · Editar solicitudes).</td>
+</tr>
+<tr>
+<td>Flujos alternativos</td>
+<td>A1 (paso 6) — Cancelación: el actor cancela el pedido.<br>A2 (paso 4) — Datos incompletos: el sistema marca los campos y pide completarlos.<br>A3 (paso 4) — Zona no cubierta: el destino está fuera del área; el sistema informa y no registra el pedido.</td>
+</tr>
+<tr>
+<td>Post-condición</td>
+<td>Pedido de presupuesto registrado, pendiente de cálculo por el Administrador.</td>
+</tr>
+</tbody>
+</table></div>
+<h3>CU-05 · Confirmar presupuesto</h3>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Nombre y tipo</th>
+<th>Confirmar presupuesto — Base</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Descripción general</td>
+<td>Una vez que el Administrador genera y envía el presupuesto, el cliente lo revisa a efectos de aceptarlo o rechazarlo. Si lo acepta, el sistema crea la mudanza asociada.</td>
+</tr>
+<tr>
+<td>Actores</td>
+<td>Principal: Cliente.</td>
+</tr>
+<tr>
+<td>Precondiciones</td>
+<td>Existe un presupuesto generado y asociado a un pedido del cliente (estado &laquo;Presupuestado&raquo;). El cliente inició sesión.</td>
+</tr>
+<tr>
+<td>Flujo normal</td>
+<td>1. El cliente consulta sus presupuestos.<br>2. El sistema muestra el detalle (costo, fecha estimada, condiciones y validez).<br>3. El cliente acepta el presupuesto.<br>4. El sistema cambia el estado a &laquo;Confirmada&raquo; y crea la mudanza asociada.</td>
+</tr>
+<tr>
+<td>Flujos alternativos</td>
+<td>A1 (paso 3) — Rechazo: el cliente rechaza; el sistema marca el presupuesto como &laquo;Rechazado&raquo; y no crea la mudanza.<br>A2 (paso 2) — Presupuesto vencido: el sistema informa el vencimiento y ofrece solicitar uno nuevo (deriva a CU-04).</td>
+</tr>
+<tr>
+<td>Post-condición</td>
+<td>El presupuesto queda &laquo;Confirmado&raquo; (o &laquo;Rechazado&raquo;); si se confirma, queda creada la mudanza en estado &laquo;Confirmada&raquo;.</td>
+</tr>
+</tbody>
+</table></div>
+<h3>CU-06 · Crear solicitudes</h3>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Nombre y tipo</th>
+<th>Crear solicitudes — Base · &laquo;include&raquo; Ver disponibilidad de recursos</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Descripción general</td>
+<td>El Administrador registra manualmente una nueva solicitud de presupuesto a efectos de dejar constancia en el sistema de un pedido recibido por un canal no digital (teléfono, WhatsApp).</td>
+</tr>
+<tr>
+<td>Actores</td>
+<td>Principal: Administrador.</td>
+</tr>
+<tr>
+<td>Precondiciones</td>
+<td>El Administrador cuenta con los datos del cliente y del servicio, recibidos por un canal externo.</td>
+</tr>
+<tr>
+<td>Flujo normal</td>
+<td>1. El Administrador selecciona &laquo;Nueva solicitud&raquo;.<br>2. El sistema muestra el formulario de carga manual.<br>3. El Administrador ingresa los datos del cliente, tipo de servicio, direcciones, volumen y fecha tentativa.<br>4. El Administrador verifica los recursos disponibles para la fecha (include &laquo;Ver disponibilidad de recursos&raquo;).<br>5. El Administrador confirma la carga.<br>6. El sistema registra la solicitud con estado &laquo;En espera de presupuesto&raquo;.</td>
+</tr>
+<tr>
+<td>Flujos alternativos</td>
+<td>A1 (paso 5) — Cancelación: el Administrador cancela; no se crea la solicitud.<br>A2 (paso 3) — Datos incompletos: el sistema marca los campos y pide completarlos.</td>
+</tr>
+<tr>
+<td>Post-condición</td>
+<td>Queda creada una nueva solicitud, disponible para ser consultada y presupuestada.</td>
+</tr>
+</tbody>
+</table></div>
+<h3>CU-07 · Ver solicitudes</h3>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Nombre y tipo</th>
+<th>Ver solicitudes — Base · &laquo;include&raquo; Ver disponibilidad de recursos</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Descripción general</td>
+<td>El Administrador consulta el listado de solicitudes registradas, con su estado y detalle, a efectos de decidir sobre qué solicitud actuar.</td>
+</tr>
+<tr>
+<td>Actores</td>
+<td>Principal: Administrador.</td>
+</tr>
+<tr>
+<td>Precondiciones</td>
+<td>Existen solicitudes registradas.</td>
+</tr>
+<tr>
+<td>Flujo normal</td>
+<td>1. El Administrador accede al panel de solicitudes.<br>2. El sistema lista las solicitudes con su estado (pendiente, en espera, presupuestada, confirmada, etc.).<br>3. El Administrador selecciona una solicitud.<br>4. El sistema muestra el detalle completo, junto con la disponibilidad de recursos vigente para la fecha (include &laquo;Ver disponibilidad de recursos&raquo;).</td>
+</tr>
+<tr>
+<td>Flujos alternativos</td>
+<td>A1 (paso 2) — Sin resultados: no hay solicitudes que coincidan con el filtro aplicado; el sistema informa la lista vacía.</td>
+</tr>
+<tr>
+<td>Post-condición</td>
+<td>Información de la o las solicitudes consultada; no se modifican datos.</td>
+</tr>
+</tbody>
+</table></div>
+<h3>CU-08 · Editar solicitudes</h3>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Nombre y tipo</th>
+<th>Editar solicitudes — Base · &laquo;include&raquo; Ver disponibilidad de recursos</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Descripción general</td>
+<td>El Administrador modifica los datos de una solicitud existente y, cuando corresponde, calcula el monto del presupuesto (según volumen, distancia, tipo de servicio, vehículos y kilometraje) a efectos de enviarlo al cliente.</td>
+</tr>
+<tr>
+<td>Actores</td>
+<td>Principal: Administrador.</td>
+</tr>
+<tr>
+<td>Precondiciones</td>
+<td>Existe una solicitud registrada, pendiente de presupuesto o de corrección.</td>
+</tr>
+<tr>
+<td>Flujo normal</td>
+<td>1. El Administrador selecciona una solicitud.<br>2. El sistema muestra el detalle actual.<br>3. El Administrador verifica los recursos disponibles para la fecha (include &laquo;Ver disponibilidad de recursos&raquo;).<br>4. El Administrador modifica los datos que correspondan y/o calcula el monto del presupuesto.<br>5. El Administrador confirma los cambios.<br>6. El sistema guarda la solicitud actualizada (estado &laquo;Presupuestado&raquo;, si se cargó un monto) y notifica al cliente por correo.</td>
+</tr>
+<tr>
+<td>Flujos alternativos</td>
+<td>A1 (paso 5) — Cancelación: el Administrador cancela la operación sin guardar.<br>A2 (paso 3) — Sin recursos disponibles: deja la solicitud &laquo;En espera&raquo; e informa una fecha alternativa.</td>
+</tr>
+<tr>
+<td>Post-condición</td>
+<td>La solicitud queda actualizada y, si se presupuestó, a la espera de confirmación del cliente, quien fue notificado.</td>
+</tr>
+</tbody>
+</table></div>
+<h3>CU-09 · Eliminar solicitudes</h3>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Nombre y tipo</th>
+<th>Eliminar solicitudes — Base · &laquo;include&raquo; Ver disponibilidad de recursos</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Descripción general</td>
+<td>El Administrador da de baja una solicitud que no debe continuar en el circuito (duplicada, fuera de alcance o desistida por el cliente).</td>
+</tr>
+<tr>
+<td>Actores</td>
+<td>Principal: Administrador.</td>
+</tr>
+<tr>
+<td>Precondiciones</td>
+<td>Existe una solicitud registrada que aún no fue confirmada por el cliente.</td>
+</tr>
+<tr>
+<td>Flujo normal</td>
+<td>1. El Administrador selecciona una solicitud.<br>2. El sistema muestra el detalle, junto con la disponibilidad de recursos comprometida (include &laquo;Ver disponibilidad de recursos&raquo;), y solicita confirmación de baja.<br>3. El Administrador confirma la eliminación.<br>4. El sistema elimina (marca como anulada) la solicitud.</td>
+</tr>
+<tr>
+<td>Flujos alternativos</td>
+<td>A1 (paso 3) — Cancelación: el Administrador cancela; la solicitud permanece sin cambios.<br>A2 (paso 1) — Solicitud no eliminable: ya fue confirmada por el cliente y tiene una mudanza asociada; el sistema impide la baja.</td>
+</tr>
+<tr>
+<td>Post-condición</td>
+<td>La solicitud queda eliminada (o anulada) y ya no forma parte del panel activo.</td>
+</tr>
+</tbody>
+</table></div>
+<h3>CU-10 · Coordinar mudanza</h3>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Nombre y tipo</th>
+<th>Coordinar mudanza — Base · &laquo;include&raquo; Ver disponibilidad de recursos</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Descripción general</td>
+<td>El Administrador organiza una mudanza confirmada a efectos de dejarla lista para ejecutarse: asigna camión y personal disponibles y programa fecha y horario.</td>
+</tr>
+<tr>
+<td>Actores</td>
+<td>Principal: Administrador. Secundario: Personal de Mudanza.</td>
+</tr>
+<tr>
+<td>Precondiciones</td>
+<td>Existe una mudanza con presupuesto confirmado (estado &laquo;Confirmada&raquo;).</td>
+</tr>
+<tr>
+<td>Flujo normal</td>
+<td>1. El Administrador selecciona una mudanza confirmada.<br>2. El sistema muestra los datos de la mudanza.<br>3. El Administrador consulta la disponibilidad de camión y personal para la fecha (include &laquo;Ver disponibilidad de recursos&raquo;).<br>4. El Administrador asigna el camión.<br>5. El Administrador asigna uno o varios operarios.<br>6. El Administrador define fecha y horario.<br>7. El sistema registra la programación y cambia el estado a &laquo;Programada&raquo;.</td>
+</tr>
+<tr>
+<td>Flujos alternativos</td>
+<td>A1 (paso 6) — Cancelación: el Administrador cancela la coordinación.<br>A2 (paso 3) — Recurso no disponible: el sistema impide la asignación y sugiere otra fecha o recurso.</td>
+</tr>
+<tr>
+<td>Post-condición</td>
+<td>Mudanza &laquo;Programada&raquo;, con camión, personal y fecha asignados.</td>
+</tr>
+</tbody>
+</table></div>
+<h3>CU-11 · Consultar mudanzas asignadas</h3>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Nombre y tipo</th>
+<th>Consultar mudanzas asignadas — Base</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Descripción general</td>
+<td>El Personal de Mudanza consulta, al comenzar la jornada, el listado de mudanzas &laquo;Programadas&raquo; a su nombre a efectos de conocer su trabajo del día antes de salir a ejecutarlo.</td>
+</tr>
+<tr>
+<td>Actores</td>
+<td>Principal: Personal de Mudanza.</td>
+</tr>
+<tr>
+<td>Precondiciones</td>
+<td>El personal inició sesión en la aplicación móvil.</td>
+</tr>
+<tr>
+<td>Flujo normal</td>
+<td>1. El personal accede a la sección &laquo;Mudanzas asignadas&raquo;.<br>2. El sistema muestra la fecha y hora actuales, y el usuario logueado.<br>3. El sistema lista las mudanzas &laquo;Programadas&raquo; para ese personal en el día, con origen, destino y horario.<br>4. El personal selecciona una mudanza de la lista.<br>5. El sistema muestra el detalle del viaje seleccionado (trayecto, horario, marcas de tiempo).</td>
+</tr>
+<tr>
+<td>Flujos alternativos</td>
+<td>A1 (paso 3) — Sin trabajos asignados: no hay mudanzas programadas para ese personal en el día; el sistema informa la lista vacía.</td>
+</tr>
+<tr>
+<td>Post-condición</td>
+<td>Información de la mudanza consultada; no se modifica ningún dato ni estado. Para actuar sobre ella (iniciar, ejecutar, finalizar), el personal continúa con CU-12 · Ejecutar mudanza.</td>
+</tr>
+</tbody>
+</table></div>
+<h3>CU-12 · Ejecutar mudanza</h3>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Nombre y tipo</th>
+<th>Ejecutar mudanza — Base · &laquo;include&raquo; Enviar notificación · &laquo;extend&raquo; Reportar incidente</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Descripción general</td>
+<td>El Personal de Mudanza ejecuta en terreno la mudanza previamente consultada (CU-11), a efectos de completar el servicio asignado. Dentro de este caso de uso se gestionan los estados: confirma el inicio (pasa a &laquo;En curso&raquo;) y la finalización (pasa a &laquo;Finalizada&raquo;). Al finalizar, el sistema notifica al Administrador/gerente.</td>
+</tr>
+<tr>
+<td>Actores</td>
+<td>Principal: Personal de Mudanza. Secundario: Cliente.</td>
+</tr>
+<tr>
+<td>Precondiciones</td>
+<td>El personal consultó la mudanza (CU-11) y ésta se encuentra &laquo;Programada&raquo; a su nombre para la fecha.</td>
+</tr>
+<tr>
+<td>Flujo normal</td>
+<td>1. Al llegar al origen, el personal confirma el inicio del servicio; el sistema cambia el estado a &laquo;En curso&raquo;.<br>2. El personal ejecuta la mudanza (carga, traslado y descarga).<br>3. Al terminar, confirma la finalización; el sistema cambia el estado a &laquo;Finalizada&raquo;.<br>4. El sistema notifica al Administrador/gerente que la mudanza finalizó (include &laquo;Enviar notificación&raquo;).</td>
+</tr>
+<tr>
+<td>Flujos alternativos</td>
+<td>A1 (paso 2) — Reportar incidente (extend): durante la ejecución el personal registra una novedad; el sistema la guarda y mantiene &laquo;En curso&raquo;.<br>A2 (paso 1) — Reprogramación: si no puede iniciarse, deriva a &laquo;Actualizar mudanza&raquo; (CU-13) para marcarla &laquo;Reprogramar&raquo;; se aborta el flujo.</td>
+</tr>
+<tr>
+<td>Post-condición</td>
+<td>La mudanza queda &laquo;Finalizada&raquo;, con marca de inicio y de fin; se notificó al Administrador.</td>
+</tr>
+</tbody>
+</table></div>
+<h3>CU-13 · Actualizar mudanza</h3>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Nombre y tipo</th>
+<th>Actualizar mudanza — Base · &laquo;include&raquo; Enviar notificación</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Descripción general</td>
+<td>El Administrador cambia el estado de una mudanza a efectos de reflejar novedades operativas: reprogramación, cancelación, no finalización o reemplazo de personal. Permite además registrar quién realizó realmente la mudanza cuando hubo cambios de cuadrilla durante el proceso. Cada actualización dispara una notificación por correo.</td>
+</tr>
+<tr>
+<td>Actores</td>
+<td>Principal: Administrador. (Origen de la novedad: Personal de Mudanza.)</td>
+</tr>
+<tr>
+<td>Precondiciones</td>
+<td>Existe una mudanza registrada en un estado posterior a &laquo;Confirmada&raquo;.</td>
+</tr>
+<tr>
+<td>Flujo normal</td>
+<td>1. El Administrador selecciona la mudanza a actualizar.<br>2. El sistema muestra el estado actual y la cuadrilla asignada.<br>3. El Administrador modifica el estado (p. ej. &laquo;Reprogramada&raquo;, &laquo;Cancelada&raquo;, &laquo;No finalizada&raquo;) y/o registra el personal que realmente la ejecutó.<br>4. El Administrador confirma la actualización.<br>5. El sistema guarda los cambios y envía una notificación por correo (include &laquo;Enviar notificación&raquo;).</td>
+</tr>
+<tr>
+<td>Flujos alternativos</td>
+<td>A1 (paso 4) — Cancelación: el Administrador cancela la operación sin guardar.<br>A2 (paso 3) — Transición inválida: el sistema impide un cambio de estado no permitido e informa el motivo.</td>
+</tr>
+<tr>
+<td>Post-condición</td>
+<td>La mudanza queda con su estado y su cuadrilla real actualizados; se notificó al Administrador/gerente.</td>
+</tr>
+</tbody>
+</table></div>
+<h3>Casos de uso incluidos y extendido — Resumen</h3>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Caso de uso</th>
+<th>Tipo / relación</th>
+<th>Descripción</th>
+<th>Post-condición</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Ver disponibilidad de recursos</td>
+<td>Incluido (Crear, Ver, Editar y Eliminar solicitudes; Coordinar mudanza)</td>
+<td>El sistema muestra los camiones y el personal libres para una fecha dada.</td>
+<td>Información de disponibilidad consultada.</td>
+</tr>
+<tr>
+<td>Enviar notificación</td>
+<td>Incluido (Ejecutar mudanza; Actualizar mudanza)</td>
+<td>El sistema envía un correo al administrador/gerente informando la acción realizada (registro, cambio de estado, reemplazo de personal).</td>
+<td>Notificación enviada.</td>
+</tr>
+<tr>
+<td>Reportar incidente</td>
+<td>Extendido (extiende Ejecutar mudanza)</td>
+<td>Durante la ejecución, el personal registra una novedad sin interrumpir el caso base.</td>
+<td>Incidente registrado; la mudanza sigue &laquo;En curso&raquo;.</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2 id="act2-ita">Paso 3 — Interfaces Tentativas de Análisis (ITA)</h2>
+<p class="ita-intro">Cada interfaz lleva el mismo número que su caso de uso (ITA-0X ↔ CU-0X) y se corresponde con los pasos de su flujo normal.</p>
+<div class="ita-block">
+  <h3>ITA-01 · Registrar cuenta (Usuario Anónimo)</h3>
+  <img src="ITA_MudApp_wireframes/ITA-01_Registrar_cuenta.png" alt="Registrar cuenta" class="ita-img">
+</div>
+<div class="ita-block">
+  <h3>ITA-02 · Iniciar sesión (Usuario Anónimo)</h3>
+  <img src="ITA_MudApp_wireframes/ITA-02_Iniciar_sesion.png" alt="Iniciar sesión" class="ita-img">
+</div>
+<div class="ita-block">
+  <h3>ITA-03 · Cerrar sesión (Cliente)</h3>
+  <img src="ITA_MudApp_wireframes/ITA-03_Cerrar_sesion.png" alt="Cerrar sesión" class="ita-img">
+</div>
+<div class="ita-block">
+  <h3>ITA-04 · Solicitar presupuesto (Usuario Anónimo / Cliente)</h3>
+  <img src="ITA_MudApp_wireframes/ITA-04_Solicitar_presupuesto.png" alt="Solicitar presupuesto" class="ita-img">
+</div>
+<div class="ita-block">
+  <h3>ITA-05 · Confirmar presupuesto (Cliente)</h3>
+  <img src="ITA_MudApp_wireframes/ITA-05_Confirmar_presupuesto.png" alt="Confirmar presupuesto" class="ita-img">
+</div>
+<div class="ita-block">
+  <h3>ITA-06 · Crear solicitudes (Administrador)</h3>
+  <img src="ITA_MudApp_wireframes/ITA-06_Crear_solicitud.png" alt="Crear solicitudes" class="ita-img">
+</div>
+<div class="ita-block">
+  <h3>ITA-07 · Ver solicitudes (Administrador)</h3>
+  <img src="ITA_MudApp_wireframes/ITA-07_Ver_solicitudes.png" alt="Ver solicitudes" class="ita-img">
+</div>
+<div class="ita-block">
+  <h3>ITA-08 · Editar solicitudes (Administrador)</h3>
+  <img src="ITA_MudApp_wireframes/ITA-08_Editar_solicitud.png" alt="Editar solicitudes" class="ita-img">
+</div>
+<div class="ita-block">
+  <h3>ITA-09 · Eliminar solicitudes (Administrador)</h3>
+  <img src="ITA_MudApp_wireframes/ITA-09_Eliminar_solicitud.png" alt="Eliminar solicitudes" class="ita-img">
+</div>
+<h2>Relación con el cronograma de la Actividad N° 1</h2>
+<p>En la Actividad N° 1 planificamos el proyecto &laquo;Mudanza y Apertura de una Nueva Sucursal&raquo; de MudaYa: <strong>6 fases, 22 paquetes de trabajo y 6 hitos</strong>, con una duración total de <strong>63 días hábiles</strong> (01/07/2026 → 25/09/2026).</p>
+<p>La Actividad N° 2 modela el sistema (MudApp) que esa nueva sucursal usará para operar: la Actividad 1 define <strong>cuándo y cómo</strong> abre la sucursal, y la Actividad 2 define <strong>qué tiene que hacer</strong> el sistema que usará desde el día uno.</p>
+<p>El DCU agrupa la funcionalidad en tres módulos, cada uno vinculado con tareas concretas del cronograma:</p>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Módulo funcional</th>
+<th>Casos de uso</th>
+<th>Tareas del cronograma (Act. 1)</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Gestión comercial (Usuario Anónimo / Cliente)</td>
+<td>Solicitar presupuesto · Registrar cuenta · Iniciar sesión · Cerrar sesión · Confirmar presupuesto</td>
+<td>Atención al público de la nueva sucursal — se prueba en la Fase 6 (Puesta en Marcha), tarea 6.3 (inducción y simulacro operativo).</td>
+</tr>
+<tr>
+<td>Gestión operativa (Administrador)</td>
+<td>Crear solicitudes · Ver solicitudes · Editar solicitudes · Eliminar solicitudes · Coordinar mudanza · Actualizar mudanza</td>
+<td>Coordinación de recursos — se apoya en la Fase 5 (5.1–5.3, conformación del equipo) y en 6.1 (logística y traslado de equipamiento).</td>
+</tr>
+<tr>
+<td>Ejecución en terreno (Personal)</td>
+<td>Consultar mudanzas asignadas · Ejecutar mudanza · Reportar incidente</td>
+<td>Trabajo de las cuadrillas — se relaciona con 6.2 (armado de puestos) y 6.3 (simulacro operativo).</td>
+</tr>
+</tbody>
+</table></div>
+<p>Si sumáramos el desarrollo de MudApp al cronograma, lo más razonable sería que corriera en paralelo a las Fases 3 y 5 y que estuviera terminado antes del HITO 6, para que el simulacro operativo (6.3) sirviera también para probar el sistema.</p>
+<hr>
+<div class="diagram-wrap">
+    <img src="Diagrama.jpeg" alt="Diagrama de Casos de Uso MudApp">
+    <p class="caption">Figura 1 — Diagrama de Casos de Uso del sistema MudApp</p>
+</div>
+
+<div class="page-break"></div>
+<div id="act3"></div>
+<h2>Gestión Ágil y Presupuestación del Proyecto</h2>
+<h3>Sistema de Gestión de Mudanzas — MudApp</h3>
+<p><strong>Grupo 4: Mudanza y Apertura de una Nueva Sucursal</strong> Sergio Tschernitschek · Santiago Vadone · Federico De Vivo</p>
+<p><strong>Metodología de Sistemas I — Entrega: 25 de junio de 2026</strong></p>
+<hr>
+<h2>1. Backlog de Historias de Usuario</h2>
+<p>Las siguientes Historias de Usuario fueron elaboradas tomando como base el Diagrama de Casos de Uso y las ITA de la Actividad N° 2.</p>
+<p>Cubren los flujos principales del sistema MudApp (MudaYa), organizados en tres módulos funcionales.</p>
+<h3>MÓDULO 1 — Experiencia del Cliente</h3>
+<h4>HU-01 · Registro de Cuenta de Cliente</h4>
+<ul>
+<li><strong>Como:</strong> Cliente nuevo de MudaYa.</li>
+<li><strong>Quiero:</strong> registrarme en MudApp ingresando mis datos personales.</li>
+<li><strong>Para:</strong> poder acceder a la plataforma y solicitar cotizaciones o servicios de mudanza.</li>
+</ul>
+<h5>Criterios de aceptación</h5>
+<p><strong>Escenario 1: Registro exitoso</strong></p>
+<ul>
+<li><strong>Dado:</strong> el usuario se encuentra en la pantalla de registro.</li>
+<li><strong>Cuando:</strong> ingresa correo no registrado, contraseña segura y datos requeridos, y presiona &laquo;Registrar&raquo;.</li>
+<li><strong>Entonces:</strong> el sistema guarda la cuenta, inicia sesión automáticamente y redirige al menú principal.</li>
+</ul>
+<p><strong>Escenario 2: Correo ya existente</strong></p>
+<ul>
+<li><strong>Dado:</strong> el correo <code>ejemplo@correo.com</code> ya está registrado.</li>
+<li><strong>Cuando:</strong> un nuevo usuario intenta registrarse con ese mismo correo.</li>
+<li><strong>Entonces:</strong> el sistema no procesa el registro y muestra: &laquo;El correo electrónico ya se encuentra registrado&raquo;.</li>
+</ul>
+<h4>HU-02 · Autenticación de Usuarios (Iniciar Sesión)</h4>
+<ul>
+<li><strong>Como:</strong> Cliente registrado.</li>
+<li><strong>Quiero:</strong> iniciar sesión con mis credenciales.</li>
+<li><strong>Para:</strong> acceder de forma segura a mi perfil, solicitudes y presupuestos activos.</li>
+</ul>
+<h5>Criterios de aceptación</h5>
+<p><strong>Escenario 1: Inicio de sesión correcto</strong></p>
+<ul>
+<li><strong>Dado:</strong> el cliente ingresa su correo y contraseña válidos.</li>
+<li><strong>Cuando:</strong> presiona el botón &laquo;Iniciar Sesión&raquo;.</li>
+<li><strong>Entonces:</strong> el sistema valida las credenciales y otorga acceso al panel principal.</li>
+</ul>
+<p><strong>Escenario 2: Credenciales inválidas</strong></p>
+<ul>
+<li><strong>Dado:</strong> el usuario ingresa una contraseña incorrecta.</li>
+<li><strong>Cuando:</strong> presiona &laquo;Iniciar Sesión&raquo;.</li>
+<li><strong>Entonces:</strong> el sistema deniega el acceso y muestra: &laquo;Usuario o contraseña incorrectos&raquo;.</li>
+</ul>
+<h4>HU-03 · Solicitar Presupuesto — Carga de Datos y Fotos</h4>
+<ul>
+<li><strong>Como:</strong> Cliente identificado.</li>
+<li><strong>Quiero:</strong> solicitar una estimación ingresando direcciones, tipo de servicio, rango de fechas, formas de pago y fotos de los bienes.</li>
+<li><strong>Para:</strong> conocer el precio de mi mudanza antes de comprometerme a contratarla.</li>
+</ul>
+<h5>Criterios de aceptación</h5>
+<p><strong>Escenario 1: Envío exitoso de la solicitud</strong></p>
+<ul>
+<li><strong>Dado:</strong> el cliente completó los campos obligatorios —origen, destino, volumen, tipo de servicio, rango de fechas y formas de pago—.</li>
+<li><strong>Cuando:</strong> presiona &laquo;Solicitar Presupuesto&raquo;.</li>
+<li><strong>Entonces:</strong> el sistema registra el pedido en estado &laquo;En espera de presupuesto&raquo; y muestra un código alfanumérico identificador.</li>
+</ul>
+<p><strong>Escenario 2: Validación de archivos adjuntos</strong></p>
+<ul>
+<li><strong>Dado:</strong> el cliente intenta adjuntar imágenes de sus bienes.</li>
+<li><strong>Cuando:</strong> sube archivos que superan los 8 archivos, 25 MB totales, o poseen un formato distinto a <code>.jpg</code>.</li>
+<li><strong>Entonces:</strong> el sistema bloquea la carga y muestra la advertencia de validación correspondiente.</li>
+</ul>
+<h4>HU-04 · Solicitar Mudanza Directa</h4>
+<ul>
+<li><strong>Como:</strong> Cliente identificado.</li>
+<li><strong>Quiero:</strong> solicitar directamente la contratación de una mudanza con fecha tentativa, tipo de servicio y locaciones.</li>
+<li><strong>Para:</strong> que la administración procese la reserva inmediata del servicio.</li>
+</ul>
+<h5>Criterios de aceptación</h5>
+<p><strong>Escenario 1: Solicitud dentro de la zona de cobertura</strong></p>
+<ul>
+<li><strong>Dado:</strong> las direcciones ingresadas están dentro del AMBA.</li>
+<li><strong>Cuando:</strong> el cliente completa el formulario y confirma.</li>
+<li><strong>Entonces:</strong> el sistema crea el registro con estado &laquo;Pendiente&raquo; y asigna un número de seguimiento.</li>
+</ul>
+<p><strong>Escenario 2: Bloqueo por zona no cubierta</strong></p>
+<ul>
+<li><strong>Dado:</strong> el destino seleccionado se encuentra fuera del AMBA.</li>
+<li><strong>Cuando:</strong> el cliente intenta confirmar la solicitud.</li>
+<li><strong>Entonces:</strong> el sistema interrumpe el proceso, no guarda la solicitud e informa que la zona no posee cobertura.</li>
+</ul>
+<h4>HU-05 · Aceptación de Presupuesto y Pago de Seña</h4>
+<ul>
+<li><strong>Como:</strong> Cliente.</li>
+<li><strong>Quiero:</strong> aceptar un presupuesto vigente emitido por el administrador.</li>
+<li><strong>Para:</strong> que se genere automáticamente la mudanza y se calcule el anticipo requerido.</li>
+</ul>
+<h5>Criterios de aceptación</h5>
+<p><strong>Escenario 1: Aceptación exitosa de presupuesto válido</strong></p>
+<ul>
+<li><strong>Dado:</strong> visualizo un presupuesto con estado &laquo;Presupuestado&raquo; y emisión menor a 10 días corridos.</li>
+<li><strong>Cuando:</strong> presiono &laquo;Aceptar presupuesto&raquo;.</li>
+<li><strong>Entonces:</strong> el sistema cambia el estado a &laquo;Confirmado&raquo;, genera la mudanza vinculada y calcula la seña —30 % del total—.</li>
+</ul>
+<p><strong>Escenario 2: Intento de aceptar un presupuesto vencido</strong></p>
+<ul>
+<li><strong>Dado:</strong> han pasado más de 10 días desde la emisión del presupuesto.</li>
+<li><strong>Cuando:</strong> intento ver o aceptar el presupuesto.</li>
+<li><strong>Entonces:</strong> el sistema bloquea la acción, cambia el estado a &laquo;Vencido&raquo; automáticamente y ofrece &laquo;Solicitar uno nuevo&raquo;.</li>
+</ul>
+<h3>MÓDULO 2 — Gestión Operativa (Administrador)</h3>
+<h4>HU-06 · Panel de Solicitudes y Cotización</h4>
+<ul>
+<li><strong>Como:</strong> Administrador del sistema desde el portal web.</li>
+<li><strong>Quiero:</strong> visualizar solicitudes entrantes, consultar disponibilidad de recursos y cargar el monto calculado.</li>
+<li><strong>Para:</strong> enviar el presupuesto formal al cliente.</li>
+</ul>
+<h5>Criterios de aceptación</h5>
+<p><strong>Escenario 1: Generación y guardado de presupuesto</strong></p>
+<ul>
+<li><strong>Dado:</strong> seleccioné una solicitud en estado &laquo;Pendiente&raquo; o &laquo;En espera de presupuesto&raquo;.</li>
+<li><strong>Cuando:</strong> el sistema lista la disponibilidad de recursos, completo el monto y presiono &laquo;Generar presupuesto&raquo;.</li>
+<li><strong>Entonces:</strong> el presupuesto se guarda, el estado pasa a &laquo;Presupuestado&raquo; y se envía una notificación al cliente.</li>
+</ul>
+<h4>HU-07 · Asignación de Recursos y Coordinación de Mudanza</h4>
+<ul>
+<li><strong>Como:</strong> Administrador del sistema.</li>
+<li><strong>Quiero:</strong> seleccionar una mudanza confirmada para asignarle un camión, operarios y fijar fecha/hora definitiva.</li>
+<li><strong>Para:</strong> programar formalmente el servicio en el calendario de operaciones.</li>
+</ul>
+<h5>Criterios de aceptación</h5>
+<p><strong>Escenario 1: Coordinación exitosa con recursos disponibles</strong></p>
+<ul>
+<li><strong>Dado:</strong> el sistema despliega únicamente camiones y operarios libres en la fecha elegida.</li>
+<li><strong>Cuando:</strong> selecciono camión, operarios, defino el horario y presiono &laquo;Programar mudanza&raquo;.</li>
+<li><strong>Entonces:</strong> el sistema reserva los recursos y cambia el estado de la mudanza a &laquo;Programada&raquo;.</li>
+</ul>
+<p><strong>Escenario 2: Alerta por recursos insuficientes</strong></p>
+<ul>
+<li><strong>Dado:</strong> los operarios no son suficientes o el camión fue reservado en paralelo.</li>
+<li><strong>Cuando:</strong> intento guardar la programación.</li>
+<li><strong>Entonces:</strong> el sistema impide la reserva, muestra una advertencia y sugiere cambiar recursos o fecha.</li>
+</ul>
+<h3>MÓDULO 3 — Ejecución en Terreno (Personal de Mudanza)</h3>
+<h4>HU-08 · Consulta de Agenda de Mudanzas</h4>
+<ul>
+<li><strong>Como:</strong> Personal de Mudanza en terreno.</li>
+<li><strong>Quiero:</strong> ver en la aplicación móvil el listado de mudanzas asignadas para el día de la fecha.</li>
+<li><strong>Para:</strong> conocer las rutas, horarios y detalles del servicio a realizar.</li>
+</ul>
+<h5>Criterios de aceptación</h5>
+<p><strong>Escenario 1: Visualización del servicio diario</strong></p>
+<ul>
+<li><strong>Dado:</strong> el operario inició sesión en la app móvil.</li>
+<li><strong>Cuando:</strong> ingresa a la sección &laquo;Mudanzas Asignadas&raquo;.</li>
+<li><strong>Entonces:</strong> el sistema trae el listado de servicios en estado &laquo;Programada&raquo; asignados para el día, con origen, destino y horario.</li>
+</ul>
+<h4>HU-09 · Control de Estados del Servicio</h4>
+<ul>
+<li><strong>Como:</strong> Personal de Mudanza en terreno.</li>
+<li><strong>Quiero:</strong> registrar inicio, reportar imprevistos y confirmar la finalización del servicio desde mi celular.</li>
+<li><strong>Para:</strong> que el sistema actualice el estado del negocio en tiempo real.</li>
+</ul>
+<h5>Criterios de aceptación</h5>
+<p><strong>Escenario 1: Inicio de servicio</strong></p>
+<ul>
+<li><strong>Dado:</strong> la cuadrilla llegó al domicilio de origen.</li>
+<li><strong>Cuando:</strong> presionan &laquo;Confirmar inicio de servicio&raquo;.</li>
+<li><strong>Entonces:</strong> el sistema registra la marca de tiempo y cambia el estado a &laquo;En curso&raquo;.</li>
+</ul>
+<p><strong>Escenario 2: Reporte de incidente</strong></p>
+<ul>
+<li><strong>Dado:</strong> la mudanza está &laquo;En curso&raquo;.</li>
+<li><strong>Cuando:</strong> el personal presiona &laquo;Reportar incidente&raquo;, escribe la novedad y la envía.</li>
+<li><strong>Entonces:</strong> el sistema registra la observación adjunta a la mudanza y mantiene el estado &laquo;En curso&raquo;.</li>
+</ul>
+<p><strong>Escenario 3: Finalización del servicio</strong></p>
+<ul>
+<li><strong>Dado:</strong> se terminaron de descargar las cosas en el destino.</li>
+<li><strong>Cuando:</strong> el personal presiona &laquo;Confirmar finalización&raquo;.</li>
+<li><strong>Entonces:</strong> el sistema estampa la marca de tiempo final y cambia el estado a &laquo;Finalizada&raquo;.</li>
+</ul>
+<hr>
+<h2>2. Planilla de Costos del Proyecto</h2>
+<p>Los costos se calcularon en base a la EDT de la Actividad N° 1, vinculando recursos del cronograma con valores estimados de mercado —pesos argentinos, 2026—. La tarifa diaria surge de dividir el sueldo mensual estimado por 21 días hábiles.</p>
+<h3>2.1 Recursos Humanos</h3>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Cargo</th>
+<th>$ / Día</th>
+<th>Días</th>
+<th>Monto Total</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>MARKETING</td>
+<td>$ 57.142</td>
+<td>8</td>
+<td>$ 457.136</td>
+</tr>
+<tr>
+<td>RRHH</td>
+<td>$ 66.666</td>
+<td>14</td>
+<td>$ 933.324</td>
+</tr>
+<tr>
+<td>CONTRATISTA</td>
+<td>$ 190.476</td>
+<td>13</td>
+<td>$ 2.476.188</td>
+</tr>
+<tr>
+<td>CONTADOR</td>
+<td>$ 64.661</td>
+<td>4</td>
+<td>$ 258.644</td>
+</tr>
+<tr>
+<td>ABOGADO</td>
+<td>$ 95.238</td>
+<td>21</td>
+<td>$ 1.999.998</td>
+</tr>
+<tr>
+<td>PO</td>
+<td>$ 114.285</td>
+<td>22</td>
+<td>$ 2.514.270</td>
+</tr>
+<tr>
+<td>TESORERO</td>
+<td>$ 71.428</td>
+<td>4</td>
+<td>$ 285.712</td>
+</tr>
+<tr>
+<td>TEC. SEG E HIG</td>
+<td>$ 61.904</td>
+<td>5</td>
+<td>$ 309.520</td>
+</tr>
+<tr>
+<td>SYS ADMIN</td>
+<td>$ 76.190</td>
+<td>2</td>
+<td>$ 152.380</td>
+</tr>
+<tr>
+<td>SUBTOTAL RRHH</td>
+<td></td>
+<td>93</td>
+<td>$ 9.387.172</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Fórmula:</strong> Monto Total = ($ / Día) × Cantidad de días asignados en el cronograma.</p>
+<h3>2.2 Hardware y Equipamiento — 20 puestos de trabajo</h3>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Ítem</th>
+<th>Cant.</th>
+<th>$ Unitario</th>
+<th>Subtotal</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>PC Desktop (Core i5, 8 GB RAM, SSD 256 GB)</td>
+<td>20</td>
+<td>$ 350.000</td>
+<td>$ 7.000.000</td>
+</tr>
+<tr>
+<td>Monitor 24" Full HD</td>
+<td>20</td>
+<td>$ 115.000</td>
+<td>$ 2.300.000</td>
+</tr>
+<tr>
+<td>Teclado + Mouse inalámbrico</td>
+<td>20</td>
+<td>$ 18.000</td>
+<td>$ 360.000</td>
+</tr>
+<tr>
+<td>Impresora multifunción láser</td>
+<td>2</td>
+<td>$ 190.000</td>
+<td>$ 380.000</td>
+</tr>
+<tr>
+<td>Switch 24 puertos</td>
+<td>1</td>
+<td>$ 110.000</td>
+<td>$ 110.000</td>
+</tr>
+<tr>
+<td>Router WiFi empresarial</td>
+<td>1</td>
+<td>$ 65.000</td>
+<td>$ 65.000</td>
+</tr>
+<tr>
+<td>UPS 1000 VA (1 c/3 puestos)</td>
+<td>7</td>
+<td>$ 85.000</td>
+<td>$ 595.000</td>
+</tr>
+<tr>
+<td>Servidor NAS / File Server</td>
+<td>1</td>
+<td>$ 450.000</td>
+<td>$ 450.000</td>
+</tr>
+<tr>
+<td>TOTAL HARDWARE</td>
+<td></td>
+<td></td>
+<td>$ 11.260.000</td>
+</tr>
+</tbody>
+</table></div>
+<h3>2.3 Resto de Recursos Materiales</h3>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Recurso</th>
+<th>Cant.</th>
+<th>Costo Unitario</th>
+<th>Monto Total</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Hosting y Cloud (3 meses)</td>
+<td>1</td>
+<td>$ 45.000</td>
+<td>$ 45.000</td>
+</tr>
+<tr>
+<td>Licencias de Software</td>
+<td>1</td>
+<td>$ 35.000</td>
+<td>$ 35.000</td>
+</tr>
+<tr>
+<td>Hardware y Equipamiento</td>
+<td>—</td>
+<td>—</td>
+<td>$ 11.260.000</td>
+</tr>
+<tr>
+<td>Insumos de Oficina</td>
+<td>1</td>
+<td>$ 25.000</td>
+<td>$ 25.000</td>
+</tr>
+<tr>
+<td>Dominio y Certificado SSL</td>
+<td>1</td>
+<td>$ 12.000</td>
+<td>$ 12.000</td>
+</tr>
+<tr>
+<td>SUBTOTAL MATERIALES</td>
+<td></td>
+<td></td>
+<td>$ 11.377.000</td>
+</tr>
+</tbody>
+</table></div>
+<h3>2.4 Resumen Presupuestario</h3>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Categoría</th>
+<th>Monto Total</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Recursos Humanos</td>
+<td>$ 9.387.172</td>
+</tr>
+<tr>
+<td>Recursos Materiales</td>
+<td>$ 11.377.000</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote><strong>COSTO TOTAL DEL PROYECTO: $ 20.764.172 — pesos argentinos, estimación 2026</strong></blockquote>
+<hr>
+<h2>3. Análisis de Impacto y Contingencia</h2>
+<h3>3.1 Impacto de un retraso de 5 días en la Ruta Crítica</h3>
+<p>La ruta crítica es la cadena secuencial completa: todos los sprints están encadenados mediante dependencias Fin-a-Inicio (FS), por lo que cualquier demora retrasa directamente la fecha de apertura del local.</p>
+<p><strong>Escenario analizado:</strong> retraso de 5 días hábiles en la tarea <strong>4.2 — Ejecución de obras de refacción interna</strong> (Sprint 7, CONTRATISTA).</p>
+<p>Se elige esta tarea porque el CONTRATISTA es el recurso de mayor costo diario —$190.476 por día— y los retrasos en obras civiles son el riesgo más frecuente en este tipo de proyectos.</p>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Concepto</th>
+<th>Cálculo</th>
+<th>Monto</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Costo extra CONTRATISTA (5 días)</td>
+<td>5 días × $ 190.476 / día</td>
+<td>$ 952.380</td>
+</tr>
+<tr>
+<td>Presupuesto original</td>
+<td></td>
+<td>$ 20.764.172</td>
+</tr>
+<tr>
+<td>Presupuesto con desvío</td>
+<td></td>
+<td>$ 21.716.552</td>
+</tr>
+<tr>
+<td>Incremento porcentual</td>
+<td>$ 952.380 / $ 20.764.172</td>
+<td>+4,6 %</td>
+</tr>
+</tbody>
+</table></div>
+<h4>Impactos adicionales — no monetarios</h4>
+<ul>
+<li>Los Sprints 8 y 9 se desplazan 5 días hábiles, retrasando la apertura oficial del local.</li>
+<li>El local alquilado genera costos fijos sin estar operativo durante esos días extra.</li>
+<li>El personal convocado para Sprint 8 entra en un período de espera no planificado.</li>
+</ul>
+<h3>3.2 Estrategia para reducir el costo sin afectar la calidad de las HU</h3>
+<h4>Compra diferida de hardware</h4>
+<p>Adquirir solo los equipos necesarios para la apertura —10 puestos— y completar hasta 20 en el primer mes operativo.</p>
+<p><strong>Ahorro estimado en inversión inicial: $5.630.000.</strong></p>
+<h4>Licencias por suscripción (SaaS)</h4>
+<p>Reemplazar la compra única de licencias —$35.000— por un modelo de suscripción mensual compartida, reduciendo el desembolso inicial sin afectar la funcionalidad de ninguna HU.</p>
+<h4>Paralelización controlada de tareas</h4>
+<p>En el Sprint 2 las tareas 1.4 y 1.5 ya corren en paralelo. Extender este modelo a otros sprints viables reduciría el tiempo total y el costo de coordinación del PO.</p>
+<h4>Honorario fijo para el Abogado</h4>
+<p>El Abogado representa $1.999.998 —21 días—. Negociar un honorario fijo por las habilitaciones —Sprints 3 y 4— podría reducir ese rubro hasta un 15 %, sin impacto en las HU que dependen de los trámites legales.</p>
+<hr>
+<h2>4. Conclusiones</h2>
+<p>La Actividad N° 3 cierra el ciclo de análisis iniciado en la Actividad N° 1 —planificación temporal, EDT y ruta crítica— y profundizado en la Actividad N° 2 —modelado funcional, Casos de Uso e ITA—.</p>
+<p>La articulación de las tres dimensiones —<strong>tiempo, alcance y costo</strong>— permite una visión integral y coherente del proyecto MudApp.</p>
+<h3>Tiempo → Costo</h3>
+<p>El cronograma ágil —9 sprints, 87 días hábiles— define con precisión cuántos días trabaja cada recurso, lo que permite calcular el costo de RRHH con exactitud: <strong>$9.387.172 para 93 días-hombre totales</strong>. Sin un cronograma detallado, cualquier estimación sería especulativa.</p>
+<h3>Alcance funcional → Recursos materiales</h3>
+<p>Las 9 HU —HU-01 a HU-09— mapean directamente los Casos de Uso de la Actividad N° 2 y determinaron los recursos materiales necesarios: 20 puestos equipados, software, red e infraestructura cloud —<strong>$11.377.000 en materiales</strong>—.</p>
+<h3>Ruta crítica → Gestión del riesgo</h3>
+<p>Un retraso de 5 días en la tarea de obras civiles —Sprint 7— implica un sobrecosto de <strong>$952.380, equivalente a +4,6 %</strong>. Esto refuerza la necesidad de monitorear las tareas del CONTRATISTA y tener un plan de contingencia ante demoras en obra.</p>
+<h3>Visión integrada del proyecto</h3>
+<p>El proyecto requiere una inversión total estimada de <strong>$20.764.172</strong>, distribuida en <strong>87 días hábiles —1 de julio al 29 de octubre de 2026—</strong>.</p>
+<p>La metodología ágil —Scrum— permite absorber cambios de alcance entre sprints sin comprometer la calidad de las HU ya definidas.</p>
+
+</div>
+</body>
+</html>
