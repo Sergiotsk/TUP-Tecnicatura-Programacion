@@ -127,13 +127,22 @@ def main():
     Descomentá cada ejercicio a medida que lo termines.
     """
     #calculadora()
+    """
     num = int(input("Ingrese un nuMero: "))
     resultado = es_primo(num)
-    print(resultado)
+    if resultado == True:
+        print(f"{num} es un numero primo")
+    else:
+        print(f"{num} no es un numero primo")
+    """
     # clasificar_nota()
     # tabla_multiplicar()
     # print(es_primo(7))  # debería imprimir True
     # print(es_primo(4))  # debería imprimir False
+    
+
+    
+
     
 
 
