@@ -65,5 +65,11 @@
   "C_Cpp.default.compilerPath": "C/msys64/mingw64/bin/gcc.exe",
   "cmake.sourceDirectory": "E:/SERJITO/TUP/TUP-REPO/Aprobadas/PracticasLibres/FolderOrganizer",
   "code-runner.runInTerminal": true,
-  "code-runner.saveFileBeforeRun": true
+  "code-runner.saveFileBeforeRun": true,
+  "code-runner.fileDirectoryAsCwd": true,
+  "python.terminal.executeInFileDir": true,
+  "python.defaultInterpreterPath": "E:/SERJITO/TUP/TUP-REPO/IntroduccionAlAnalisisDeDatos/.venv/Scripts/python.exe",
+  "code-runner.executorMap": {
+    "python": "$pythonPath -u $fullFileName"
+  }
 }
