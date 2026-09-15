@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/favicon-192.png" />
+    <title>Contacto — Mecatorc</title>
+    <meta
+      name="description"
+      content="Contactate con Mecatorc, distribuidor oficial Atlas Copco. Teléfono (2226) 543365."
+    />
+  </head>
+  <body>
+    <div id="app-header"></div>
+
+    <main>
+      <section class="section">
+        <div class="container">
+          <h1 style="text-align: center; margin-bottom: 2rem">Contacto</h1>
+
+          <div class="contact-layout">
+            <form id="contact-form" class="contact-form" novalidate>
+              <div class="form-field">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" autocomplete="name" />
+                <span class="form-error" data-error-for="nombre" hidden></span>
+              </div>
+
+              <div class="form-field">
+                <label for="email">Correo electrónico</label>
+                <input type="email" id="email" name="email" autocomplete="email" />
+                <span class="form-error" data-error-for="email" hidden></span>
+              </div>
+
+              <div class="form-field">
+                <label for="asunto">Asunto</label>
+                <input type="text" id="asunto" name="asunto" />
+                <span class="form-error" data-error-for="asunto" hidden></span>
+              </div>
+
+              <div class="form-field">
+                <label for="mensaje">Mensaje</label>
+                <textarea id="mensaje" name="mensaje" rows="6"></textarea>
+                <span class="form-error" data-error-for="mensaje" hidden></span>
+              </div>
+
+              <button type="submit" class="btn">Enviar</button>
+              <p class="form-status" data-form-status role="status"></p>
+            </form>
+
+            <aside class="contact-aside">
+              <img
+                src="/src/assets/img/contacto-iso.jpg"
+                alt="Operario industrial Mecatorc"
+                width="210"
+                height="300"
+              />
+              <p>Contáctanos al <a href="tel:(2226) 543365">(2226) 543365</a></p>
+            </aside>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="app-footer"></div>
+    <script type="module" src="/src/pages/contacto.ts"></script>
+  </body>
+</html>
